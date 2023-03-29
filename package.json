@@ -1,0 +1,43 @@
+{
+  "name": "cyberslice-pizza-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "react-scripts start",
+    "seed": "node ./db/seed.js",
+    "seed:dev": "nodemon ./db/seed.js",
+    "server:dev": "nodemon index.js",
+    "seed:test": "npm run test:watch db",
+    "start:api": "npm run start:dev",
+    "test:api": "npm run test:watch api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capstone-project-team-tec/Cyberslice-Pizza-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/capstone-project-team-tec/Cyberslice-Pizza-Project/issues"
+  },
+  "homepage": "https://github.com/capstone-project-team-tec/Cyberslice-Pizza-Project#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.10.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.9.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
