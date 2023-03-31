@@ -2,6 +2,7 @@
 const {Client} = require('pg')
 require('dotenv').config()
 const client = new Client('http://localhost3000')
+client.password = 'alpaca'
 
 
 
