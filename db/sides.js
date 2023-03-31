@@ -1,3 +1,4 @@
+const { client } = require("./client")
 
 async function createSides({category, name, price}) {
     try {
@@ -55,4 +56,10 @@ async function updateSides({category, name, price}) {
     } catch(error) {
         console.log(error)
     }
+}
+module.exports = {
+    createSides,
+    getAllSides,
+    getSidesById,
+    updateSides
 }
