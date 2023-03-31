@@ -1,3 +1,5 @@
+const {client} = require("./client")
+
 async function createDrinks({category, name, price}) {
     try {
         const {rows} = await client.query(`
@@ -28,7 +30,7 @@ async function getAllDrinks() {
     }
 }
 
-async function getSidesById(id) {
+async function getDrinksById(id) {
     try {
         const {rows: [products] } = await client.query(`
         SELECT * FROM products
@@ -42,7 +44,7 @@ async function getSidesById(id) {
     }
 }
 
-async function updateSides({category, name, price}) {
+async function updateDrinks({category, name, price}) {
     try {
         const {rows} = await client.query(`
         UPDATE products 
@@ -54,4 +56,11 @@ async function updateSides({category, name, price}) {
     } catch(error) {
         console.log(error)
     }
+}
+
+module.exports = {
+    createDrinks,
+    getAllDrinks,
+    getDrinksById,
+    updateDrinks
 }

@@ -58,3 +58,10 @@ async function updateDesserts({category, name, price}) {
         console.log(error)
     }
 }
+
+module.exports = {
+    createDessert,
+    getAllDesserts,
+    getDessertById,
+    updateDesserts
+}

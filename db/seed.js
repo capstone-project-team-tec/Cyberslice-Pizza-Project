@@ -6,6 +6,24 @@ const {
     getUserById,
     getUserByUsername,
   } = require('./users.js');
+  const {
+    createDessert,
+    getAllDesserts,
+    getDessertById,
+    updateDesserts
+  } = require('./desserts.js')
+  const {
+    createDrinks,
+    getAllDrinks,
+    getDrinksById,
+    updateDrinks
+  } = require('./drinks.js')
+  const {
+    createSides,
+    getAllSides,
+    getSidesById,
+    updateSides
+  } = require('./sides.js')
 
 async function dropTables() {
   try {
@@ -101,12 +119,83 @@ async function createInitialUsers() {
     throw error
   }
 }
+
+async function createInitialDesserts() {
+  console.log("Starting to create desserts...")
+  try {
+    const dessertsToCreate = [
+      { category: "desserts", name: "Brownies",  price: 7.99 },
+      { category: "desserts", name: "Cinnamon Twists",  price: 7.99 },
+      { category: "desserts", name: "Apple Pie", price: 11.99 },
+      { category: "desserts", name: "Chocolate Ice Cream", price: 4.99 },
+    ]
+    const desserts = await Promise.all(dessertsToCreate.map(createDessert))
+
+    console.log(desserts)
+    console.log("Finished creating desserts")
+  } catch(error) {
+  console.log(error)
+}
+}
+
+async function createInitialDrinks() {
+  console.log("Starting to create drinks...")
+  try {
+    const drinksToCreate = [
+      { category: "drinks", name: "Small Neuron Fizz", price: 2.79  },
+      { category: "drinks", name: "Large Neuron Fizz", price: 3.29  },
+      { category: "drinks", name: "Small Nexus Nectar", price: 2.79  },
+      { category: "drinks", name: "Large Nexus Nectar", price: 3.29 },
+      { category: "drinks", name: "Small Circuit Surge", price: 2.79  },
+      { category: "drinks", name: "Large Circuit Surge", price: 3.29  },
+      { category: "drinks", name: "Small Binary Burst", price: 2.79 },
+      { category: "drinks", name: "Large Binary Burst", price: 3.29  },
+      { category: "drinks", name: "Small Quantum Cola", price: 2.79  },
+      { category: "drinks", name: "Large Quantum Cola", price: 3.29  },
+      { category: "drinks", name: "Small Plasma Pop", price: 2.79  },
+      { category: "drinks", name: "Large Plasma Pop", price: 3.29  }
+    ]
+    const drinks = await Promise.all(drinksToCreate.map(createDrinks))
+
+    console.log(drinks)
+    console.log("Finished Creating Drinks")
+  } catch(error) {
+    console.log(error)
+  }
+}
+async function createInitialSides() {
+  console.log("Starting to create sides...")
+  try {
+    const sidesToCreate = [
+      { category: "sides", name: "Salad", price: 6.99},
+      { category: "sides", name: "4ct Breadsticks", price: 4.99},
+      { category: "sides", name: "6ct Breadsticks", price: 6.99},
+      { category: "sides", name: "8ct Wings", price: 11.99},
+      { category: "sides", name: "12ct Wings", price: 13.99},
+      { category: "sides", name: "Marinara Cup", price: .99},
+      { category: "sides", name: "Icing Cup", price: 1.99}
+      
+
+    ]
+    const sides = await Promise.all(sidesToCreate.map(createSides))
+
+    console.log(sides)
+    console.log("Finished Creating Sides")
+
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
     await dropTables();
     await createTables();
     await createInitialUsers();
+    await createInitialDesserts();
+    await createInitialDrinks();
+    await createInitialSides();
 
     // await createInitialUsers()
     // await createInitialActivities()
