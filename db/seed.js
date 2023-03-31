@@ -37,7 +37,7 @@ async function createTables() {
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         address VARCHAR(255),
-        phone INTEGER UNIQUE        
+        phone VARCHAR(255) UNIQUE
       );
       CREATE TABLE products (
           id SERIAL PRIMARY KEY,
@@ -83,11 +83,31 @@ async function createTables() {
   }
 }
 
+async function createInitialUsers() {
+  console.log("Starting to create users...")
+  try {
+    const usersToCreate = [
+      { username: "albert", password: "bertie99", email: "bertie@fake.com", phone: "110-111-0010", address: "someAddress 1111 s blvd" },
+      { username: "sandra", password: "sandra123", email: "sandra@Superfake.com", phone: "110-000-0010", address: "someAddress 0000 s blvd" },
+      { username: "glamgal", password: "glamgal123", email: "glammy@Ultrafake.com", phone: "110-333-0010", address: "someAddress 3333 s blvd" } 
+    ]
+    const users = await Promise.all(usersToCreate.map(createUser))
+
+    console.log("Users created:")
+    console.log(users)
+    console.log("Finished creating users!")
+  } catch (error) {
+    console.error("Error creating users!")
+    throw error
+  }
+}
 async function rebuildDB() {
   try {
     client.connect();
-    await dropTables()
-    await createTables()
+    await dropTables();
+    await createTables();
+    await createInitialUsers();
+
     // await createInitialUsers()
     // await createInitialActivities()
     // await createInitialRoutines()

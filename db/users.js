@@ -1,14 +1,21 @@
 const {client} = require("./client");
 const bcrypt = require("bcrypt");
 
+// Check for the same user?
 async function createUser({username, password, email, address, phone}) {
     try {
+        const saltCount = 12;
+        const hashedPassword = await bcrypt.hash(password, saltCount);
+        const hashedEmail = await bcrypt.hash(email, saltCount);
+        const hashedAddress = await bcrypt.hash(address, saltCount);
+        const hashedPhone = await bcrypt.hash(phone, saltCount);
+
         const {rows} = await client.query(`
         INSERT INTO users(username, password, email, address, phone)
-        VALUES ($1,$2, $3, $4, $5)
-        ON CONFLICT (username, phone, email) DO NOTHING
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT DO NOTHING
         RETURNING  *;
-        ` [username, password, email, address, phone])
+        `, [username, hashedPassword, hashedEmail, hashedAddress, hashedPhone]);
 
         return rows
     } catch(error) {
