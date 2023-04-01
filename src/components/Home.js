@@ -20,8 +20,9 @@ const Home = () => {
         <div id="futureOfPizzaTextAndButton">
           <h1 id="theFutureOfPizza">The Future of Pizza</h1>
           <p id="theFutureOfPizzaSubtext">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius
-            quis elit non egestas. Maecenas vitae gravida ante, at congue massa.
+            Welcome to a new reality. 
+            Our state-of-the-art facility fuses cutting-edge technology with artisanal pizza-making. 
+            Immerse yourself in a high-tech dystopian wonderland while enjoying our artisanal pizzas crafted with the highest-quality ingredients.
           </p>
           <Link id="orderNowLink" to="/checkout">ORDER NOW</Link>
         </div>
@@ -34,11 +35,24 @@ const Home = () => {
         <div id="engineeredToPerfectionTextAndSubtext">
           <h1 id="engineeredToPerfection">Engineered to Perfection</h1>
           <p id="engineeredToPerfectionSubtext">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius quis elit non egestas. 
-            Maecenas vitae gravida ante, at congue massa. Vestibulum eu libero aliquet, rhoncus leo at, efficitur diam. 
-            Aliquam elementum nibh odio, nec efficitur neque scelerisque sodales. Morbi enim lectus, vehicula 
-            vulputate enim feugiat, bibendum ultrices nunc. Pellentesque sed scelerisque orci. Etiam at nulla nunc.
+            At Cyber Slice Pizza, we elevate the art of pizza-making to new heights. 
+            Our master chefs meticulously engineer each pizza, blending innovative culinary techniques with traditional methods. 
+            Using the freshest toppings and dough made in-house, we ensure every bite bursts with an unforgettable fusion of flavors. 
+            Come and experience the future of pizza today!
           </p>
+        </div>
+      </div>
+      <div id="lowerHomeContainer">
+        <div id="lowerHomeContainerPicAndButtons">
+          <img id="pizzaOverheadShot" src="/pizzaOverheadShot.jpg" alt="Image of Pizza from Overhead"></img>
+          <div id="lowerHomeContainerButtonGroup">
+            <Link className="lowerHomeContainerButton" id="viewOurFullMenuButton">View Our Full Menu</Link>
+            <Link className="lowerHomeContainerButton" id="viewOurLocationsButton">View Our Locations</Link>
+            <Link className="lowerHomeContainerButton" id="createAnAccountButton">
+              New Here? <br /> 
+              Create An Account
+            </Link>
+          </div>
         </div>
       </div>
     </div>

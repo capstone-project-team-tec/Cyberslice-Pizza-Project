@@ -18,18 +18,22 @@ const Footer = (props) => {
     }
 
     return(
-        <div></div>
-        // <header>
-        //     <img id="headerLogo" src="/logo.jpg" alt="Fitness Tracker logos"/>
-        //             <div id="headerButtonGroup">   
-        //                 <Link to='/' className="headerButton"> Home </Link>
-        //                 <Link to='/routines' className="headerButton"> Routines </Link> 
-        //                 {isLoggedIn ?<Link to='/myroutines' className="headerButton"> My Routines </Link>: undefined }
-        //                 {/* {isLoggedIn ? <Link to='/myroutines' className="headerButton"> My Routines </Link> : <a href="#" onClick={() => alert("error")} className="headerButton"> My Routines </a>} */}
-        //                 <Link to='/activities' className="headerButton"> Activities </Link>
-        //                 {!isLoggedIn ? <Link to='/login' className="headerButton"> Login </Link> : <Link onClick={handleLogout} className="headerButton"> Logout </Link>}
-        //             </div>  
-        // </header>
+        <footer>
+            <div id="containerNeededToCenterFooterBackgroundContainer">
+                <div id="footerBackgroundContainer">
+                    <div id="footerContents">
+                        <div id="blueSquare"></div>
+                        <div id="footerButtonGroup">
+                            <Link to='/' className="footerButton"> MENU </Link>
+                            <Link to='/locations' className="footerButton"> LOCATIONS </Link> 
+                            {isLoggedIn ?<Link onClick={handleLogout} className="footerButton"> LOGOUT </Link>: <Link to='/login' className="footerButton"> LOGIN </Link> }
+                            <div id="whiteSquare1" className="footerButton"></div>
+                            <div id="whiteSquare2" className="footerButton"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     )
 }
 
