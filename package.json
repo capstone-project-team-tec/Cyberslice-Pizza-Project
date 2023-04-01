@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/capstone-project-team-tec/Cyberslice-Pizza-Project/issues"
   },
-  "homepage": "https://github.com/capstone-project-team-tec/Cyberslice-Pizza-Project#readme",
+  "homepage": "/",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -39,5 +39,17 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

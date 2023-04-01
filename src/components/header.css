@@ -1,0 +1,52 @@
+/* general header styling */
+header {
+    width: auto;
+    height:5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5% 10% 0 10%;
+}
+
+/* header logo styling */
+#headerLogo {
+    height: 45px;
+    width: auto;
+}
+
+/* header button styling */
+#headerButtonGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headerButton {
+    height: auto;
+    color: white;
+    font-size: 20px;
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 30px;
+    letter-spacing: 2px;
+    transition: color 0.75s;
+}
+
+.headerButton:hover {
+    color: #cbff5e;
+}
+
+/* cart styling */
+#cartIcon {
+    height: 40px;
+    width: auto;
+    fill: white;
+}
+
+#cartIcon:hover {
+    fill: #cbff5e;
+}
+
