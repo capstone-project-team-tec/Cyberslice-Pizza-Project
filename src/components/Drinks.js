@@ -1,12 +1,48 @@
-import { useState } from "react"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import "./drinks.css"
 import "./global.css"
 
 const Drinks = (props) => {
+    const [MyDrinks, setMyDrinks] = useState([])
+
+    const fetchAllDrinks = async (event) => {
+        try {
+            const response = await fetch(`https://localhost:1337/api/drinks`, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const result = await response.json();
+
+            setMyDrinks(result)
+
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        fetchAllDrinks();
+    }, [])
+
+    console.log(MyDrinks)
+    
+
     return (
         <div>
-            placeholder
+            <h1>Cyberslice Drinks</h1>
+            
+            {
+                MyDrinks.length > 0 ? (MyDrinks.map((singleDrink) => {
+                    return (
+                        <div key={singleDrink.id}>
+                            <h2> Placeholder for Link: {singleDrink.name}</h2>
+                            <h2> Price: {singleDrink.price}</h2>
+                            </div>
+                    )
+                })
+                ): <div> No drinks yet</div>
+            }
         </div>
     )
 }
