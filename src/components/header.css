@@ -12,6 +12,12 @@ header {
 #headerLogo {
     height: 45px;
     width: auto;
+    fill: white;
+    transition: fill 0.75s;
+}
+
+#headerLogo:hover {
+    fill: #cbff5e;
 }
 
 /* header button styling */
@@ -44,6 +50,7 @@ header {
     height: 40px;
     width: auto;
     fill: white;
+    transition: fill 0.75s;
 }
 
 #cartIcon:hover {
