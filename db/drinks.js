@@ -16,12 +16,11 @@ async function createDrinks({category, name, price}) {
     }
 }
 
-
 async function getAllDrinks() {
     try {
         const {rows} = await client.query(`
         SELECT * FROM products
-        WHERE category='sides';
+        WHERE category='drinks';
         `)
         
         return rows;
@@ -30,37 +29,51 @@ async function getAllDrinks() {
     }
 }
 
-async function getDrinksById(id) {
+async function getDrinkById(id) {
     try {
-        const {rows: [products] } = await client.query(`
+        const {rows: [product] } = await client.query(`
         SELECT * FROM products
-        WHERE id=$1, category='sides';
-        `)
+        WHERE id=$1 AND category='drinks';
+        `, [id])
 
-        return products
+        return product
 
     } catch(error) {
         console.log(error)
     }
 }
 
-async function updateDrinks({category, name, price}) {
-    try {
-        const {rows} = await client.query(`
-        UPDATE products 
-        SET "name" = $1, "description" = $2
-        WHERE category='sides';
-        ` [category, name, price])
+async function updateDrinks({id, fields = {} }) {
+    console.log("Starting updateDrinks");
 
-        return rows;
+    const setString = Object.keys(fields).map(
+        (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ');
+
+    try {
+        const result = await client.query(`
+            UPDATE products
+            SET ${setString}
+            WHERE id=$${Object.values(fields).length + 1} AND category='drinks'
+            RETURNING *;
+            `, [...Object.values(fields), id]
+        );
+
+        if (result.rowCount > 0) {
+            console.log("Finished updateDrinks");
+            return await getDrinkById(id);
+        } else {
+            throw new Error("No rows updated.");
+        }
     } catch(error) {
-        console.log(error)
+        console.log(error);
+        throw error;
     }
 }
 
 module.exports = {
     createDrinks,
     getAllDrinks,
-    getDrinksById,
+    getDrinkById,
     updateDrinks
 }

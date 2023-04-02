@@ -27,6 +27,7 @@ usersRouter.post('/login', async (req,res,next)=>{
         });
     }
     try {
+        console.log("Calling getUserByUsername in users.js, testing logging in");
         const user = await getUserByUsername(username);
         const userId = user.id;
         // if (userData.username && userData.password) {

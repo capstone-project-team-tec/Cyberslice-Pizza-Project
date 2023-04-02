@@ -24,6 +24,7 @@ async function createUser({username, password, email, address, phone}) {
 }
 
 async function getUser({ username, password }) {
+  console.log("inside of getUser, testing logging in");
     try {
         const { rows : [user] } = await client.query(`
           SELECT * 
@@ -90,9 +91,10 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(userName) {
+  console.log("Getting user by username, testing logging in");
     try {
         const {rows} = await client.query(`
-            SELECT id, username, password 
+            SELECT *
             FROM users
             WHERE username=$1;
         `, [userName])
