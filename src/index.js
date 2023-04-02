@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes, Link, } from "react-router-dom"
-import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides } from "./components"
+import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer } from "./components"
 
 const App = () => {
     const [drinks, setDrinks] = useState([])
@@ -86,18 +86,21 @@ console.log(desserts, drinks, sides, currentUser)
     return (
 
         <BrowserRouter>
-        
-        <Routes>
-            <Route path="/" element={<Home />}/>
-            <Route path="/pizza" element={<Pizza />}/>
-            <Route path="/drinks" element={<Drinks drinks={drinks}/>}/>
-            <Route path="/sides" element={<Sides sides={sides}/>} />
-            <Route path="/desserts" element={<Desserts desserts={desserts}/>} />
-            <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
-            <Route path="/orderoptions" element={<OrderOptions />} />
-            <Route path="/locations" element={<Locations />} />
-            <Route path="/checkout" element={<Checkout />} />
-        </Routes>
+            <div>
+                <Header />
+                    <Routes>
+                        <Route path="/" element={<Home />}/>
+                        <Route path="/pizza" element={<Pizza />}/>
+                        <Route path="/drinks" element={<Drinks drinks={drinks}/>}/>
+                        <Route path="/sides" element={<Sides sides={sides}/>} />
+                        <Route path="/desserts" element={<Desserts desserts={desserts}/>} />
+                        <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
+                        <Route path="/orderoptions" element={<OrderOptions />} />
+                        <Route path="/locations" element={<Locations />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                    </Routes>
+                <Footer />
+            </div>
         </BrowserRouter>
     )
 }

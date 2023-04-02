@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+}
+:root {
+  /* fonts */
+  --font-orbitron: Orbitron;
+  --font-open-sans: "Open Sans";
+
+  /* font sizes */
+  --font-size-base: 16px;
+  --font-size-13xl: 32px;
+  --font-size-xl: 20px;
+
+  /* Colors */
+  --white-100: #fff;
+  --red-500: #f93f1d;
+  --black-500: #000;
+  --green-500: #cbff5e;
+
+}
