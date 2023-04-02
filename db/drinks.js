@@ -21,7 +21,7 @@ async function getAllDrinks() {
     try {
         const {rows} = await client.query(`
         SELECT * FROM products
-        WHERE category='sides';
+        WHERE category='drinks';
         `)
         
         return rows;

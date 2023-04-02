@@ -49,7 +49,7 @@ async function dropTables() {
     throw error;
   }
 }
-
+  
 async function createTables() {
   try {
     console.log("Starting to build tables...");
@@ -169,7 +169,6 @@ async function createInitialDrinks() {
     console.log(error)
   }
 }
-
 async function createInitialSides() {
   console.log("Starting to create sides...")
   try {
@@ -215,12 +214,9 @@ async function createInitialToppings() {
 async function rebuildDB() {
   try {
     client.connect();
-
-    // Drop all tables and recreate them
+    
     await dropTables();
     await createTables();
-
-    // Initialize dummy data
     await createInitialUsers();
     await createInitialDesserts();
     await createInitialDrinks();

@@ -16,7 +16,6 @@ async function createSides({category, name, price}) {
     }
 }
 
-
 async function getAllSides() {
     try {
         const {rows} = await client.query(`
@@ -57,6 +56,7 @@ async function updateSides({category, name, price}) {
         console.log(error)
     }
 }
+
 module.exports = {
     createSides,
     getAllSides,
