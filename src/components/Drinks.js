@@ -8,7 +8,7 @@ const Drinks = (props) => {
 
     const fetchAllDrinks = async (event) => {
         try {
-            const response = await fetch(`https://localhost:1337/api/drinks`, {
+            const response = await fetch(`http://localhost:1337/api/drinks`, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -36,7 +36,7 @@ const Drinks = (props) => {
                 MyDrinks.length > 0 ? (MyDrinks.map((singleDrink) => {
                     return (
                         <div key={singleDrink.id}>
-                            <h2> Placeholder for Link: {singleDrink.name}</h2>
+                            <h2>{singleDrink.name}</h2>
                             <h2> Price: {singleDrink.price}</h2>
                             </div>
                     )

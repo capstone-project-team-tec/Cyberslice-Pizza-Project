@@ -8,11 +8,11 @@ const App = () => {
     const [drinks, setDrinks] = useState([])
     const [desserts, setDesserts] = useState([])
     const [sides, setSides] = useState([])
-    const {currentUser, setCurrentUser} = useState({})
+    const [currentUser, setCurrentUser] = useState({})
 
     async function fetchDrinks() {
         try {
-            const response = await fetch(`https://localhost:1337/api/drinks`);
+            const response = await fetch(`http://localhost:1337/api/drinks`);
 
             const data = await response.json();
 
@@ -24,7 +24,7 @@ const App = () => {
     
     async function fetchDesserts() {
         try {
-            const response = await fetch(`https://localhost:1337/api/desserts`);
+            const response = await fetch(`http://localhost:1337/api/desserts`);
 
             const data = await response.json()
 
@@ -37,7 +37,7 @@ const App = () => {
 
     async function fetchSides() {
         try {
-            const response = await fetchDesserts(`https://localhost:1337/api/sides`);
+            const response = await fetch(`http://localhost:1337/api/sides`);
 
             const data = await response.json();
 
@@ -51,7 +51,7 @@ const App = () => {
         if (localStorage.token) {
 
         try {
-            const response = await fetch(`https://localhost:1337/api/users` , {
+            const response = await fetch(`http://localhost:1337/api/users` , {
             headers: {
                 'Content-Type': 'appplication/json',
                 'Authorization': `Bearer ${localStorage.token}`
@@ -61,6 +61,7 @@ const App = () => {
            const data = await response.json();
            
            setCurrentUser(data)
+           console.log(data)
 
         } catch(error) {
             console.log(error)

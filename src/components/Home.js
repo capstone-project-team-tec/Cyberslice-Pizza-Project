@@ -15,7 +15,7 @@ const Home = () => {
     
   return (
     <div id="home">
-      <img id="gridPic" src="grid.png" alt="Image of Grid"></img>
+      <img id="gridPic" src="/grid.png" alt="Image of Grid"></img>
       <div id="upperHomeContainer">
         <div id="futureOfPizzaTextAndButton">
           <h1 id="theFutureOfPizza">The Future of Pizza</h1>

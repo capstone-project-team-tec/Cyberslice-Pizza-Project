@@ -8,7 +8,7 @@ const Desserts = (props) => {
 
     const fetchAllDesserts = async (event) => {
         try {
-            const response = await fetch(`https://localhost:1337/api/desserts`, {
+            const response = await fetch(`http://localhost:1337/api/desserts`, {
                 headers: {
                     "Content-Type": "application/json",   
                 }
@@ -35,7 +35,7 @@ const Desserts = (props) => {
                 return (
                     <div key={singleDessert.id}>
 
-                        <h2>Placeholder for Link {singleDessert.name}</h2>
+                        <h2>{singleDessert.name}</h2>
                         <h4>Price: {Dessert.price}</h4> 
                         </div>
                 )
