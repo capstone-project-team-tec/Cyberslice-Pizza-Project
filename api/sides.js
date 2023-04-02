@@ -28,6 +28,7 @@ sidesRouter.get('/', async(req,res,next)=>{
         next(error);
       }
 })
+
 sidesRouter.patch('/:sideId', async (req, res, next) => {
   const id = req.params.sideId;
   console.log("sidesRouter.patch; sideId: " + id);
@@ -51,6 +52,22 @@ sidesRouter.patch('/:sideId', async (req, res, next) => {
     res.send(updatedSide);
   } catch ({ name, message }) {
     next({ name, message });
+  }
+});
+
+sidesRouter.get('/:sideId', async (req, res, next) => {
+  const side = await getSideById(req.params.sideId);
+  if (!req.params.sideId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    res.send(
+      side
+    );
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 });
 

@@ -56,4 +56,20 @@ dessertsRouter.patch('/:dessertId', async (req, res, next) => {
   }
 });
 
+dessertsRouter.get('/:dessertId', async (req, res, next) => {
+  const dessert = await getDessertById(req.params.dessertId);
+  if (!req.params.dessertId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    res.send(
+      dessert
+    );
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 module.exports = dessertsRouter
