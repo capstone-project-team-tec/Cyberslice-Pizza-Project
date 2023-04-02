@@ -24,6 +24,12 @@ const {
     getSidesById,
     updateSides
   } = require('./sides.js')
+  const {
+    createToppings,
+    getAllToppings,
+    getToppingsById,
+    updateToppings
+  } = require('./toppings.js')
 
 async function dropTables() {
   try {
@@ -43,7 +49,7 @@ async function dropTables() {
     throw error;
   }
 }
-  
+
 async function createTables() {
   try {
     console.log("Starting to build tables...");
@@ -71,7 +77,7 @@ async function createTables() {
       );
       CREATE TABLE toppings (
           id SERIAL PRIMARY KEY,
-          name VARCHAR(255),
+          name VARCHAR(255) UNIQUE NOT NULL,
           price FLOAT NOT NULL
       );
       CREATE TABLE carts (
@@ -163,6 +169,7 @@ async function createInitialDrinks() {
     console.log(error)
   }
 }
+
 async function createInitialSides() {
   console.log("Starting to create sides...")
   try {
@@ -187,20 +194,39 @@ async function createInitialSides() {
   }
 }
 
+async function createInitialToppings() {
+  console.log("Starting to create toppings...")
+  try {
+    const toppingsToCreate = [
+      { name: "Sausage", price: 2.99},
+      { name: "Pepperoni", price: 2.99},
+      { name: "Bacon", price: 3.99},
+      { name: "24-carat Gold Flakes", price: 5.99}
+    ]
+    const toppings = await Promise.all(toppingsToCreate.map(createToppings))
+
+    console.log(toppings)
+    console.log("Finished creating toppings")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
+
+    // Drop all tables and recreate them
     await dropTables();
     await createTables();
+
+    // Initialize dummy data
     await createInitialUsers();
     await createInitialDesserts();
     await createInitialDrinks();
     await createInitialSides();
+    await createInitialToppings();
 
-    // await createInitialUsers()
-    // await createInitialActivities()
-    // await createInitialRoutines()
-    // await createInitialRoutineActivities()
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error

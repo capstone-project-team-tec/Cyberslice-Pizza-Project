@@ -50,7 +50,7 @@ async function updateSides({category, name, price}) {
         UPDATE products 
         SET "name" = $1, "description" = $2
         WHERE category='sides';
-        ` [category, name, price])
+        `, [category, name, price])
 
         return rows;
     } catch(error) {
