@@ -17,7 +17,6 @@ async function createDessert({category, name, price}) {
     }
 }
 
-
 async function getAllDesserts() {
     try {
         const {rows} = await client.query(`
@@ -33,29 +32,43 @@ async function getAllDesserts() {
 
 async function getDessertById(id) {
     try {
-        const {rows: [products] } = await client.query(`
+        const {rows: [product] } = await client.query(`
         SELECT * FROM products
         WHERE id=$1 AND category='desserts';
-        `)
+        `, [id])
 
-        return products
+        return product
 
     } catch(error) {
         console.log(error)
     }
 }
 
-async function updateDesserts({category, name, price}) {
-    try {
-        const {rows} = await client.query(`
-        UPDATE products 
-        SET "name" = $1, "description" = $2
-        WHERE category='desserts';
-        ` [category, name, price])
+async function updateDesserts({id, fields = {} }) {
+    console.log("Starting updateDesserts");
 
-        return rows;
+    const setString = Object.keys(fields).map(
+        (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ');
+
+    try {
+        const result = await client.query(`
+            UPDATE products
+            SET ${setString}
+            WHERE id=$${Object.values(fields).length + 1} AND category='desserts'
+            RETURNING *;
+            `, [...Object.values(fields), id]
+        );
+
+        if (result.rowCount > 0) {
+            console.log("Finished updateDesserts");
+            return await getDessertById(id);
+        } else {
+            throw new Error("No rows updated.");
+        }
     } catch(error) {
-        console.log(error)
+        console.log(error);
+        throw error;
     }
 }
 

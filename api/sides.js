@@ -3,7 +3,9 @@ const sidesRouter = express.Router();
 
 const { 
     createSide,
-    getAllSides
+    getAllSides,
+    getSideById,
+    updateSides
 } = require('../db/sides');
 
 //dependency imports
@@ -26,5 +28,30 @@ sidesRouter.get('/', async(req,res,next)=>{
         next(error);
       }
 })
+sidesRouter.patch('/:sideId', async (req, res, next) => {
+  const id = req.params.sideId;
+  console.log("sidesRouter.patch; sideId: " + id);
+  const { name, price } = req.body;
+
+  console.log(name);
+  console.log(price);
+  const updateFields = {};
+
+  if (name) {
+    updateFields.name = name;
+  }
+
+  if (price) {
+    updateFields.price = price;
+  }
+
+  try {
+    const updatedSide = await updateSides({id, fields: updateFields});
+    console.log("Updated side: " + updatedSide);
+    res.send(updatedSide);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 module.exports = sidesRouter

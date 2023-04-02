@@ -29,37 +29,52 @@ async function getAllSides() {
     }
 }
 
-async function getSidesById(id) {
+async function getSideById(id) {
     try {
-        const {rows: [products] } = await client.query(`
+        const {rows: [product] } = await client.query(`
         SELECT * FROM products
-        WHERE id=$1, category='sides';
-        `)
+        WHERE id=$1 AND category='sides';
+        `, [id])
 
-        return products
+        return product
 
     } catch(error) {
         console.log(error)
     }
 }
 
-async function updateSides({category, name, price}) {
+async function updateSides({id, fields = {} }) {
+    console.log("Starting updateSides");
+
+    const setString = Object.keys(fields).map(
+        (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ');
+
     try {
-        const {rows} = await client.query(`
-        UPDATE products 
-        SET "name" = $1, "description" = $2
-        WHERE category='sides';
-        `, [category, name, price])
+        const result = await client.query(`
+            UPDATE products
+            SET ${setString}
+            WHERE id=$${Object.values(fields).length + 1} AND category='sides'
+            RETURNING *;
+            `, [...Object.values(fields), id]
+        );
 
-        return rows;
+        if (result.rowCount > 0) {
+            console.log("Finished updateSides");
+            return await getSideById(id);
+        } else {
+            throw new Error("No rows updated.");
+        }
     } catch(error) {
-        console.log(error)
+        console.log(error);
+        throw error;
     }
 }
+
 
 module.exports = {
     createSides,
     getAllSides,
-    getSidesById,
+    getSideById,
     updateSides
 }
