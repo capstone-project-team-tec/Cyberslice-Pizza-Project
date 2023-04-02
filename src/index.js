@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes, Link, } from "react-router-dom"
-import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer } from "./components"
+import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu } from "./components"
 
 const App = () => {
     const [drinks, setDrinks] = useState([])
@@ -99,6 +99,8 @@ console.log(desserts, drinks, sides, currentUser)
                         <Route path="/orderoptions" element={<OrderOptions />} />
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/menu" element={<Menu />} />
                     </Routes>
                 <Footer />
             </div>
