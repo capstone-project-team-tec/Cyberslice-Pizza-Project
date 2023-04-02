@@ -8,7 +8,7 @@ const Sides = (props) => {
 
     const fetchAllSides = async (event) => {
         try {
-            const response = await fetch(`https://localhost:1337/api/sides`, {
+            const response = await fetch(`http://localhost:1337/api/sides`, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -16,6 +16,7 @@ const Sides = (props) => {
             const result = await response.json();
 
             setAllSides(result)
+            console.log(result)
 
         } catch(error) {
             console.log(error)
@@ -35,7 +36,7 @@ const Sides = (props) => {
                 return (
                     <div key={singleSide.id}>
 
-                        <h2>Placeholder for Link {singleSide.name}</h2>
+                        <h2>{singleSide.name}</h2>
                         <h4>Price: {singleSide.price}</h4> 
                         </div>
                 )
