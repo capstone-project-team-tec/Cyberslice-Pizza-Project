@@ -10,6 +10,7 @@ const Register = () => {
     const [ address, setAddress ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ phone, setPhone ] = useState("");
+    const [ CurrentUser, setCurrentUser ] = useState({})
 
 
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Register = () => {
               return;
             }
 
-            const response = await fetch(`https://localhost:1337/users/register`, {
+            const response = await fetch(`http://localhost:1337/api/users/register`, {
                 method: "POST", 
                 headers: {
                     'Content-Type': "application/json",
@@ -34,6 +35,9 @@ const Register = () => {
                 body: JSON.stringify ({
                         username: username,
                         password: password,
+                        email: email,
+                        address: address,
+                        phone: phone
                 })
             })
 
@@ -41,12 +45,13 @@ const Register = () => {
 
             console.log(resultData)
 
+
             if (!resultData.token) {
                 alert("Unable to create account, please try again")
             } else {
                 const myJWT = resultData.token;
                 localStorage.setItem("token", myJWT) 
-                setCurrentUser({username, password})
+                setCurrentUser({username, password, email, address, phone})
                 navigate("/")
             }
         } catch (error) {
@@ -75,6 +80,24 @@ const Register = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
+                />
+                <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                />
+                <input 
+                type="text"
+                placeholder="Address"
+                value={address}
+                onChange={(event) => setAddress(event.target.value)}
+                />
+                <input 
+                type="text"
+                placeholder="Phone"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
                 />
                 <button type="submit"> Create Account </button>
             </form>
