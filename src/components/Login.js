@@ -10,7 +10,8 @@ const Login = (props) => {
 
     //Login
     const [ myUsername, setMyUsername ] = useState("");
-    const [ myPassword, setMyPassword ] = useState("")
+    const [ myPassword, setMyPassword ] = useState("");
+    
 
     const {setCurrentUser} = props;
 
