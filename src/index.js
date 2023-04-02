@@ -99,7 +99,7 @@ console.log(desserts, drinks, sides, currentUser)
                         <Route path="/orderoptions" element={<OrderOptions />} />
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/register" element={<Register />} />
+                        <Route path="/register" element={<Register setCurrentUser={setCurrentUser}/>} />
                         <Route path="/menu" element={<Menu />} />
                     </Routes>
                 <Footer />
