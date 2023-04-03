@@ -65,7 +65,7 @@ const Login = (props) => {
                 <button className="loginButton" type="submit"> Login </button>
             </form>
 
-            <h5>Don't Have An Account? <Link to="/register">Sign Up Here</Link></h5>
+            <h5 id="signup">Don't Have An Account? <Link to="/register">Sign Up Here</Link></h5>
         </section>
     ) 
 }

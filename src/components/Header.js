@@ -44,7 +44,7 @@ const Header = (props) => {
                 </svg> 
             </Link>
             <div id="headerButtonGroup">   
-                <Link to='/' className="headerButton"> MENU </Link>
+                <Link to='/menu' className="headerButton"> MENU </Link>
                 <Link to='/locations' className="headerButton"> LOCATIONS </Link> 
                 {isLoggedIn ?<Link onClick={handleLogout} className="headerButton"> LOGOUT </Link>: <Link to='/login' className="headerButton"> LOGIN </Link> }
                 <Link to='/checkout' className="headerButton"> 

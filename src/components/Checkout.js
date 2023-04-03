@@ -6,7 +6,7 @@ import "./global.css"
 const Checkout = (props) => {
     return (
         <div>
-            placeholder
+            <h1>placeholder</h1>
         </div>
     )
 }
