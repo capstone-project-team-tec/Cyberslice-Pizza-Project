@@ -6,7 +6,7 @@ import "./global.css"
 const Locations = (props) => {
     return(
         <div>
-            placeholder
+            <h1>placeholder</h1>
         </div>
     )
 }

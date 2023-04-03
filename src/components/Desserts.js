@@ -36,7 +36,7 @@ const Desserts = (props) => {
                     <div key={singleDessert.id}>
 
                         <h2>{singleDessert.name}</h2>
-                        <h4>Price: {Dessert.price}</h4> 
+                        <h4>Price: {singleDessert.price}</h4> 
                         </div>
                 )
             })

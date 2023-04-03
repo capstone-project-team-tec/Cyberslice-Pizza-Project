@@ -46,9 +46,9 @@ const Home = () => {
         <div id="lowerHomeContainerPicAndButtons">
           <img id="pizzaOverheadShot" src="/pizzaOverheadShot.jpg" alt="Image of Pizza from Overhead"></img>
           <div id="lowerHomeContainerButtonGroup">
-            <Link className="lowerHomeContainerButton" id="viewOurFullMenuButton">View Our Full Menu</Link>
-            <Link className="lowerHomeContainerButton" id="viewOurLocationsButton">View Our Locations</Link>
-            <Link className="lowerHomeContainerButton" id="createAnAccountButton">
+            <Link to="menu" className="lowerHomeContainerButton" id="viewOurFullMenuButton">View Our Full Menu</Link>
+            <Link to="/locations" className="lowerHomeContainerButton" id="viewOurLocationsButton">View Our Locations</Link>
+            <Link to="/register" className="lowerHomeContainerButton" id="createAnAccountButton">
               New Here? <br /> 
               Create An Account
             </Link>
