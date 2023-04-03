@@ -3,8 +3,9 @@ const usersRouter = express.Router();
 
 const { 
     createUser,
-    getUserByUsername
-    // getUserById
+    getUserByUsername,
+    getUserById,
+    getAllUsers
     // deleteUser
 } = require('../db/users');
 
@@ -117,6 +118,16 @@ usersRouter.post('/register', async (req,res,next)=>{
         next(error);
     }
 })
+
+usersRouter.get('/', async(req,res,next)=>{
+    try {
+        const users = await getAllUsers();
+        res.send( users );
+      } catch (error) {
+        next(error);
+      }
+})
+
 usersRouter.get('/me', requireUser, async(req,res,next)=>{
     try {
         const user = req.user;
@@ -142,21 +153,21 @@ usersRouter.get('/me', requireUser, async(req,res,next)=>{
 })
 
 // Just a boilerplate (GET BY ID) route; similar code from desserts.js
-// usersRouter.get('/:userId', async (req, res, next) => {
-//     const user = await getUserById(req.params.userId);
-//     if (!req.params.userId) {
-//       console.log(error);
-//       next(error);
-//     }
-//     try {
-//       res.send(
-//         user
-//       );
-//     } catch (error) {
-//       console.log(error);
-//       next(error);
-//     }
-// });
+usersRouter.get('/:userId', async (req, res, next) => {
+    const user = await getUserById(req.params.userId);
+    if (!req.params.userId) {
+      console.log(error);
+      next(error);
+    }
+    try {
+      res.send(
+        user
+      );
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+});
 
 // Just a boilerplate; some similar code from desserts.js
 

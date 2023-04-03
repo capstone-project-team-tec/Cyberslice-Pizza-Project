@@ -110,6 +110,18 @@ async function getUserByUsername(userName) {
     }
 }
 
+async function getAllUsers() {
+  try {
+      const {rows} = await client.query(`
+      SELECT * FROM users;
+      `)
+      
+      return rows;
+  } catch (error) {
+      console.log(error)
+  }
+}
+
 // Just a boilerplate; some code copied from desserts.js
 // async function deleteUser(id) {
 //   try {
@@ -137,4 +149,5 @@ module.exports = {
     getUser,
     getUserById,
     getUserByUsername,
+    getAllUsers
   }
