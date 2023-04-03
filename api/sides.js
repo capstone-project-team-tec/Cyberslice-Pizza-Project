@@ -5,7 +5,8 @@ const {
     createSide,
     getAllSides,
     getSideById,
-    updateSides
+    updateSides,
+    deleteSide
 } = require('../db/sides');
 
 //dependency imports
@@ -20,6 +21,7 @@ sidesRouter.use((req,res,next)=>{
     console.log("A request is being made to /sides");
     next();
 })
+
 sidesRouter.get('/', async(req,res,next)=>{
     try {
         const sides = await getAllSides();
@@ -71,4 +73,16 @@ sidesRouter.get('/:sideId', async (req, res, next) => {
   }
 });
 
+sidesRouter.delete('/:sideId', async (req, res, next) => {
+  if (!req.params.sideId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    const deletedSide = await deleteSide(req.params.sideId);
+    res.send(deletedSide);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 module.exports = sidesRouter

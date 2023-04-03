@@ -5,6 +5,7 @@ const {
     createDessert,
     getAllDesserts,
     updateDesserts,
+    deleteDessert,
     getDessertById
 } = require('../db/desserts');
 
@@ -69,6 +70,19 @@ dessertsRouter.get('/:dessertId', async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+});
+
+dessertsRouter.delete('/:dessertId', async (req, res, next) => {
+  if (!req.params.dessertId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    const deletedDessert = await deleteDessert(req.params.dessertId);
+    res.send(deletedDessert);
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

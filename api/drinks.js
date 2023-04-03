@@ -5,6 +5,7 @@ const {
     createDrink,
     getAllDrinks,
     updateDrinks,
+    deleteDrink,
     getDrinkById
 } = require('../db/drinks');
 
@@ -71,4 +72,16 @@ drinksRouter.get('/:drinkId', async (req, res, next) => {
   }
 });
 
+drinksRouter.delete('/:drinkId', async (req, res, next) => {
+  if (!req.params.drinkId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    const deletedDrink = await deleteDrink(req.params.drinkId);
+    res.send(deletedDrink);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 module.exports = drinksRouter

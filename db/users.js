@@ -87,7 +87,6 @@ async function getUserById(userId) {
     } catch (error) {
         console.log(error);
     }
-
 }
 
 async function getUserByUsername(userName) {
@@ -110,6 +109,28 @@ async function getUserByUsername(userName) {
         console.log(error);
     }
 }
+
+// Just a boilerplate; some code copied from desserts.js
+// async function deleteUser(id) {
+//   try {
+//       const user = await getUserById(id);
+//       if (!user) {
+//           throw {
+//               name: 'UserNotFoundError',
+//               message: 'Could not find a user with that id'
+//           }
+//       }
+//       // This SQL is very wrong.
+//       await client.query(`
+//           DELETE FROM products
+//           WHERE id=$1 AND category='desserts';
+//       `, [id]);
+
+//       return user;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 module.exports = {
     createUser,

@@ -71,9 +71,30 @@ async function updateDrinks({id, fields = {} }) {
     }
 }
 
+async function deleteDrink(id) {
+    try {
+        const drink = await getDrinkById(id);
+        if (!drink) {
+            throw {
+                name: 'DessertNotFoundError',
+                message: 'Could not find a dessert with that id'
+            }
+        }
+        await client.query(`
+            DELETE FROM products
+            WHERE id=$1 AND category='drinks';
+        `, [id]);
+
+        return drink;
+    } catch (error) {
+      throw error;
+    }
+}
+
 module.exports = {
     createDrinks,
     getAllDrinks,
     getDrinkById,
-    updateDrinks
+    updateDrinks,
+    deleteDrink
 }

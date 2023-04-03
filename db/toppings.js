@@ -54,9 +54,32 @@ async function updateToppings({name, price}) {
         console.log(error)
     }
 }
+
+// Can't really test this new CRUD operation (DELETE) without there being a toppings route...
+// async function deleteToppings(id) {
+//     try {
+//         const topping = await getToppingById(id);
+//         if (!topping) {
+//             throw {
+//                 name: 'ToppingNotFoundError',
+//                 message: 'Could not find a dessert with that id'
+//             }
+//         }
+//         await client.query(`
+//             DELETE FROM products
+//             WHERE id=$1 AND category='toppings';
+//         `, [id]);
+
+//         return topping;
+//     } catch (error) {
+//       throw error;
+//     }
+// }
+
 module.exports = {
     createToppings,
     getAllToppings,
     getToppingsById,
     updateToppings
+    // deleteToppings
 }
