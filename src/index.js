@@ -88,7 +88,7 @@ console.log(desserts, drinks, sides, currentUser)
 
         <BrowserRouter>
             <div>
-                <Header />
+                <Header currentUser={currentUser}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza />}/>
@@ -96,13 +96,13 @@ console.log(desserts, drinks, sides, currentUser)
                         <Route path="/sides" element={<Sides sides={sides}/>} />
                         <Route path="/desserts" element={<Desserts desserts={desserts}/>} />
                         <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
-                        <Route path="/orderoptions" element={<OrderOptions />} />
+                        <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser}/>} />
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser}/>} />
                         <Route path="/menu" element={<Menu />} />
                     </Routes>
-                <Footer />
+                <Footer currentUser={currentUser}/>
             </div>
         </BrowserRouter>
     )

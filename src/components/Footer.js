@@ -6,14 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const Footer = (props) => {
-    const { isLoggedIn } = props;
+    const isLoggedIn = props.currentUser;
     const navigate = useNavigate();
 
 
     const handleLogout = (event) => {
         event.preventDefault();
         localStorage.removeItem('token');
-        props.setIsLoggedIn(false);
+        
         navigate('/');
     }
 
@@ -24,9 +24,9 @@ const Footer = (props) => {
                     <div id="footerContents">
                         <img id="footerLogo" src="/logo2.png" alt="Logo 2 pic" />
                         <div id="footerButtonGroup">
-                            <Link to='/' className="footerButton"> MENU </Link>
+                            <Link to='/menu' className="footerButton"> MENU </Link>
                             <Link to='/locations' className="footerButton"> LOCATIONS </Link> 
-                            {isLoggedIn ?<Link onClick={handleLogout} className="footerButton"> LOGOUT </Link>: <Link to='/login' className="footerButton"> LOGIN </Link> }
+                            {localStorage.getItem("token") ?<Link onClick={handleLogout} className="footerButton"> LOGOUT </Link>: <Link to='/login' className="footerButton"> LOGIN </Link> }
                             <a id="facebookIconAnchor" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
                                 <svg id="facebookIcon" className="footerButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
                                     <defs>
