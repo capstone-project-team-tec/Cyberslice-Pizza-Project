@@ -9,11 +9,9 @@ const Login = (props) => {
     const [ myUsername, setMyUsername ] = useState("");
     const [ myPassword, setMyPassword ] = useState("");
     
-
     const {setCurrentUser} = props;
 
     const navigate = useNavigate();
-
 
     async function loginFunction(e) {
         e.preventDefault();
@@ -45,27 +43,40 @@ const Login = (props) => {
     }
 
     return (
-        <section> 
+        <section id="loginContainer"> 
 
             {/* Login */}
-            <h3> Login to your account</h3>
-            <form onSubmit={loginFunction}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={myUsername}
-                    onChange={(event) => setMyUsername(event.target.value)}
-                />
-                <input className="loginBox"
-                    type="text"
-                    placeholder="Password"
-                    value={myPassword}
-                    onChange={(event) => setMyPassword(event.target.value)}
-                />
-                <button className="loginButton" type="submit"> Login </button>
-            </form>
+            <section className = "loginTitle"> 
+                Welcome Back
+            </section>
+            
+            <section className = "formsAndPicture">
+                <form onSubmit={loginFunction}>
+                    <div className="input-wrapper">
+                        <h2> Email</h2>
+                        <input className="loginBox"
+                            id="username"
+                            type="text"
+                            placeholder=""
+                            value={myUsername}
+                            onChange={(event) => setMyUsername(event.target.value)}
+                        />
+                    </div>
+                    <div className="input-wrapper">
+                        <h2> Password</h2>
+                        <input className="loginBox"
+                            id="password"
+                            type="text"
+                            placeholder=""
+                            value={myPassword}
+                            onChange={(event) => setMyPassword(event.target.value)}
+                        />
+                    </div>
+                    <button className="loginButton" type="submit"> Login </button>
+                </form>
+            </section>
 
-            <h5 id="signup">Don't Have An Account? <Link to="/register">Sign Up Here</Link></h5>
+            <h5 id="signup">Don't Have An Account? <Link to="/register">Sign Up</Link></h5>
         </section>
     ) 
 }
