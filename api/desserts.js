@@ -5,6 +5,7 @@ const {
     createDessert,
     getAllDesserts,
     updateDesserts,
+    deleteDessert,
     getDessertById
 } = require('../db/desserts');
 
@@ -51,6 +52,35 @@ dessertsRouter.patch('/:dessertId', async (req, res, next) => {
     const updatedDessert = await updateDesserts({id, fields: updateFields});
     console.log("Updated dessert: " + updatedDessert);
     res.send(updatedDessert);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+dessertsRouter.get('/:dessertId', async (req, res, next) => {
+  const dessert = await getDessertById(req.params.dessertId);
+  if (!req.params.dessertId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    res.send(
+      dessert
+    );
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+dessertsRouter.delete('/:dessertId', async (req, res, next) => {
+  if (!req.params.dessertId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    const deletedDessert = await deleteDessert(req.params.dessertId);
+    res.send(deletedDessert);
   } catch ({ name, message }) {
     next({ name, message });
   }

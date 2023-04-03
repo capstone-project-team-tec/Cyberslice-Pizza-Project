@@ -71,10 +71,30 @@ async function updateSides({id, fields = {} }) {
     }
 }
 
+async function deleteSide(id) {
+    try {
+        const side = await getSideById(id);
+        if (!side) {
+            throw {
+                name: 'SideNotFoundError',
+                message: 'Could not find a side with that id'
+            }
+        }
+        await client.query(`
+            DELETE FROM products
+            WHERE id=$1 AND category='sides';
+        `, [id]);
+
+        return side;
+    } catch (error) {
+      throw error;
+    }
+}
 
 module.exports = {
     createSides,
     getAllSides,
     getSideById,
-    updateSides
+    updateSides,
+    deleteSide
 }

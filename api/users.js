@@ -4,6 +4,8 @@ const usersRouter = express.Router();
 const { 
     createUser,
     getUserByUsername
+    // getUserById
+    // deleteUser
 } = require('../db/users');
 
 //dependency imports
@@ -138,5 +140,37 @@ usersRouter.get('/me', requireUser, async(req,res,next)=>{
         next(error);
     }
 })
+
+// Just a boilerplate (GET BY ID) route; similar code from desserts.js
+// usersRouter.get('/:userId', async (req, res, next) => {
+//     const user = await getUserById(req.params.userId);
+//     if (!req.params.userId) {
+//       console.log(error);
+//       next(error);
+//     }
+//     try {
+//       res.send(
+//         user
+//       );
+//     } catch (error) {
+//       console.log(error);
+//       next(error);
+//     }
+// });
+
+// Just a boilerplate; some similar code from desserts.js
+
+// usersRouter.delete('/:userId', async (req, res, next) => {
+//     if (!req.params.userId) {
+//       console.log(error);
+//       next(error);
+//     }
+//     try {
+//       const deleteUser = await deleteUser(req.params.userId);
+//       res.send(deletedUser);
+//     } catch ({ name, message }) {
+//       next({ name, message });
+//     }
+//   });
 
 module.exports = usersRouter

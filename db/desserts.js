@@ -31,12 +31,14 @@ async function getAllDesserts() {
 }
 
 async function getDessertById(id) {
+    console.log("Starting getDessertById");
     try {
         const {rows: [product] } = await client.query(`
         SELECT * FROM products
         WHERE id=$1 AND category='desserts';
         `, [id])
 
+        console.log("Finished getDessertById");
         return product
 
     } catch(error) {
@@ -72,9 +74,30 @@ async function updateDesserts({id, fields = {} }) {
     }
 }
 
+async function deleteDessert(id) {
+    try {
+        const dessert = await getDessertById(id);
+        if (!dessert) {
+            throw {
+                name: 'DessertNotFoundError',
+                message: 'Could not find a dessert with that id'
+            }
+        }
+        await client.query(`
+            DELETE FROM products
+            WHERE id=$1 AND category='desserts';
+        `, [id]);
+
+        return dessert;
+    } catch (error) {
+      throw error;
+    }
+}
+
 module.exports = {
     createDessert,
     getAllDesserts,
     getDessertById,
-    updateDesserts
+    updateDesserts,
+    deleteDessert
 }
