@@ -19,12 +19,12 @@ div {
 }
 
 #gridPic {
-    height: 60%;
-    max-height: 500px;
+    height: 100%;
     width: 100%;
     position: absolute;
     z-index: -5;
-    opacity: 20%;
+    opacity: 15%;
+    padding-top: 8%;
 }
 
 /* upper container left side of screen */
@@ -91,15 +91,17 @@ div {
     border-radius: 5%;
 }
 
-#whiteCircle {
+#pizzaIcon {
     position: absolute;
     bottom: 50px;
     left: -75px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: white;
+    width: 200px;
+    height: 200px;
     z-index: 1;
+    fill:none;
+    stroke:#fff;
+    stroke-miterlimit:10;
+    stroke-width:3px;
 }
 
 /* middle container styling */
@@ -163,8 +165,8 @@ div {
 
 /* lower component left side of screen */
 #pizzaOverheadShot {
-    height: 400px;
-    width: auto;
+    height: 432px;
+    width: 600px;
     border-radius: 5%;
 }
 
@@ -203,4 +205,5 @@ div {
 #createAnAccountButton {
     background-color: #cbff5e;
     color: black;
+    margin-bottom: 0%;
 }
