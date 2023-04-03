@@ -16,11 +16,6 @@ body {
   --font-orbitron: Orbitron;
   --font-open-sans: "Open Sans";
 
-  /* font sizes */
-  --font-size-base: 16px;
-  --font-size-13xl: 32px;
-  --font-size-xl: 20px;
-
   /* Colors */
   --white-100: #fff;
   --red-500: #f93f1d;
