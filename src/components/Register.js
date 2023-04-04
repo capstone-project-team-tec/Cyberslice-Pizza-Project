@@ -62,46 +62,64 @@ const Register = () => {
 
 
     return (
-        <section>
+        <section id = "registerContainer">
             {/* Register */}
-            <h3> Create New Account </h3>
+            <section className = "registerTitle"> 
+                Sign Up
+                <br></br>
+            </section>
             
-            <form onSubmit={(event) => {
-                    event.preventDefault()
-                    accountRegistration()}}> 
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-                <input
-                type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                />
-                <input 
-                type="text"
-                placeholder="Address"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                />
-                <input 
-                type="text"
-                placeholder="Phone"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-                />
-                <button type="submit"> Create Account </button>
-            </form>
-            
+            <section className = "formAndPicture">
+                <form onSubmit={(event) => {
+                        event.preventDefault()
+                        accountRegistration()}}> 
+                    <h2>Username</h2>
+                    <input
+                        className = "registerBox"
+                        type="text"
+                        placeholder=""
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                    />
+                    <h2>Password</h2>
+                    <input
+                        className = "registerBox"
+                        type="text"
+                        placeholder=""
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                    />
+                    <h2>Email</h2>
+                    <input
+                        className = "registerBox"    
+                        type="text"
+                        placeholder=""
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                    />
+                    <h2>Address</h2>
+                    <input 
+                        className = "registerBox"
+                        type="text"
+                        placeholder=""
+                        value={address}
+                        onChange={(event) => setAddress(event.target.value)}
+                    />
+                    <h2>Phone</h2>
+                    <input 
+                        className = "registerBox"
+                        type="text"
+                        placeholder=""
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
+                    />
+                    <button className="registerButton" type="submit"> Create Account </button>
+                    
+                </form>
+                <section className = "picture">
+                    This is where a picture of pizza would go. Yeah.
+                </section>
+            </section>
         </section>
     )
 }

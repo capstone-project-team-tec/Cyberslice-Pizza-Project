@@ -48,9 +48,10 @@ const Login = (props) => {
             {/* Login */}
             <section className = "loginTitle"> 
                 Welcome Back
+                <br></br>
             </section>
             
-            <section className = "formsAndPicture">
+            <section className = "formAndPicture">
                 <form onSubmit={loginFunction}>
                     <div className="input-wrapper">
                         <h2> Email</h2>
@@ -74,6 +75,9 @@ const Login = (props) => {
                     </div>
                     <button className="loginButton" type="submit"> Login </button>
                 </form>
+                <section className = "picture">
+                    This is where a picture of pizza would go. Yeah.
+                </section>
             </section>
 
             <h5 id="signup">Don't Have An Account? <Link to="/register">Sign Up</Link></h5>
