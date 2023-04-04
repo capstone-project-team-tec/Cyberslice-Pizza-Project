@@ -35,6 +35,12 @@ const {
     createPizza,
     addDetailsToPizza 
   } = require("./pizza");
+  const {
+    createCartWithoutUser,
+    createCartForUser,
+    createOrderItemsRowForProduct,
+    checkoutCart
+  } = require("./cart");
 
 async function dropTables() {
   try {
@@ -62,6 +68,7 @@ async function createTables() {
     await client.query(`
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
         username VARCHAR(255) UNIQUE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
@@ -116,9 +123,9 @@ async function createInitialUsers() {
   console.log("Starting to create users...")
   try {
     const usersToCreate = [
-      { username: "albert", password: "bertie99", email: "bertie@fake.com", phone: "110-111-0010", address: "someAddress 1111 s blvd" },
-      { username: "sandra", password: "sandra123", email: "sandra@Superfake.com", phone: "110-000-0010", address: "someAddress 0000 s blvd" },
-      { username: "glamgal", password: "glamgal123", email: "glammy@Ultrafake.com", phone: "110-333-0010", address: "someAddress 3333 s blvd" } 
+      { name: "albert", username: "albert", password: "bertie99", email: "bertie@fake.com", phone: "110-111-0010", address: "someAddress 1111 s blvd" },
+      { name: "sandra", username: "sandra", password: "sandra123", email: "sandra@Superfake.com", phone: "110-000-0010", address: "someAddress 0000 s blvd" },
+      { name: "jennifer", username: "glamgal", password: "glamgal123", email: "glammy@Ultrafake.com", phone: "110-333-0010", address: "someAddress 3333 s blvd" } 
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 
@@ -259,6 +266,75 @@ async function createPizzaWithToppings() {
   }
 }
 
+async function createInitialCartsWithoutUser () {
+  console.log("Starting to create a cart without a user...")
+  try {
+    const createdCart = await createCartWithoutUser();
+    const createdCart2 = await createCartWithoutUser();
+    const createdCart3 = await createCartWithoutUser();
+
+    console.log(createdCart)
+    console.log("this is createdcart.id ....." + createdCart.id)
+    console.log("Finished creating initial cart ID...");
+
+    console.log("Adding rows to carts table...");
+    
+    const CartsTableRows = [
+      { 
+        id: createdCart.id,
+        isCheckedOut: true,
+        totalCost: 15.99
+      },
+      { 
+        id: createdCart2.id,
+        isCheckedOut: true,
+        totalCost: 20.99
+      }
+    ];
+    
+    const carts = await Promise.all(CartsTableRows.map(checkoutCart));
+    console.log(carts)
+    console.log("Finished creating carts rows with no user")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+async function createInitialCartsForUser () {
+  console.log("Starting to create a cart for a user...")
+  try {
+    const createdCart = await createCartForUser(1);
+    const createdCart2 = await createCartForUser(1);
+    const createdCart3 = await createCartForUser(1);
+
+    console.log(createdCart)
+    console.log("this is createdcart.id ....." + createdCart.id)
+    console.log("this is createdcart.userid ....." + createdCart.userId)
+    console.log("Finished creating initial cart ID...");
+
+    console.log("Adding rows to carts table...");
+    
+    const CartsTableRows = [
+      { 
+        id: createdCart.id,
+        isCheckedOut: true,
+        totalCost: 99
+      },
+      { 
+        id: createdCart2.id,
+        isCheckedOut: true,
+        totalCost: 55
+      }
+    ];
+    
+    const carts = await Promise.all(CartsTableRows.map(checkoutCart));
+    console.log(carts)
+    console.log("Finished creating carts rows for user")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -271,6 +347,8 @@ async function rebuildDB() {
     await createInitialSides();
     await createInitialToppings();
     await createPizzaWithToppings();
+    await createInitialCartsWithoutUser();
+    await createInitialCartsForUser();
 
   } catch (error) {
     console.log("Error during rebuildDB")
