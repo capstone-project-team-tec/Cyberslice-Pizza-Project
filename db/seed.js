@@ -29,7 +29,12 @@ const {
     getAllToppings,
     getToppingsById,
     updateToppings
-  } = require('./toppings.js')
+  } = require('./toppings.js');
+  const { 
+    addToppingsToPizza,
+    createPizza,
+    addDetailsToPizza 
+  } = require("./pizza");
 
 async function dropTables() {
   try {
@@ -71,9 +76,9 @@ async function createTables() {
       ); 
       CREATE TABLE pizza(
           id SERIAL PRIMARY KEY,
-          name VARCHAR(255) UNIQUE NOT NULL,
-          "basePizzaCost" FLOAT NOT NULL,
-          size INTEGER NOT NULL
+          name VARCHAR(255) UNIQUE,
+          "basePizzaCost" FLOAT,
+          size INTEGER
       );
       CREATE TABLE toppings (
           id SERIAL PRIMARY KEY,
@@ -88,7 +93,7 @@ async function createTables() {
       );
       CREATE TABLE "pizzaWithToppings" (
           id SERIAL PRIMARY KEY,
-          "pizzaID" INTEGER REFERENCES pizza(id),
+          "pizzaId" INTEGER REFERENCES pizza(id),
           "toppingsId" INTEGER REFERENCES toppings(id),
           count INTEGER NOT NULL
       );
@@ -197,15 +202,58 @@ async function createInitialToppings() {
   console.log("Starting to create toppings...")
   try {
     const toppingsToCreate = [
-      { name: "Sausage", price: 2.99},
-      { name: "Pepperoni", price: 2.99},
-      { name: "Bacon", price: 3.99},
-      { name: "24-carat Gold Flakes", price: 5.99}
+      { name: "Pepperoni", price: 3.99},
+      { name: "Sausage", price: 3.99},
+      { name: "GreenPepper", price: 2.99},
+      { name: "Onion", price: 2.99},
+      { name: "Black Olives", price: 2.99},
+      { name: "24-Carat Gold Flakes", price: 6.99}
     ]
     const toppings = await Promise.all(toppingsToCreate.map(createToppings))
 
     console.log(toppings)
     console.log("Finished creating toppings")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+async function createPizzaWithToppings() {
+  console.log("Starting to create a pizza with toppings...")
+  try {
+
+    console.log("Creating initial pizza ID...");
+
+    const createdPizza = await createPizza();
+    const secondCreatedPizza = await createPizza();
+
+    console.log(createdPizza)
+    console.log("this is createdpizza.id ....." + createdPizza.id)
+    console.log("Finished creating initial pizza ID...");
+
+    console.log("Adding rows to pizzaWithToppings table...");
+    
+    const pizzaWithToppingsTableRows = [
+      { 
+        pizzaId: createdPizza.id,
+        toppingsId: 1,
+        count: 1
+      },
+      { 
+        pizzaId: createdPizza.id,
+        toppingsId: 3,
+        count: 2
+      },
+      { 
+        pizzaId: secondCreatedPizza.id,
+        toppingsId: 4,
+        count: 1
+      }
+    ];
+    
+    const pizzaWithToppings = await Promise.all(pizzaWithToppingsTableRows.map(addToppingsToPizza));
+    console.log(pizzaWithToppings)
+    console.log("Finished creating pizzaWithToppings rows")
   } catch(error) {
     console.log(error)
   }
@@ -222,6 +270,7 @@ async function rebuildDB() {
     await createInitialDrinks();
     await createInitialSides();
     await createInitialToppings();
+    await createPizzaWithToppings();
 
   } catch (error) {
     console.log("Error during rebuildDB")
