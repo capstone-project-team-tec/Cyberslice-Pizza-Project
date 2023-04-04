@@ -29,7 +29,7 @@ const Profile = (props) => {
             })
             const result = await response.json()
 
-            setThisUser(result)
+            setThisUser(result.user)
         } catch(error) {
             console.log(error)
         }
@@ -50,13 +50,18 @@ const Profile = (props) => {
 
     
 
-
+    console.log("This is the thisUser...",thisUser)
     return (
         <div>
             {
                 thisUser.username ? (
-                    <h1>{thisUser.username}</h1>
-                    
+                    <div>
+                        <h1>{thisUser.username}</h1>
+                        <h1>{thisUser.name}</h1>
+                        <h1>{thisUser.email}</h1>
+                        <h1>{thisUser.phone}</h1>
+                        <h1>{thisUser.address}</h1>
+                    </div>
                 ): ""
             }
              {/* {

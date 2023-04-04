@@ -42,13 +42,13 @@ async function checkoutCart({ id, isCheckedOut, totalCost }) {
 
 
 // orderItems table functions
-async function createOrderItemsRowForProduct({cartId, productId}) {
+async function createOrderItemsRowForProduct({cartId, productId, count, cost}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO orderItems (cartId, productId)
-        VALUES ($1, $2)
+        INSERT INTO "orderItems" ("cartId", "productId", count, cost)
+        VALUES ($1, $2, $3, $4)
         RETURNING *;
-        `, [ cartId, productId ])
+        `, [ cartId, productId, count, cost ])
 
         return rows;
 

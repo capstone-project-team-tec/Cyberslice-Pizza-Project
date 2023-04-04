@@ -94,6 +94,7 @@ usersRouter.post('/register', async (req,res,next)=>{
             })
             // NORMALLY, you would also be generating a JWT on top of hashing the password, and sending that JWT with the response.send method.
             if (newCreatedUser) {
+                console.log("This is the new created user...",newCreatedUser);
                 const token = await jwt.sign({id: newCreatedUser.id, username: newCreatedUser.username},process.env.JWT_SECRET, {expiresIn: '1w'} );
                 res.send(
                 {
