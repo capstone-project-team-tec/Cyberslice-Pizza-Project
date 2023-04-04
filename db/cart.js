@@ -91,11 +91,31 @@ async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost}) {
     }
 }
 
+async function fetchOrderItemsByCartId(cartId) {
+    try {
+
+        const {rows: orderItems } = await client.query(`
+            SELECT * FROM "orderItems"
+            WHERE "cartId"=$1;
+        `,[cartId]);
+
+        if (!orderItems || orderItems.length == 0) {
+            return null
+        }
+
+        return orderItems;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     createCartWithoutUser,
     createCartForUser,
     checkoutCart,
     fetchUserCarts,
     createOrderItemsRowForProduct,
-    createOrderItemsRowForPizza
+    createOrderItemsRowForPizza,
+    fetchOrderItemsByCartId
 }
