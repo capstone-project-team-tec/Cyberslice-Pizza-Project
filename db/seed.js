@@ -109,6 +109,7 @@ async function createTables() {
         "productId" INTEGER REFERENCES products(id),
         "cartId" INTEGER REFERENCES carts(id), 
         "pizzaId" INTEGER REFERENCES pizza(id),
+        count INTEGER NOT NULL,
         cost FLOAT NOT NULL
     );
     `);
@@ -335,6 +336,41 @@ async function createInitialCartsForUser () {
   }
 }
 
+async function createInitialOrderItemsRowsForCartsUsingProducts() {
+  console.log("Starting to create orderItems rows for a cart using products...")
+  try {
+    const createdRow = await createOrderItemsRowForProduct({cartId:1, productId:2, count:1, cost:9.99});
+    const createdRow2 = await createOrderItemsRowForProduct({cartId:2, productId:4, count:2, cost:17.99});
+    const createdRow3 = await createOrderItemsRowForProduct({cartId:1, productId:3, count:2, cost:69.99});
+
+    console.log(createdRow)
+    console.log("this is createdRow.id ....." + createdRow.id)
+    console.log("this is createdcart.cartid ....." + createdRow.cartId)
+    console.log("Finished creating initial rows for orderItems...");
+
+    // console.log("Adding rows to  table...");
+    
+    // const CartsTableRows = [
+    //   { 
+    //     id: createdCart.id,
+    //     isCheckedOut: true,
+    //     totalCost: 99
+    //   },
+    //   { 
+    //     id: createdCart2.id,
+    //     isCheckedOut: true,
+    //     totalCost: 55
+    //   }
+    // ];
+    
+    // const carts = await Promise.all(CartsTableRows.map(checkoutCart));
+    // console.log(carts)
+    // console.log("Finished creating carts rows for user")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -349,6 +385,7 @@ async function rebuildDB() {
     await createPizzaWithToppings();
     await createInitialCartsWithoutUser();
     await createInitialCartsForUser();
+    await createInitialOrderItemsRowsForCartsUsingProducts();
 
   } catch (error) {
     console.log("Error during rebuildDB")
