@@ -2,20 +2,20 @@ const {client} = require("./client");
 const bcrypt = require("bcrypt");
 
 // Check for the same user?
-async function createUser({username, password, email, address, phone}) {
+async function createUser({username, password, name, email, address, phone}) {
     try {
         const saltCount = 12;
         const hashedPassword = await bcrypt.hash(password, saltCount);
-        const hashedEmail = await bcrypt.hash(email, saltCount);
-        const hashedAddress = await bcrypt.hash(address, saltCount);
-        const hashedPhone = await bcrypt.hash(phone, saltCount);
+        // const hashedEmail = await bcrypt.hash(email, saltCount);
+        // const hashedAddress = await bcrypt.hash(address, saltCount);
+        // const hashedPhone = await bcrypt.hash(phone, saltCount);
 
         const {rows} = await client.query(`
-        INSERT INTO users(username, password, email, address, phone)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO users(username, password, name, email, address, phone)
+        VALUES ($1, $2, $3, $4, $5, 6$)
         ON CONFLICT DO NOTHING
         RETURNING  *;
-        `, [username, hashedPassword, hashedEmail, hashedAddress, hashedPhone]);
+        `, [username, hashedPassword, name, email, address, phone]);
 
         return rows
     } catch(error) {
@@ -43,26 +43,26 @@ async function getUser({ username, password }) {
           throw new Error('Invalid password');
         }
 
-        const hashedEmail = user.email;
+        // const email = user.email;
     
-        const isValidEmail = await bcrypt.compare(email, hashedEmail);
-        if (!isValidEmail) {
-          throw new Error('Invalid email');
-        }
+        // const isValidEmail = await bcrypt.compare(email, hashedEmail);
+        // if (!isValidEmail) {
+        //   throw new Error('Invalid email');
+        // }
 
-        const hashedAddress = user.address;
+        // const hashedAddress = user.address;
     
-        const isValidAddress = await bcrypt.compare(address, hashedAddress);
-        if (!isValidAddress) {
-          throw new Error('Invalid address');
-        }
+        // const isValidAddress = await bcrypt.compare(address, hashedAddress);
+        // if (!isValidAddress) {
+        //   throw new Error('Invalid address');
+        // }
     
-        const hashedPhone = user.phone;
+        // const hashedPhone = user.phone;
     
-        const isValidPhone = await bcrypt.compare(phone, hashedPhone);
-        if (!isValidPhone) {
-          throw new Error('Invalid phone number');
-        }
+        // const isValidPhone = await bcrypt.compare(phone, hashedPhone);
+        // if (!isValidPhone) {
+        //   throw new Error('Invalid phone number');
+        // }
 
         return user;
       } catch (error) {

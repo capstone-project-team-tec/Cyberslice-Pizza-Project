@@ -2,6 +2,7 @@ const express = require('express');
 const apiRouter = express.Router();
 const jwt = require('jsonwebtoken');
 const {getUserByUsername} = require('../db');
+require("dotenv").config()
 const {JWT_SECRET} = process.env;
 
 apiRouter.use(async(req,res,next)=>{
@@ -17,8 +18,9 @@ apiRouter.use(async(req,res,next)=>{
         try {
             console.log("top of the try block");
             const jwtId = jwt.verify(token, JWT_SECRET);
-            const {username} = jwtId;
-            // console.log(jwtId);
+            
+            const username = jwtId.username;
+            console.log("This is the JWTid", jwtId);
             console.log("username: " +username);
             if(username){
                 console.log("top of the if statement in the try block");

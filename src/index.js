@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes, Link, } from "react-router-dom"
-import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu } from "./components"
+import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu, Profile } from "./components"
 
 const App = () => {
     const [drinks, setDrinks] = useState([])
@@ -88,7 +88,7 @@ console.log(desserts, drinks, sides, currentUser)
 
         <BrowserRouter>
             <div>
-                <Header currentUser={currentUser}/>
+                <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza />}/>
@@ -100,9 +100,10 @@ console.log(desserts, drinks, sides, currentUser)
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser}/>} />
+                        <Route path="/profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser}/>}/>
                         <Route path="/menu" element={<Menu />} />
                     </Routes>
-                <Footer currentUser={currentUser}/>
+                <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             </div>
         </BrowserRouter>
     )
