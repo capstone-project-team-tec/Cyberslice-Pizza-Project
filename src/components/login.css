@@ -20,14 +20,27 @@
 h3 {
     margin: 0;
 }
- /* Should probably fix login.js to give everything the same className
- and edit those elements based on that. Shouldn't overwrite all input tags. */
+.loginTitle{
+    font-size: 4rem;
+    margin-bottom: 5rem;
+}
 
+.formAndPicture {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+}
+/* For editing how the picture appears */
+/* .picture {
+
+} */
 .loginBox {
     background-color: black;
     color: white;
-    border: 1px solid white;
-    border-radius: 5px;
+    border: 2px solid white;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
@@ -37,15 +50,15 @@ h3 {
 }
 
 .loginBox:focus {
-    border: 1px solid #cbff5e;
+    border: 2px solid #cbff5e;
     outline: none;
     transition: border-color 0.75s;
 }
 
 .loginButton{
     background-color: black;
-    border: 1px solid white;
-    border-radius: 5px;
+    border: 2px solid white;
+    border-radius: 4px;
     color: white;
     cursor: pointer;
 
@@ -62,12 +75,13 @@ h3 {
 }
 
 .loginButton:hover {
-    border: 1px solid #cbff5e;
+    border: 2px solid #cbff5e;
     color: #cbff5e;
     outline: none;
     transition: border-color 0.75s, color 0.75s;
 }
 
+.formsAndPictures
 label {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
