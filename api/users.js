@@ -87,6 +87,7 @@ usersRouter.post('/register', async (req,res,next)=>{
             let newCreatedUser = await createUser({
                 username: userData.username,
                 password: userData.password,
+                name: userData.name,
                 email: userData.email,
                 address: userData.address,
                 phone: userData.phone
@@ -133,8 +134,7 @@ usersRouter.get('/me', requireUser, async(req,res,next)=>{
         const user = req.user;
         if (user){
             res.send({
-                id: user.id,
-                username: user.username
+                user
             });
         } else{
             res.send({

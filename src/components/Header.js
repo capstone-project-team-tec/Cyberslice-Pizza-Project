@@ -45,6 +45,7 @@ const Header = (props) => {
             <div id="headerButtonGroup">   
                 <Link to='/menu' className="headerButton"> MENU </Link>
                 <Link to='/locations' className="headerButton"> LOCATIONS </Link> 
+                {localStorage.getItem("token") ? (<Link to="/profile" className="headerButton">Profile</Link>):""}
                 {localStorage.getItem("token") ?<Link onClick={handleLogout} className="headerButton"> LOGOUT </Link>: <Link to='/login' className="headerButton"> LOGIN </Link> }
                 <Link to='/orderoptions' className="headerButton"> 
                     <svg id="cartIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
