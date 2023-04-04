@@ -28,16 +28,35 @@ async function createCartForUser(userId) {
     }
 }
 
-async function checkoutCart({ id, isCheckedOut, totalCost }) {
+async function checkoutCart({ cartId, totalCost }) {
     try {
             const { rows } = await client.query(`
                 UPDATE carts
-                SET "isCheckedOut" = $2, "totalCost" = $3
+                SET "isCheckedOut" = true, "totalCost" = $2
                 WHERE id = $1;
-            `, [id, isCheckedOut, totalCost]);
+            `, [cartId, totalCost]);
         } catch(error) {
             console.log(error);
         }
+}
+
+async function fetchUserCarts(userId) {
+    try {
+
+        const {rows: carts } = await client.query(`
+            SELECT * FROM carts
+            WHERE "userId"=$1;
+        `,[userId]);
+
+        if (!carts || carts.length == 0) {
+            return null
+        }
+
+        return carts;
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 
@@ -57,9 +76,26 @@ async function createOrderItemsRowForProduct({cartId, productId, count, cost}) {
     }
 }
 
+async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost}) {
+    try {
+        const {rows} = await client.query(`
+        INSERT INTO "orderItems" ("cartId", "pizzaId", count, cost)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *;
+        `, [ cartId, pizzaId, count, cost ])
+
+        return rows;
+
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     createCartWithoutUser,
     createCartForUser,
+    checkoutCart,
+    fetchUserCarts,
     createOrderItemsRowForProduct,
-    checkoutCart
+    createOrderItemsRowForPizza
 }

@@ -43,31 +43,31 @@ pizzaRouter.get('/', async (req, res, next) => {
 });
 
 pizzaRouter.post('/', async (req, res, next) => {
-        try {
-            let newPizza = await createPizza();
-            if (newPizza) {
-                    res.send(
-                    {
-                        success: true,
-                        error: null,
-                        message: "A new row has been created in pizza table"
-                    }).status(200)
-            } else {
-                res.send(
-                    {
-                        success: false,
-                        error: {
-                            name: "createPizzaError",
-                            message: "Failed to create a new row in pizza table"
-                        },
-                        data: null
-                    }
-                ).status(403)
-            }
-        } catch (error) {
-            console.log(error);
-            next(error);
+  try {
+    let newPizza = await createPizza();
+    if (newPizza) {
+      res.send(
+        {
+          success: true,
+          error: null,
+          message: "A new row has been created in pizza table"
+        }).status(200)
+    } else {
+      res.send(
+        {
+            success: false,
+            error: {
+                name: "createPizzaError",
+                message: "Failed to create a new row in pizza table"
+            },
+            data: null
         }
+      ).status(403)
+    }
+  } catch (error) {
+      console.log(error);
+      next(error);
+  }
 })
 
 pizzaRouter.patch('/:pizzaId', async (req, res, next) => {
