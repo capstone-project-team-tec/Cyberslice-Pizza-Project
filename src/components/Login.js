@@ -80,7 +80,7 @@ const Login = (props) => {
                 </section>
             </section>
 
-            <h5 id="signup">Don't Have An Account? <Link to="/register">Sign Up</Link></h5>
+            <h5 id="noAccountMessage">Don't Have An Account? <Link id="signUp" to="/register">Sign Up</Link></h5>
         </section>
     ) 
 }
