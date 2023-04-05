@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import "./drinks.css";
 import "./global.css";
 
 const Drinks = (props) => {
-  const [MyDrinks, setMyDrinks] = useState([]);
-  const [currentCartId, setCurrentCartId] = useState(props.currentCart.id)
+  const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, drinks } = props;
+  // const [currentCartId, setCurrentCartId] = useState(props.currentCart.id)
+  const [addedDrinkId, setAddedDrinkId] = useState(null);
+  // const [singleDrinkId, setSingleDrinkId] = useState('');
+  // const [singleDrinkPrice, setSingleDrinkPrice] =useState('');
+  // const [singleDrinkName, setSingleDrinkName] =useState('');
 
-  const fetchAllDrinks = async (event) => {
-    try {
-            const response = await fetch(`http://localhost:1337/api/drinks`, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const result = await response.json();
-
-            setMyDrinks(result)
-
-        } catch(error) {
-            console.log(error)
-        }
+  const showAddedToCartNotification = (id) => {
+    setAddedDrinkId(id);
+    setTimeout(() => {
+      setAddedDrinkId(null);
+    }, 2000);
   };
-
-  useEffect(() => {
-    fetchAllDrinks();
-  }, []); 
   
   let guestCartId
   async function createCartForGuest() {
@@ -39,13 +29,13 @@ const Drinks = (props) => {
       });
   
       const result = await response.json();
-      props.setCurrentCart({
+      setCurrentCart({
         id: result.id,
         isCheckedOut: result.isCheckedOut,
         totalCost: result.totalCost,
         userId: result.userId
     })
-      setCurrentCartId(result.id)
+      // setCurrentCartId(result.id)
       guestCartId = result.id
       if (result.success) {
         console.log('A new cart has been created for the guest. here is the result:  ',result );
@@ -57,16 +47,16 @@ const Drinks = (props) => {
     } catch (error) {
       console.error('Error creating cart for guest:', error);
     }
-  }  
+  } 
+  
+  // useEffect(() => {
+  //   if (Object.keys(currentCart).length != 0) {
+  //     createOrderItem(currentCartId, singleDrinkId, 1, singleDrinkPrice, singleDrinkName);
+  //   }
+  // }, [currentCart]);
 
-  const createOrderItemsRow = async (cartId, productId, count, cost, productName) => {
-    if (props.currentCart == {}){
-        await createCartForGuest();
-        cartId = guestCartId
-        console.log("no current user was found in drinks")
-    } else {
-        console.log("a current user was found in drinks.  ",props.currentCart)
-    }
+
+  const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
       const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
         method: "POST",
@@ -81,107 +71,71 @@ const Drinks = (props) => {
           productName
         }),
       });
-
       const result = await response.json();
       console.log(result);
+      showAddedToCartNotification(productId);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(MyDrinks);
+
+  const createOrderItemsRow = async (productId, count, cost, productName) => {
+    let cartId;
+    if (Object.keys(currentCart).length == 0) {
+      console.log("this is createOrderItemsRow firing on the if currentCart length equals zero");
+      if (currentUser) {
+        console.log("this is the current user:   ", currentUser);
+        await fetchUserCurrentCart();
+        cartId = currentCart.id;
+      } else {
+        await createCartForGuest();
+        cartId = guestCartId;
+      }
+    } else {
+      console.log("a current cart was found in drinks.  ", currentCart);
+      cartId = currentCart.id;
+    }
+    createOrderItem(cartId, productId, count, cost, productName);
+  };
 
   return (
     <div>
       <h1>Cyberslice Drinks</h1>
 
-      {MyDrinks.length > 0 ? (
-        MyDrinks.map((singleDrink) => {
+      {drinks.length > 0 ? (
+        drinks.map((singleDrink) => {
           return (
             <div key={singleDrink.id}>
               <h2>{singleDrink.name}</h2>
               <h2> Price: {singleDrink.price}</h2>
               <button
-                onClick={() =>
+                onClick={() => {
+                  // setSingleDrinkId(singleDrink.id);
+                  // setSingleDrinkPrice(singleDrink.price);
+                  // setSingleDrinkName(singleDrink.name);
                   createOrderItemsRow(
-                    currentCartId,
+                    // currentCartId,
                     singleDrink.id,
                     1,
                     singleDrink.price,
                     singleDrink.name
-                  )
-                }
+                  );
+                }}
               >
                 Add to Order
               </button>
+              {addedDrinkId === singleDrink.id && (
+                <span className="added-to-cart-message">Added to cart!</span>
+              )}
             </div>
           );
         })
       ) : (
-        <div>No drinks yet</div>
+        <div>No Drinks Yet</div>
       )}
     </div>
   );
 };
 
 export default Drinks;
-
-
-
-
-
-
-
-
-
-
-
-// import { useEffect, useState } from "react"
-// import { Link } from "react-router-dom"
-// import "./drinks.css"
-// import "./global.css"
-
-// const Drinks = (props) => {
-//     const [MyDrinks, setMyDrinks] = useState([])
-
-//     const fetchAllDrinks = async (event) => {
-//         try {
-//             const response = await fetch(`http://localhost:1337/api/drinks`, {
-//                 headers: {
-//                     "Content-Type": "application/json"
-//                 }
-//             })
-//             const result = await response.json();
-
-//             setMyDrinks(result)
-
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
-//     useEffect(() => {
-//         fetchAllDrinks();
-//     }, [])
-
-//     console.log(MyDrinks)
-    
-//     return (
-//         <div>
-//             <h1>Cyberslice Drinks</h1>
-            
-//             {
-//                 MyDrinks.length > 0 ? (MyDrinks.map((singleDrink) => {
-//                     return (
-//                         <div key={singleDrink.id}>
-//                             <h2>{singleDrink.name}</h2>
-//                             <h2> Price: {singleDrink.price}</h2>
-//                         </div>
-//                     )
-//                 })
-//                 ): <div> No drinks yet</div>
-//             }
-//         </div>
-//     )
-// }
-
-// export default Drinks;
