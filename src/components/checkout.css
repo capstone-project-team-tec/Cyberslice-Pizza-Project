@@ -1,3 +1,114 @@
-h1 {
+button {
     margin-bottom: 20%
+}
+
+#checkoutContainer{
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 10%;
+    margin-top: 5%;
+
+    height: 100%;
+}
+
+#checkoutPageTitle{
+    display: flex;
+    flex: 1;
+    font-size: 4rem;
+    margin-bottom: 5rem;
+}
+
+
+
+.item {
+    display: flex;
+    flex-direction: column;
+
+    background-color: black;
+    border: 2px solid white;
+
+    border-radius: 4px;
+    
+    width: 100rem;
+    max-width: 80%;
+    margin-bottom: 1rem;
+}
+
+.itemTitle{
+    color: #cbff5e;
+}
+
+.itemDetailsContainer {
+    display: flex;
+    flex-direction: row;
+
+    border: 2px solid white;
+}
+
+.detailCategory{
+    border: 2px solid white;
+}
+
+.detailValue{
+    border: 2px solid white;
+}
+
+.removeButton{
+    color: red;
+
+    border: 2px solid white;
+}
+
+.detailColumn {
+    display: flex;
+    flex-direction: column;
+
+    border: 2px solid white;
+}
+
+#totalContainer {
+    display: flex;
+    flex-direction: column;
+
+    border: 2px solid white;
+
+    width: 100rem;
+    max-width: 80%;
+    margin-bottom: 1rem;
+}
+
+#subtotal{
+    display: flex;
+    flex-direction: row;
+}
+
+#fee{
+    display: flex;
+    flex-direction: row;
+}
+
+#total{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+#buttonContainer{
+    display: flex;
+    justify-content: flex-end;
+
+    width: 100rem;
+    max-width: 80%;
+}
+
+
+#checkoutButton{
+    display: flex;
+    justify-content: flex-end;
+
+    width: fit-content;
+    max-width: 80%;
+
+    border: 2px solid white;
 }
