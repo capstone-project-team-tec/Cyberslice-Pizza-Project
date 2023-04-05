@@ -122,32 +122,46 @@ async function getAllUsers() {
   }
 }
 
-// Just a boilerplate; some code copied from desserts.js
-// async function deleteUser(id) {
-//   try {
-//       const user = await getUserById(id);
-//       if (!user) {
-//           throw {
-//               name: 'UserNotFoundError',
-//               message: 'Could not find a user with that id'
-//           }
-//       }
-//       // This SQL is very wrong.
-//       await client.query(`
-//           DELETE FROM products
-//           WHERE id=$1 AND category='desserts';
-//       `, [id]);
+async function updateUser({id, username, name, email, address, phone}) {
+    console.log(id, username)
+    try {
+        const { rows: [user] } = await client.query(`
+            UPDATE users
+            SET username=$2, name=$3, email=$4, address=$5, phone=$6
+            WHERE id = $1
+            RETURNING *;
+        `, [id, username, name, email, address, phone]);
+        
 
-//       return user;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+        return user;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+async function deleteUser(id) {
+  try { 
+      await client.query(`
+          DELETE FROM users
+          WHERE id=$1;
+      `, [id]);
+
+      return;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// name, email, address, phone
+// name=$3, email=$4, address=$5, phone=$6
+
 
 module.exports = {
     createUser,
     getUser,
     getUserById,
     getUserByUsername,
-    getAllUsers
+    getAllUsers,
+    updateUser,
+    deleteUser
   }

@@ -5,8 +5,9 @@ const {
     createUser,
     getUserByUsername,
     getUserById,
-    getAllUsers
-    // deleteUser
+    getAllUsers,
+    updateUser,
+    deleteUser
 } = require('../db/users');
 
 //dependency imports
@@ -170,19 +171,64 @@ usersRouter.get('/:userId', async (req, res, next) => {
     }
 });
 
+usersRouter.patch(`/me`, async (req, res, next) => {
+    // const id = req.params.id
+    console.log(req.user)
+    const { id } = req.user
+    const { username, name, email, address, phone} = req.body
+    const updateFields = {}
+    if(id) {
+        updateFields.id = id
+    }
+    if (username) {
+        updateFields.username = username
+    }
+    if (name) {
+        updateFields.name = name
+    }
+    if (email) {
+        updateFields.email = email
+    }
+    if (address) {
+        updateFields.address = address
+    }
+    if (phone) {
+        updateFields.phone = phone
+    }
+    try {
+        const updatedUser = await updateUser(updateFields)
+        console.log(updatedUser)
+        res.send(updatedUser)
+    } catch(error) {
+        console.log(error)
+    }
+})
+
 // Just a boilerplate; some similar code from desserts.js
 
-// usersRouter.delete('/:userId', async (req, res, next) => {
-//     if (!req.params.userId) {
-//       console.log(error);
-//       next(error);
-//     }
-//     try {
-//       const deleteUser = await deleteUser(req.params.userId);
-//       res.send(deletedUser);
-//     } catch ({ name, message }) {
-//       next({ name, message });
-//     }
-//   });
+usersRouter.delete('/me', async (req, res, next) => {
+    // const { username } = req.user
+    const { id } = req.user
+    try {
+    // const user = await getUserByUsername(username);
+      if (!id) {
+          res.send( {
+              name: 'UserNotFoundError',
+              message: 'Could not find a user with that username'
+          } )
+      } else { 
+    // const { id } = req.user
+        await deleteUser(id)
+        res.send({
+            success: true,
+            message: "User was successfully deleted"
+        })
+      }
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  });
 
 module.exports = usersRouter
+
+
