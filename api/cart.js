@@ -7,7 +7,8 @@ const {
     checkoutCart,
     fetchUserCarts,
     createOrderItemsRowForProduct,
-    createOrderItemsRowForPizza
+    createOrderItemsRowForPizza,
+    fetchOrderItemsByCartId
 } = require('../db/cart');
 
 //dependency imports
@@ -42,6 +43,19 @@ cartRouter.get('/', async (req, res, next) => {
   }
 });
 
+cartRouter.get('/:cartId', async (req, res, next) => {
+    const id = req.params.cartId;
+    console.log("fetching orderItems entries per cart id; cartId: " + id);
+        try {
+            const currentCartOrderItems = await fetchOrderItemsByCartId(id);
+            console.log("these are the current cart's order items...." + currentCartOrderItems);
+            res.send(currentCartOrderItems);
+        } catch (error) {
+            console.log(error);
+        }
+    } 
+);
+
 cartRouter.post('/', async (req, res, next) => {
     try {
         const { userId } = req.body;
@@ -65,6 +79,41 @@ cartRouter.post('/', async (req, res, next) => {
                 error: {
                     name: "createCartError",
                     message: userId ? "Failed to create a new row in carts table for the user" : "Failed to create a new row in carts table"
+                },
+                data: null
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+
+cartRouter.post('/orderitems', async (req, res, next) => {
+    try {
+        const { cartId, productId, pizzaId, count, cost } = req.body;
+        let newOrderItemsRow;
+
+        if (productId) {
+            newOrderItemsRow = await createOrderItemsRowForProduct({cartId:cartId, productId:productId, count:count, cost:cost});
+        } else if (pizzaId) {
+            newOrderItemsRow = await createOrderItemsRowForPizza({cartId:cartId, pizzaId:pizzaId, count:count, cost:cost});
+        } else {
+            console.log("Neither a product id nor a pizza id was found.")
+        }
+
+        if (newOrderItemsRow) {
+            res.status(200).send({
+                success: true,
+                error: null,
+                message: productId ? "A new row has been created in order items table for a product." : "A new row has been created in order items table for a pizza."
+            });
+        } else {
+            res.status(403).send({
+                success: false,
+                error: {
+                    name: "createOrderItemsRowError",
+                    message: productId ? "Failed to create a new row in orderItems table for a product." : "Failed to create a new row in orderItems table for a pizza."
                 },
                 data: null
             });
