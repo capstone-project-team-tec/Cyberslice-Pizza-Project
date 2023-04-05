@@ -38,8 +38,9 @@ const {
   const {
     createCartWithoutUser,
     createCartForUser,
+    checkoutCart,
     createOrderItemsRowForProduct,
-    checkoutCart
+    createOrderItemsRowForPizza
   } = require("./cart");
 
 async function dropTables() {
@@ -348,24 +349,23 @@ async function createInitialOrderItemsRowsForCartsUsingProducts() {
     console.log("this is createdcart.cartid ....." + createdRow.cartId)
     console.log("Finished creating initial rows for orderItems...");
 
-    // console.log("Adding rows to  table...");
-    
-    // const CartsTableRows = [
-    //   { 
-    //     id: createdCart.id,
-    //     isCheckedOut: true,
-    //     totalCost: 99
-    //   },
-    //   { 
-    //     id: createdCart2.id,
-    //     isCheckedOut: true,
-    //     totalCost: 55
-    //   }
-    // ];
-    
-    // const carts = await Promise.all(CartsTableRows.map(checkoutCart));
-    // console.log(carts)
-    // console.log("Finished creating carts rows for user")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+async function createInitialOrderItemsRowsForCartsUsingPizza() {
+  console.log("Starting to create orderItems rows for a cart using pizza...")
+  try {
+    const createdRow = await createOrderItemsRowForPizza({cartId:1, pizzaId:2, count:1, cost: 111111.99});
+    const createdRow2 = await createOrderItemsRowForPizza({cartId:2, pizzaId:1, count:2, cost:2222222.99});
+    const createdRow3 = await createOrderItemsRowForPizza({cartId:1, pizzaId:1, count:2, cost:3333333.99});
+
+    console.log(createdRow)
+    console.log("this is createdRow.id ....." + createdRow.id)
+    console.log("this is createdcart.cartid ....." + createdRow.cartId)
+    console.log("Finished creating initial rows for orderItems...");
+
   } catch(error) {
     console.log(error)
   }
@@ -386,7 +386,7 @@ async function rebuildDB() {
     await createInitialCartsWithoutUser();
     await createInitialCartsForUser();
     await createInitialOrderItemsRowsForCartsUsingProducts();
-
+    await createInitialOrderItemsRowsForCartsUsingPizza();
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error

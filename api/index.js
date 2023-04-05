@@ -49,6 +49,7 @@ const dessertsRouter = require('./desserts');
 const drinksRouter = require('./drinks');
 const sidesRouter = require('./sides');
 const pizzaRouter = require('./pizza');
+const cartRouter = require('./cart')
 // const activitiesRouter = require('./activities');
 // const routinesRouter = require('./routines');
 // const routine_activitiesRouter = require('./routine_activities');
@@ -57,6 +58,7 @@ apiRouter.use('/desserts', dessertsRouter);
 apiRouter.use('/drinks', drinksRouter);
 apiRouter.use('/sides', sidesRouter);
 apiRouter.use('/pizza', pizzaRouter);
+apiRouter.use('/cart', cartRouter);
 // apiRouter.use('/activities', activitiesRouter);
 // apiRouter.use('/routines', routinesRouter);
 // apiRouter.use('/routine_activities', routine_activitiesRouter);
