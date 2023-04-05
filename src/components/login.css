@@ -1,5 +1,14 @@
-#signup {
+#noAccountMessage {
     margin-bottom: 20%;
+}
+
+#signUp {
+    color: #cbff5e;
+    text-decoration: none;
+}
+
+#signUp:visited {
+    color: #cbff5e;
 }
 
 #loginContainer{

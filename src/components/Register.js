@@ -10,6 +10,7 @@ const Register = () => {
     const [ address, setAddress ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ phone, setPhone ] = useState("");
+    const [ name, setName ] = useState("");
     const [ CurrentUser, setCurrentUser ] = useState({})
 
     const navigate = useNavigate();
@@ -171,7 +172,8 @@ const Register = () => {
                         password: password,
                         email: email,
                         address: address,
-                        phone: phone
+                        phone: phone,
+                        name: name
                 })
             })
 
@@ -269,6 +271,14 @@ const Register = () => {
                         placeholder=""
                         value={phone}
                         onChange={(event) => setPhone(event.target.value)}
+                    />
+                    <h2>Name</h2>
+                    <input 
+                        className = "registerBox"
+                        type="text"
+                        placeholder=""
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
                     />
                     <button className="registerButton" type="submit"> Create Account </button>
                     
