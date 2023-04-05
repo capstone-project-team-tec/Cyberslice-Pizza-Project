@@ -1,14 +1,14 @@
 const { client } = require("./client");
 
 
-async function createDessert({category, name, price}) {
+async function createDessert({category, name, price, image}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO products (category, name, price)
-        VALUES ($1, $2, $3)
+        INSERT INTO products (category, name, price, image)
+        VALUES ($1, $2, $3, $4)
         ON CONFLICT (name) DO NOTHING
         RETURNING *;
-        `, [category, name, price ])
+        `, [category, name, price, image ])
 
         return rows;
 
