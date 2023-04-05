@@ -28,13 +28,20 @@ const Login = (props) => {
             })
             console.log("login is working")
             const result = await response.json();
-            console.log(result)
+            console.log("This is theresult of logging in line 31 of login component:   ",result)
             if (!result.token) {
                 alert("Username or password is incorrect, please try again")
             } else {
                 const myJWT = result.token;
                 localStorage.setItem("token", myJWT)
-                setCurrentUser({username: myUsername, password: myPassword})
+                setCurrentUser({
+                    username: result.user.username,
+                    id: result.user.userId,
+                    name: result.user.userRealName,
+                    email: result.user.userEmail,
+                    address: result.user.userAddress,
+                    phone: result.user.userPhone
+                })
                 navigate("/")
             }
         } catch (error) {

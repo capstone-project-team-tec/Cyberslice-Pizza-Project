@@ -9,6 +9,7 @@ async function createCartWithoutUser() {
             VALUES (NULL, false, NULL)
             RETURNING *;
         `);
+        console.log("This is rows zero:   ",rows[0])
         return rows[0];
     } catch(error) {
         console.log(error);
@@ -61,13 +62,13 @@ async function fetchUserCarts(userId) {
 
 
 // orderItems table functions
-async function createOrderItemsRowForProduct({cartId, productId, count, cost}) {
+async function createOrderItemsRowForProduct({cartId, productId, count, cost, productName}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO "orderItems" ("cartId", "productId", count, cost)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO "orderItems" ("cartId", "productId", count, cost, "productName")
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
-        `, [ cartId, productId, count, cost ])
+        `, [ cartId, productId, count, cost, productName ])
 
         return rows;
 
@@ -76,13 +77,13 @@ async function createOrderItemsRowForProduct({cartId, productId, count, cost}) {
     }
 }
 
-async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost}) {
+async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost, pizzaName}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO "orderItems" ("cartId", "pizzaId", count, cost)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO "orderItems" ("cartId", "pizzaId", count, cost, "pizzaName")
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
-        `, [ cartId, pizzaId, count, cost ])
+        `, [ cartId, pizzaId, count, cost, pizzaName ])
 
         return rows;
 

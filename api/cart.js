@@ -25,14 +25,22 @@ cartRouter.use((req,res,next)=>{
 })
 
 cartRouter.get('/', async (req, res, next) => {
-  if (req.body.userId) {
+  if (req.user.id) {
     console.log("the cart router is running....")
     try {
       console.log('a user id has been found!!!!!')
-      const userId = req.body.userId;
+      const userId = req.user.id;
       const userCarts = await fetchUserCarts(userId);
-      console.log("these are the user's carts" + userCarts);
-      res.send(userCarts);
+      console.log("these are the user's carts:   " + userCarts);
+      if (userCarts) {
+        res.send(userCarts);
+      } else {
+        res.status(404).send({
+          status: 'not_found',
+          failure: true,
+          message: `No carts found for user with ID: ${userId}`,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +79,10 @@ cartRouter.post('/', async (req, res, next) => {
             res.status(200).send({
                 success: true,
                 error: null,
+                id: newCart.id,
+                userId: newCart.userId,
+                isCheckedOut: newCart.isCheckedOut,
+                totalCost: newCart.totalCost,
                 message: userId ? "A new row has been created in carts table for the user" : "A new row has been created in carts table"
             });
         } else {
@@ -91,13 +103,13 @@ cartRouter.post('/', async (req, res, next) => {
 
 cartRouter.post('/orderitems', async (req, res, next) => {
     try {
-        const { cartId, productId, pizzaId, count, cost } = req.body;
+        const { cartId, productId, pizzaId, count, cost, productName, pizzaName } = req.body;
         let newOrderItemsRow;
 
         if (productId) {
-            newOrderItemsRow = await createOrderItemsRowForProduct({cartId:cartId, productId:productId, count:count, cost:cost});
+            newOrderItemsRow = await createOrderItemsRowForProduct({cartId:cartId, productId:productId, count:count, cost:cost, productName:productName});
         } else if (pizzaId) {
-            newOrderItemsRow = await createOrderItemsRowForPizza({cartId:cartId, pizzaId:pizzaId, count:count, cost:cost});
+            newOrderItemsRow = await createOrderItemsRowForPizza({cartId:cartId, pizzaId:pizzaId, count:count, cost:cost, pizzaName:pizzaName});
         } else {
             console.log("Neither a product id nor a pizza id was found.")
         }
@@ -148,64 +160,5 @@ cartRouter.patch('/:cartId', async (req, res, next) => {
       next({ name, message });
     }
 })
-
-// cartRouter.post('/', async (req, res, next) => {
-//         try {
-//             let newPizza = await createPizza();
-//             if (newPizza) {
-//                     res.send(
-//                     {
-//                         success: true,
-//                         error: null,
-//                         message: "A new row has been created in pizza table"
-//                     }).status(200)
-//             } else {
-//                 res.send(
-//                     {
-//                         success: false,
-//                         error: {
-//                             name: "createPizzaError",
-//                             message: "Failed to create a new row in pizza table"
-//                         },
-//                         data: null
-//                     }
-//                 ).status(403)
-//             }
-//         } catch (error) {
-//             console.log(error);
-//             next(error);
-//         }
-// })
-
-// cartRouter.patch('/:pizzaId', async (req, res, next) => {
-//   const id = req.params.pizzaId;
-//   console.log("cartRouter.patch; pizzaId: " + id);
-//   const { name, basePizzaCost, size } = req.body;
-
-//   console.log("this is line 57" + name);
-//   console.log("this is line 58" + basePizzaCost);
-//   console.log("this is line 59" + size);
-
-//   const updateFields = {};
-
-//   if (name) {
-//     updateFields.name = name;
-//   }
-
-//   if (basePizzaCost) {
-//     updateFields.basePizzaCost = basePizzaCost;
-//   }
-
-//   if (size) {
-//     updateFields.size = size;
-//   } 
-
-//   try {
-//     const updatePizza = await addDetailsToPizza(id, updateFields);
-//     res.send(updatePizza);
-//   } catch ({ name, message }) {
-//     next({ name, message });
-//   }
-// });
 
 module.exports = cartRouter
