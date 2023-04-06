@@ -166,14 +166,18 @@ cartRouter.patch('/:cartId', async (req, res, next) => {
 
 cartRouter.delete("/orderitems/:productId", async (req, res, next) => {
     const { productId } = req.params
+
+    const { cartId } = req.body;
+    console.log("productId: " + productId);
+    console.log("cartID: " + cartId);
     try {
-        if(!productId) {
+        if(!productId || !cartId) {
             res.send({
                 name: "ProductNotFoundError",
                 message: "Cannot Delete This Product"
             })
         } else {
-            const deletedProduct = await deleteRowProducts(productId)
+            const deletedProduct = await deleteRowProducts(productId, cartId)
             res.send({
                 success: true,
                 deletedProduct: deletedProduct,
