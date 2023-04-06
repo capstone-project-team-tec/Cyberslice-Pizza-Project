@@ -1,4 +1,5 @@
 const express = require("express");
+const { createHashRouter } = require("react-router-dom");
 const cartRouter = express.Router();
 
 const { 
@@ -8,7 +9,9 @@ const {
     fetchUserCarts,
     createOrderItemsRowForProduct,
     createOrderItemsRowForPizza,
-    fetchOrderItemsByCartId
+    fetchOrderItemsByCartId,
+    deleteRowProducts,
+    deleteRowPizza
 } = require('../db/cart');
 
 //dependency imports
@@ -158,6 +161,48 @@ cartRouter.patch('/:cartId', async (req, res, next) => {
       res.send(checkedOutCart);
     } catch ({ name, message }) {
       next({ name, message });
+    }
+})
+
+cartRouter.delete("/orderitems/:productId", async (req, res, next) => {
+    const { productId } = req.params
+    try {
+        if(!productId) {
+            res.send({
+                name: "ProductNotFoundError",
+                message: "Cannot Delete This Product"
+            })
+        } else {
+            const deletedProduct = await deleteRowProducts(productId)
+            res.send({
+                success: true,
+                deletedProduct: deletedProduct,
+                message: "Product was successfully deleted from cart"
+            })
+        }
+    } catch({name, message}) {
+        console.log({name, message})
+    }
+})
+
+cartRouter.delete("/orderitems/:pizzaId", async (req, res, next) => {
+    const { pizzaId } = req.params
+    try {
+        if(!pizzaId) {
+            res.send({
+                name: "ProductNotFoundError",
+                message: "Cannot Delete This Pizza"
+            })
+        } else {
+            const deletedPizza = await deleteRowPizza(pizzaId)
+            res.send({
+                success: true,
+                deletedPizza: deletedPizza,
+                message: "Pizza was successfully deleted from cart"
+            })
+        }
+    } catch({name, message}) {
+        console.log({name, message})
     }
 })
 

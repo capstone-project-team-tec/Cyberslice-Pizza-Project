@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import "./profile.css"
 import "./global.css"
 
+
 const Profile = (props) => {
     const [thisUser, setThisUser] = useState({})
     const [username, setUsername] = useState("")
@@ -12,7 +13,9 @@ const Profile = (props) => {
     const [phone, setPhone] = useState("")
     const [editEntries, setEditEntries] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
-    const [myId, setMyId] = useState(null)
+    const [myId, setMyId] = useState(null);
+    const [userCarts, setUserCarts] = useState([]);
+    const { currentUser, currentCart } = props
 
     // const thisUser = props.currentUser
 
@@ -33,6 +36,24 @@ const Profile = (props) => {
 
     async function editAddressForm() {
         setEditAddress(!editAddress)
+    }
+
+    async function fetchCartsByUser() {
+        try {
+            const response = await fetch(`http://localhost:1337/api/cart`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            const result = await response.json();
+            console.log("this is the result of fetchCartsByUser", result)
+
+            setUserCarts(result)
+
+        } catch(error) {
+            console.log(error)
+        }
     }
 
     async function fetchUserById(event) {
@@ -125,11 +146,12 @@ const Profile = (props) => {
     }
 
     useEffect(()=> {
-        fetchUserById()
+        fetchUserById();
+        fetchCartsByUser();
     }, [])
 
     
-
+    console.log("this is the props.currentCart", props.currentCart)
     console.log("This is the thisUser...",thisUser)
     return (
         <div>
@@ -194,6 +216,15 @@ const Profile = (props) => {
                     </div>
                 ): "Profile not found"
             }
+            <h2>Order History for {props.currentUser.name}</h2>
+            {/* {
+                props.currentCart.isCheckedOut ? (
+                    props.currentCart.
+                )
+            } */}
+            
+
+            
             <button onClick={handleLogout}>Log Out Of This Account</button>
             <button onClick={deleteAccount}>Delete This Account</button>
             

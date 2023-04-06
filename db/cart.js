@@ -111,6 +111,42 @@ async function fetchOrderItemsByCartId(cartId) {
     }
 }
 
+async function deleteRowProducts(productId) {
+    console.log("Starting to delete product rows")
+    try { 
+        const {rows} = await client.query(`
+            DELETE FROM "orderItems"
+            WHERE "productId"=$1
+            RETURNING *;
+        `, [productId]);
+        console.log("This is the rows for delete rows product", rows)
+        console.log("Finished deleting product rows")
+
+        return rows[0];
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+  async function deleteRowPizza(pizzaId) {
+    console.log("Starting to delete pizza rows")
+    try { 
+        const {rows} = await client.query(`
+            DELETE FROM "orderItems"
+            WHERE "pizzaId"=$1
+            RETURNING *;
+        `, [pizzaId]);
+        console.log("Finished deleting pizza rows ")
+
+        return rows[0];
+        
+        
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+
 module.exports = {
     createCartWithoutUser,
     createCartForUser,
@@ -118,5 +154,7 @@ module.exports = {
     fetchUserCarts,
     createOrderItemsRowForProduct,
     createOrderItemsRowForPizza,
-    fetchOrderItemsByCartId
+    fetchOrderItemsByCartId,
+    deleteRowProducts,
+    deleteRowPizza
 }
