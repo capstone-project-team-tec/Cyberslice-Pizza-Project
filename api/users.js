@@ -34,6 +34,11 @@ usersRouter.post('/login', async (req,res,next)=>{
         console.log("Calling getUserByUsername in users.js, testing logging in");
         const user = await getUserByUsername(username);
         const userId = user.id;
+        const userEmail = user.email
+        const userRealName = user.name;
+        const userAddress = user.address;
+        const userPhone = user.phone;
+
         // if (userData.username && userData.password) {
         //     const userInDb = await fetchUserByUsername(userData.username);
             if (user) {
@@ -45,8 +50,12 @@ usersRouter.post('/login', async (req,res,next)=>{
                             success:true,
                             user:
                             {
+                                username,
                                 userId,
-                                username
+                                userEmail,
+                                userRealName,
+                                userAddress,
+                                userPhone
                             },
                             message: "You are now logged in!",
                             token: token

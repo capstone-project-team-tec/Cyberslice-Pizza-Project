@@ -111,7 +111,9 @@ async function createTables() {
         "cartId" INTEGER REFERENCES carts(id), 
         "pizzaId" INTEGER REFERENCES pizza(id),
         count INTEGER NOT NULL,
-        cost FLOAT NOT NULL
+        cost FLOAT NOT NULL,
+        "productName" VARCHAR(255) REFERENCES products(name),
+        "pizzaName" VARCHAR(255) REFERENCES pizza(name)
     );
     `);
     console.log("Finished building tables!");
@@ -283,13 +285,11 @@ async function createInitialCartsWithoutUser () {
     
     const CartsTableRows = [
       { 
-        id: createdCart.id,
-        isCheckedOut: true,
+        cartId: createdCart.id,
         totalCost: 15.99
       },
       { 
-        id: createdCart2.id,
-        isCheckedOut: true,
+        cartId: createdCart2.id,
         totalCost: 20.99
       }
     ];
@@ -305,27 +305,29 @@ async function createInitialCartsWithoutUser () {
 async function createInitialCartsForUser () {
   console.log("Starting to create a cart for a user...")
   try {
-    const createdCart = await createCartForUser(1);
-    const createdCart2 = await createCartForUser(1);
-    const createdCart3 = await createCartForUser(1);
+    const createdCart = await createCartForUser(2);
+    const createdCart2 = await createCartForUser(2);
+    const createdCart3 = await createCartForUser(2);
 
     console.log(createdCart)
-    console.log("this is createdcart.id ....." + createdCart.id)
-    console.log("this is createdcart.userid ....." + createdCart.userId)
-    console.log("Finished creating initial cart ID...");
+    console.log("this is createdcart.id for a user....." + createdCart.id)
+    console.log("this is createdcart.userid for a user....." + createdCart.userId)
+    console.log("Finished creating initial cart ID for a user...");
 
     console.log("Adding rows to carts table...");
     
     const CartsTableRows = [
       { 
-        id: createdCart.id,
-        isCheckedOut: true,
+        cartId: createdCart.id,
         totalCost: 99
       },
       { 
-        id: createdCart2.id,
-        isCheckedOut: true,
+        cartId: createdCart2.id,
         totalCost: 55
+      },
+      { 
+        cartId: createdCart3.id,
+        totalCost: 110
       }
     ];
     
@@ -340,9 +342,9 @@ async function createInitialCartsForUser () {
 async function createInitialOrderItemsRowsForCartsUsingProducts() {
   console.log("Starting to create orderItems rows for a cart using products...")
   try {
-    const createdRow = await createOrderItemsRowForProduct({cartId:1, productId:2, count:1, cost:9.99});
-    const createdRow2 = await createOrderItemsRowForProduct({cartId:2, productId:4, count:2, cost:17.99});
-    const createdRow3 = await createOrderItemsRowForProduct({cartId:1, productId:3, count:2, cost:69.99});
+    const createdRow = await createOrderItemsRowForProduct({cartId:1, productId:2, count:1, cost:9.99, productName: "Cinnamon Twists"});
+    const createdRow2 = await createOrderItemsRowForProduct({cartId:2, productId:4, count:2, cost:17.99, productName: "Chocolate Ice Cream"});
+    const createdRow3 = await createOrderItemsRowForProduct({cartId:1, productId:3, count:2, cost:69.99, productName: "Apple Pie"});
 
     console.log(createdRow)
     console.log("this is createdRow.id ....." + createdRow.id)
