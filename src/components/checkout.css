@@ -30,42 +30,69 @@ button {
 
     border-radius: 4px;
     
-    width: 100rem;
-    max-width: 80%;
+    width: auto;
+    max-width: 90%;
     margin-bottom: 1rem;
 }
 
 .itemTitle{
     color: #cbff5e;
+
+    margin-top: 1.5rem;
+    margin-left: 1rem;
+
+    font-size: 1.5rem
 }
 
 .itemDetailsContainer {
     display: flex;
     flex-direction: row;
 
-    border: 2px solid white;
-}
+    justify-content: space-between;
 
-.detailCategory{
-    border: 2px solid white;
-}
 
-.detailValue{
-    border: 2px solid white;
-}
-
-.removeButton{
-    color: red;
-
-    border: 2px solid white;
+    margin-left: 2rem;
 }
 
 .detailColumn {
     display: flex;
     flex-direction: column;
 
-    border: 2px solid white;
 }
+.detailCategory{
+    font-size: 1.25rem;
+
+    color: rgb(178, 178, 178);
+
+    margin-bottom: 1rem;
+}
+
+.detailValue{
+    font-size: 1rem;
+
+    margin-bottom: 1rem;
+}
+
+
+.removeButtonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-right: 2rem;
+}
+.removeButton{
+    color: rgb(250, 0, 0);
+
+    border: 4px solid rgb(255, 255, 255);
+    height: fit-content;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    justify-content: center;
+}
+
+
 
 #totalContainer {
     display: flex;
@@ -81,17 +108,22 @@ button {
 #subtotal{
     display: flex;
     flex-direction: row;
+
+    justify-content: space-between;
 }
 
 #fee{
     display: flex;
     flex-direction: row;
+
+    justify-content: space-between;
 }
 
 #total{
     display: flex;
     flex-direction: row;
     
+    justify-content: space-between;
 }
 
 #buttonContainer{
