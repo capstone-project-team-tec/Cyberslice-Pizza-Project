@@ -15,11 +15,12 @@ const Profile = (props) => {
     const [editAddress, setEditAddress] = useState(false);
     const [myId, setMyId] = useState(null);
     const [userCarts, setUserCarts] = useState([]);
+    const [cartOrderItems, setCartOrderItems] = useState([])
     const { currentUser, currentCart } = props
 
     // const thisUser = props.currentUser
 
-    // const {id} = useParams()
+    const {id} = useParams()
     const navigate = useNavigate();
 
 
@@ -51,10 +52,45 @@ const Profile = (props) => {
 
             setUserCarts(result)
 
+
         } catch(error) {
             console.log(error)
         }
     }
+let orderItemsArray = []
+    async function fetchOrderItems() {
+        userCarts.map(async (singleCart) => {
+          try {
+            console.log("this is the single cart id", singleCart.id)
+            const response = await fetch(`http://localhost:1337/api/cart/${singleCart.id}`, {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
+            
+            const result = await response.json();
+            console.log(result);
+            orderItemsArray.push(result)
+            console.log(orderItemsArray)
+
+            setCartOrderItems(orderItemsArray)
+
+
+            
+
+
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      }
+
+      
+    
+        
+
+        
 
     async function fetchUserById(event) {
         try {
@@ -150,9 +186,16 @@ const Profile = (props) => {
         fetchCartsByUser();
     }, [])
 
+    useEffect(() => {
+        fetchOrderItems()
+    }, [userCarts])
+
     
     console.log("this is the props.currentCart", props.currentCart)
     console.log("This is the thisUser...",thisUser)
+
+
+console.log(cartOrderItems)
     return (
         <div>
             {
@@ -216,12 +259,54 @@ const Profile = (props) => {
                     </div>
                 ): "Profile not found"
             }
-            <h2>Order History for {props.currentUser.name}</h2>
+            {/* <h2>Order History for {props.currentUser.name}</h2> */}
             {/* {
-                props.currentCart.isCheckedOut ? (
-                    props.currentCart.
-                )
-            } */}
+        props.currentUser.id == userCarts.userId ? (
+    <div>
+      {userCarts.isCheckedOut ? (
+            <div>
+                <h1>{cartOrderItems.name}</h1>
+                <h1>{cart</h1>
+            </div>
+            ) : (
+                <div>No carts Checked Out</div>
+            )}
+        </div>
+        ) : (
+            ""
+        )
+    } */}
+    
+  <div className="profile-page">
+    {/* ... */}
+    <div className="orders">
+      <h2>Order History:</h2>
+
+
+{
+  Array.isArray(cartOrderItems) && cartOrderItems.length > 0 ? (
+    cartOrderItems.map((cart, index) => (
+      <div key={index}>
+        <h3>Cart ID: {cart.id}</h3>
+        <ul>
+          {cart.map((item, index) => (
+            <li key={index}>
+                {item.productName}
+              ${item.cost} x {item.count} 
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  ) : (
+    <p>No items in cart</p>
+  )
+}
+    </div>
+  </div>
+ 
+
+            
             
 
             

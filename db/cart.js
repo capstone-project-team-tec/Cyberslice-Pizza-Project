@@ -46,7 +46,7 @@ async function fetchUserCarts(userId) {
 
         const {rows: carts } = await client.query(`
             SELECT * FROM carts
-            WHERE "userId"=$1;
+            WHERE "userId"=$1 AND "isCheckedOut"=true;
         `,[userId]);
 
         if (!carts || carts.length == 0) {
@@ -93,18 +93,19 @@ async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost, pizzaN
 }
 
 async function fetchOrderItemsByCartId(cartId) {
+    console.log("starting to fetch order items by cart id")
     try {
 
-        const {rows: orderItems } = await client.query(`
+        const {rows } = await client.query(`
             SELECT * FROM "orderItems"
             WHERE "cartId"=$1;
         `,[cartId]);
 
-        if (!orderItems || orderItems.length == 0) {
-            return null
-        }
-
-        return orderItems;
+        // if (!orderItems || orderItems.length == 0) {
+        //     return null
+        // }
+        console.log("This is the order items return", rows)
+        return rows;
 
     } catch (error) {
         console.log(error);
