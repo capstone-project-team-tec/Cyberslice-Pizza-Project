@@ -180,7 +180,7 @@ cartRouter.delete("/orderitems/:productId", async (req, res, next) => {
             const deletedProduct = await deleteRowProducts(productId, cartId)
             res.send({
                 success: true,
-                deletedProduct: deletedProduct,
+                deletedProduct: `The deleted product: ${deletedProduct}`,
                 message: "Product was successfully deleted from cart"
             })
         }
