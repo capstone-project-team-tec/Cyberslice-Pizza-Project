@@ -9,6 +9,7 @@ import "./global.css"
 const Checkout = (props) => {
     const { currentCart, currentUser } = props
     const [currentOrderItems, setCurrentOrderItems] = useState([])
+    const [anything, setAnything] = useState([])
     const {id} = useParams()
 
     useEffect(() => {
@@ -27,7 +28,7 @@ const Checkout = (props) => {
             });      
             const result = await response.json();
             setCurrentOrderItems(result);
-            return result;
+            
         } catch (error) {
           console.log(error);
         }
@@ -35,31 +36,35 @@ const Checkout = (props) => {
 
     async function removeOrderItem(orderItemId) {
         try {
-          const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-
-            body: {
-                cartId: currentCart.id
-            }
+            console.log(orderItemId);
+            console.log(currentCart.id)
+            const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
+                method: 'DELETE',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {
+                    "cartId" : currentCart.id
+            } )
           });
           const result = await response.json();
+
+          setAnything(result);
+          
           console.log(result);
         } catch (error) {
           console.log(error);
         }
       }
 
-    async function handleRemove (id) {
+    async function handleRemove (productId, orderItemId) {
         const updatedOrderItems = currentOrderItems.filter(
-            (orderItem) => orderItem.id !== id
+            (orderItem) => orderItem.id !== orderItemId
         );
 
         // Update the items list again.
         setCurrentOrderItems(updatedOrderItems);
-        await removeOrderItem(id);
+        await removeOrderItem(productId);
     }
 
     const subTotalCost = currentOrderItems.reduce((accumulator, orderItem) => {
@@ -104,7 +109,7 @@ const Checkout = (props) => {
 
                                 {/* This needs to go to the far right */}
                                 <section className = "removeButtonContainer">
-                                    <button id = "removeButton" onClick={() => handleRemove(orderItem.id)}>
+                                    <button id = "removeButton" onClick={() => handleRemove(orderItem.productId, orderItem.id)}>
                                         Remove
                                     </button>
                                 </section>
