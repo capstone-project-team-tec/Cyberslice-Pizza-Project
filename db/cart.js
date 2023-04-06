@@ -111,14 +111,14 @@ async function fetchOrderItemsByCartId(cartId) {
     }
 }
 
-async function deleteRowProducts(productId) {
+async function deleteRowProducts(productId, cartId) {
     console.log("Starting to delete product rows")
     try { 
         const {rows} = await client.query(`
             DELETE FROM "orderItems"
-            WHERE "productId"=$1
+            WHERE "productId"=$1 AND "cartId" = $2
             RETURNING *;
-        `, [productId]);
+        `, [productId, cartId]);
         console.log("This is the rows for delete rows product", rows)
         console.log("Finished deleting product rows")
 

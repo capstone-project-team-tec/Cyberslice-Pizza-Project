@@ -9,6 +9,7 @@ import "./global.css"
 const Checkout = (props) => {
     const { currentCart, currentUser } = props
     const [currentOrderItems, setCurrentOrderItems] = useState([])
+    const {id} = useParams()
 
     useEffect(() => {
         getOrderItemsByCartId();
@@ -30,6 +31,35 @@ const Checkout = (props) => {
         } catch (error) {
           console.log(error);
         }
+    }
+
+    async function removeOrderItem(orderItemId) {
+        try {
+          const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+
+            body: {
+                cartId: currentCart.id
+            }
+          });
+          const result = await response.json();
+          console.log(result);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+    async function handleRemove (id) {
+        const updatedOrderItems = currentOrderItems.filter(
+            (orderItem) => orderItem.id !== id
+        );
+
+        // Update the items list again.
+        setCurrentOrderItems(updatedOrderItems);
+        await removeOrderItem(id);
     }
 
     const subTotalCost = currentOrderItems.reduce((accumulator, orderItem) => {
@@ -74,7 +104,9 @@ const Checkout = (props) => {
 
                                 {/* This needs to go to the far right */}
                                 <section className = "removeButtonContainer">
-                                    <section className = "removeButton"> Remove </section>
+                                    <button id = "removeButton" onClick={() => handleRemove(orderItem.id)}>
+                                        Remove
+                                    </button>
                                 </section>
                                 
                             </section>
@@ -123,70 +155,7 @@ const Checkout = (props) => {
                     </section>
                 </section>
             </section>
-        {/* <section id = "itemsList">
-            itemsList
-            <section className = "item">
-                <section className = "itemTitle">
-                    itemTitle
-                </section>
 
-                ============= 
-
-
-                <section className = "itemDetailsContainer">
-
-                    <section className = "detailColumn">
-                        <section className = "detailCategory"> 
-                            Category
-                        </section>
-
-                        <section className = "detailValue"> 
-                            Value
-                        </section>
-                    </section>
-
-===================================
-
-                    <section className = "removeButton">
-                        Remove
-                    </section>
-                </section>
-            </section>
-        </section>
-
-        <section id = "totalContainer">
-            <section className = "chargeContainer">
-                <section id = "subtotal">
-                    <section id = "subtotalTitle">
-                        Subtotal
-                    </section>
-                    <section className = "price">
-                        10.55
-                    </section>
-                </section>
-                    */}
-                {/* <section id = "fee">
-                    <section id = "feeTitle">
-                        
-                        Delivery Fee
-                    </section>
-                    <section className = "price">
-                        2.99
-                    </section>
-                </section>
-
-                <section id = "total">
-                    <section id = "totalTitle">
-                        Total:
-                    </section>
-
-                    <section className = "price">
-                        2.99
-                    </section>
-                </section>
-        </section>
-        </section> */}
-{/* Depends on what the carryout/delivery choice was */}
             <section id = "buttonContainer"> 
                 <section id = "checkoutButton">Check out</section>
             </section>
