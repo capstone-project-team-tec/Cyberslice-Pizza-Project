@@ -14,6 +14,10 @@ const {
     deleteRowPizza
 } = require('../db/cart');
 
+const {
+    createPaymentInformationForOrderRow
+} = require('../db/paymentInformationForOrder');
+
 //dependency imports
 require('dotenv').config();
 // Do we even need this?
@@ -138,6 +142,34 @@ cartRouter.post('/orderitems', async (req, res, next) => {
         next(error);
     }
 });
+
+cartRouter.post('/:cartId/payment', async (req, res, next) => {
+    try {
+        const cartId = req.params.cartId;
+        const { cardholderName, cardNumber, expirationDate, cvv, billingAddress } = req.body;
+        const newPaymentRow = await createPaymentInformationForOrderRow({cartId: cartId, cardholderName: cardholderName, cardNumber: cardNumber, expirationDate: expirationDate, cvv: cvv, billingAddress: billingAddress});
+
+        if (newPaymentRow) {
+            res.status(200).send({
+                success: true,
+                error: null,
+                message: "A new row has been created in paymentInformationForOrder table."
+            });
+        } else {
+            res.status(403).send({
+                success: false,
+                error: {
+                    name: "createPaymentInformationForOrderRowError",
+                    message: "Failed to create a new row in paymentInformationForOrder table." 
+                },
+                data: null
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
 
 cartRouter.patch('/:cartId', async (req, res, next) => {
     const cartId = req.params.cartId;

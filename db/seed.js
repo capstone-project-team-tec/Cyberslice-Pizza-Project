@@ -42,11 +42,15 @@ const {
     createOrderItemsRowForProduct,
     createOrderItemsRowForPizza
   } = require("./cart");
+  const {
+    createPaymentInformationForOrderRow
+  } = require("./paymentInformationForOrder");
 
 async function dropTables() {
   try {
     console.log("Starting to drop tables...");
     await client.query(`
+      DROP TABLE IF EXISTS "paymentInformationForOrder";
       DROP TABLE IF EXISTS "orderItems";
       DROP TABLE IF EXISTS "pizzaWithToppings";
       DROP TABLE IF EXISTS carts;
@@ -116,6 +120,15 @@ async function createTables() {
         cost FLOAT NOT NULL,
         "productName" VARCHAR(255) REFERENCES products(name),
         "pizzaName" VARCHAR(255) REFERENCES pizza(name)
+    );
+      CREATE TABLE "paymentInformationForOrder"(
+        id SERIAL PRIMARY KEY,
+        "cartId" INTEGER UNIQUE REFERENCES carts(id), 
+        "cardholderName" VARCHAR(255) NOT NULL,
+        "cardNumber" VARCHAR(255) NOT NULL,
+        "expirationDate" VARCHAR(255) NOT NULL,
+        cvv VARCHAR(255) NOT NULL,
+        "billingAddress" VARCHAR(255) NOT NULL
     );
     `);
     console.log("Finished building tables!");
@@ -375,6 +388,23 @@ async function createInitialOrderItemsRowsForCartsUsingPizza() {
   }
 }
 
+async function createInitialPaymentInformationForOrder() {
+  console.log("Starting to create payment information for orders...")
+  try {
+    const initialPaymentInformation = [
+      { cartId: 1, cardholderName: "sam", cardNumber: "123123123", expirationDate: "12/12/2023", cvv: "123", billingAddress: "123 fake street"},
+      { cartId: 2, cardholderName: "bob", cardNumber: "456456456", expirationDate: "12/12/2024", cvv: "456", billingAddress: "456 fake street"},
+      { cartId: 3, cardholderName: "carlyle", cardNumber: "789789789", expirationDate: "12/12/2025", cvv: "789", billingAddress: "789 fake street"}
+    ]
+    const paymentInformation = await Promise.all(initialPaymentInformation.map(createPaymentInformationForOrderRow))
+
+    console.log(paymentInformation)
+    console.log("Finished creating payment information for orders")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -391,6 +421,7 @@ async function rebuildDB() {
     await createInitialCartsForUser();
     await createInitialOrderItemsRowsForCartsUsingProducts();
     await createInitialOrderItemsRowsForCartsUsingPizza();
+    await createInitialPaymentInformationForOrder();
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error
