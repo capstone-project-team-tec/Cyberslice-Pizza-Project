@@ -4,6 +4,7 @@ import "./profile.css"
 import "./global.css"
 
 
+
 const Profile = (props) => {
     const [thisUser, setThisUser] = useState({})
     const [username, setUsername] = useState("")
@@ -196,62 +197,121 @@ let orderItemsArray = []
 
 
 console.log(cartOrderItems)
+
     return (
         <div>
+            <h2 id="profile">{thisUser.name}'s Profile</h2>
             {
                 thisUser.username ? (
                     <div>
-                        <h1>Username: {thisUser.username}</h1>
-                        
-                        <h1>Name: {thisUser.name}</h1>
-                        
-                        <h1>Email: {thisUser.email}</h1>
-                        
-                        <h1>Phone: {thisUser.phone}</h1>
-                        
-                        <h1>Address: {thisUser.address}</h1>
-                    
-                    <button onClick={editEntriesForm}>Edit</button>
+                        <div className="parent">
+                            <div id="split">
+                        <h4 id="personalInfo">Personal Information</h4>
+                        <button id="button"onClick={editEntriesForm}>Edit</button>
+                            </div>
 
+                        <div className="fields">
+                            <div className="userinfo">
+                                <section className="infocolumn">
+                        <h5 className="userplace">Username</h5>
+                        <h5>{thisUser.username}</h5> 
+                            </section>
+                        
+                            <section className="infocolumn">
+                        <h5 className="userplace">Name</h5>
+                        <h5>{thisUser.name}</h5> 
+                            </section>
+                        
+                            <section className="infocolumn">
+                        <h5 className="userplace">Email</h5>
+                        <h5>{thisUser.email}</h5>
+                            </section>
+                        
+                            <section className="infocolumn">
+                        <h5 className="userplace">Phone</h5>
+                        <h5>{thisUser.phone}</h5>
+                        </section>
+                        </div>
+                        
+                        </div>
+                        </div>
+                    
                     {
                         editEntries ? (
                             <div>
                         <form onSubmit={updateUserById}>
-                        <input 
+                            <div id="form1">
+                            <section>
+                        <h6>Enter New Username:</h6>
+                        <input
                         type="text"
                         defaultValue={thisUser.username}
                         onChange={(event) => setUsername(event.target.value)}
                         />
-                        <input
+                        </section>
+                            <section>
+                        <h6>Enter New Name:</h6>
+                        <input 
                         type="text"
                         defaultValue={thisUser.name}
                         onChange={(event) => setName(event.target.value)}
                         />
+                        </section>
+                        <section>
+                        <h6>Enter New Email:</h6>
                         <input
                         type="text"
                         defaultValue={thisUser.email}
                         onChange={(event) => setEmail(event.target.value)}
                         />
-                        <input
+                        </section>
+                        <section>
+                        <h6>Enter New Phone:</h6>
+                        <input 
                         type="text"
                         defaultValue={thisUser.phone}
                         onChange={(event) => setPhone(event.target.value)}
                         />
+                        </section>
+                        </div>
+                        
+                        <p> </p>
+                        <div id="button1">
                         <button type="submit">Update</button>
+                        </div>
                         </form>
                             </div>
                         ):""
                     }
-                    <button onClick={editAddressForm}>Edit</button>
+
+                    <div id="address">
+                        <div id="split">
+                        <h4 id="personalInfo" className="headaddress">Address</h4>
+                        <button id="button" onClick={editAddressForm}>Edit</button>
+                        </div>
+                        <section id="street">
+                        <h5 id="streethead">Street</h5>
+                    <h5>{thisUser.address}</h5>
+                        </section>
+                    
+                    </div>
                     {
                         editAddress ? (
+                            
                             <form onSubmit={updateUserById}>
+                            <div id="form2">
+                                <h5>Enter New Address:</h5>
                                 <input 
                                 type="text"
                                 placeholder="address"
                                 value={address}
                                 onChange={(event) => setAddress(event.target.value)}/>
+                                <p> </p>
+                                <button id="button1"type="submit">Update</button>
+                                
+                                </div>
                             </form>
+                            
 
                         ):""
                     }
@@ -276,32 +336,94 @@ console.log(cartOrderItems)
             ""
         )
     } */}
-    
+
+
+   
   <div className="profile-page">
     {/* ... */}
+    <h2>Order History:</h2>
     <div className="orders">
-      <h2>Order History:</h2>
+      
+    {
+  Array.isArray(cartOrderItems) && cartOrderItems.length > 0 ? (
+    cartOrderItems.map((cart, index) => {
+      let subtotal = 0;
+      return (
+        <div key={index}>
+          {console.log(cart)}
+          <h3>{cart.cartId}</h3>
+          <div>
+            <ul id="orders">
+              {cart.map((item, index) => {
+                subtotal += item.cost * item.count;
+                return (
+                  <div key={index}>
+                    <h2 id="head">Product:</h2> 
+                    { item.productName && item.productName.length > 0 ? (
+                      <h2> x{item.count} {item.productName}</h2>
+                    ) : null }
+                    { item.pizzaName && item.pizzaName.length > 0 ? (   
+                      <h2>x{item.count} {item.pizzaName} Pizza</h2>
+                    ) : null }
+                    <h2 id="head">Cost:</h2>
+                    <h4>${item.cost} x {item.count} = ${item.cost * item.count}</h4>
+                  </div>
+                );
+              })}
+              <h4 id="subtotal">Subtotal: ${subtotal.toFixed(2)}</h4>
+            </ul>
+            
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <p>No Orders Found</p>
+  )
+}
 
-
-{
+{/* {
   Array.isArray(cartOrderItems) && cartOrderItems.length > 0 ? (
     cartOrderItems.map((cart, index) => (
       <div key={index}>
-        <h3>Cart ID: {cart.id}</h3>
-        <ul>
+        {console.log(cart)}
+        <h3>{cart.cartId}</h3>
+        <div>
+        <ul id="orders">
           {cart.map((item, index) => (
-            <li key={index}>
-                {item.productName}
-              ${item.cost} x {item.count} 
-            </li>
+            <div key={index}>
+                
+                <h2 id="head">Product:</h2> 
+            { item.productName && item.productName.length > 0 ? (
+            <h2> x{item.count} {item.productName}</h2>
+            ):""
+            }
+            { item.pizzaName && item.pizzaName.length > 0 ? (   
+            <h2>x{item.count} {item.pizzaName} Pizza</h2>
+            ):""
+            } 
+            <h2 id="head">Cost:</h2>
+              <h4>${item.cost} x {item.count} = ${item.cost * item.count}</h4>
+              
+
+              
+
+              
+              </div>
           ))}
         </ul>
+        <h4 id="subtotal">Subtotal: ${subtotal.toFixed(2)}</h4>
+        
+        </div>
       </div>
+      
+      
     ))
   ) : (
-    <p>No items in cart</p>
+    <p>No Orders Found</p>
   )
-}
+} */}
+
     </div>
   </div>
  
@@ -309,9 +431,10 @@ console.log(cartOrderItems)
             
             
 
-            
-            <button onClick={handleLogout}>Log Out Of This Account</button>
-            <button onClick={deleteAccount}>Delete This Account</button>
+            <div id="buttoncontainer">
+            <button id="buttondelete"onClick={handleLogout}>Log Out Of This Account</button>
+            <button id="buttondelete"onClick={deleteAccount}>Delete This Account</button>
+            </div>
             
         </div>
     )
