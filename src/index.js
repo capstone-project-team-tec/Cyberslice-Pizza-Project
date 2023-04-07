@@ -176,9 +176,9 @@ console.log("This is the current user on line 166 of src index file:   ",current
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza />}/>
-                        <Route path="/drinks" element={<Drinks currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} drinks={drinks}/>}/>
-                        <Route path="/sides" element={<Sides sides={sides}/>} />
-                        <Route path="/desserts" element={<Desserts desserts={desserts}/>} />
+                        <Route path="/drinks" element={<Drinks drinks={drinks} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} />}/>
+                        <Route path="/sides" element={<Sides currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} sides={sides}/>} />
+                        <Route path="/desserts" element={<Desserts currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} desserts={desserts}/>} />
                         <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
                         <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser}/>} />
                         <Route path="/locations" element={<Locations />} />
