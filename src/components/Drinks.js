@@ -110,7 +110,8 @@ const Drinks = (props) => {
               return (
                 <section id = "itemContainer">
                     <div key={singleDrink.id}>
-                      <section id = "itemPic">sodie poppy goes here. yeah.</section>
+                      <img src = {singleDrink.image} id = "itemPic"> 
+                      </img>
                       <section id = "itemTitle">{singleDrink.name}</section>
                       <section id = "itemCost"> ${singleDrink.price}</section>
 
