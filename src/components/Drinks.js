@@ -110,10 +110,15 @@ const Drinks = (props) => {
               return (
                 <section id = "itemContainer">
                     <div key={singleDrink.id}>
-                      <img src = {singleDrink.image} id = "itemPic"> 
-                      </img>
-                      <section id = "itemTitle">{singleDrink.name}</section>
-                      <section id = "itemCost"> ${singleDrink.price}</section>
+                      <section id = "imageContainer"> 
+                        <img src = {singleDrink.image} id = "itemPic">
+                        </img>
+                      </section>
+                      <section id = "itemDetails">
+                        <section id = "itemTitle">{singleDrink.name}</section>
+                        <section id = "itemCost"> ${singleDrink.price}</section>
+                      </section>
+                      
 
                       <section id = "addToCartContainer">
                         <section id = "addToCartButtonContainer">
