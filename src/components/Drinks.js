@@ -101,39 +101,66 @@ const Drinks = (props) => {
 
   return (
     <div>
-      <h1>Cyberslice Drinks</h1>
+      <section id= "drinksContainer">
+        <section id = "drinksPageTitle">Drinks</section>
 
-      {drinks.length > 0 ? (
-        drinks.map((singleDrink) => {
-          return (
-            <div key={singleDrink.id}>
-              <h2>{singleDrink.name}</h2>
-              <h2> Price: {singleDrink.price}</h2>
-              <button
-                onClick={() => {
-                  // setSingleDrinkId(singleDrink.id);
-                  // setSingleDrinkPrice(singleDrink.price);
-                  // setSingleDrinkName(singleDrink.name);
-                  createOrderItemsRow(
-                    // currentCartId,
-                    singleDrink.id,
-                    1,
-                    singleDrink.price,
-                    singleDrink.name
-                  );
-                }}
-              >
-                Add to Order
-              </button>
-              {addedDrinkId === singleDrink.id && (
-                <span className="added-to-cart-message">Added to cart!</span>
-              )}
-            </div>
-          );
-        })
-      ) : (
-        <div>No Drinks Yet</div>
-      )}
+        <section id = "itemsList"> 
+          {drinks.length > 0 ? (
+            drinks.map((singleDrink) => {
+              return (
+                <section id = "itemContainer">
+                    <div key={singleDrink.id}>
+                      <section id = "itemPic">sodie poppy goes here. yeah.</section>
+                      <section id = "itemTitle">{singleDrink.name}</section>
+                      <section id = "itemCost"> ${singleDrink.price}</section>
+
+                      <section id = "addToCartContainer">
+                        <section id = "addToCartButtonContainer">
+                          <section id = "addToCartButton">
+                            <button onClick={() => {
+                                // setSingleDrinkId(singleDrink.id);
+                                // setSingleDrinkPrice(singleDrink.price);
+                                // setSingleDrinkName(singleDrink.name);
+                                createOrderItemsRow(
+                                  // currentCartId,
+                                  singleDrink.id,
+                                  1,
+                                  singleDrink.price,
+                                  singleDrink.name
+                                ) ; }}
+                            > Add to Order </button>
+                          </section>
+                          
+                          <section id = "addToCartQuantityContainer">
+                            <section id = "subtractorContainer">
+                              -
+                            </section>
+
+                            <section id = "quantityContainer">
+                              1
+                            </section>
+
+                            <section id = "adderContainer">
+                              +
+                            </section>
+                          </section>
+
+                        </section>
+                      </section>
+
+                      
+                      {addedDrinkId === singleDrink.id && (
+                        <span className="added-to-cart-message">Added to cart!</span>
+                      )}
+                    </div>
+                  </section>
+              );
+            })
+          ) : (
+            <div>No Drinks Yet</div>
+          )}
+        </section>
+      </section>
     </div>
   );
 };

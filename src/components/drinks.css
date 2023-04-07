@@ -7,4 +7,86 @@
     border-radius: 4px;
     font-size: 0.9rem;
 }
-  
+
+#drinks {
+    color: red;
+}
+
+#drinksContainer{
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 10%;
+    margin-top: 5%;
+
+    height: 100%;
+}
+
+#drinksPageTitle{
+    display: flex;
+    flex: 1;
+    font-size: 4rem;
+    margin-bottom: 5rem;
+}
+
+#itemsList{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: space-evenly;
+
+    background-color: black;
+    border: 4px solid white;
+
+    border-radius: 4px;
+    border-color: rgb(0, 102, 255);
+    max-width: 90%;
+
+    padding-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#itemContainer{
+    border: 2px solid white;
+    display: flex;
+    
+    flex-basis: 30%;
+    width: 25rem;
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: 2rem;
+
+    margin-bottom: 2rem;
+}
+
+#itemPic {
+
+}
+
+#itemTitle {
+    
+}
+
+#itemCost {
+    
+}
+
+#addToCartContainer {
+    display: flex;
+
+    flex-direction: row;
+}
+
+#addToCartButtonContainer{
+    display: flex;
+
+    flex-direction: row;
+}
+
+#addToCartQuantityContainer {
+    display: flex;
+
+    flex-direction: row;
+}
