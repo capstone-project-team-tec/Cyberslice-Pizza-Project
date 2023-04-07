@@ -1,13 +1,13 @@
 const { client } = require("./client")
 
-async function createToppings({name, price}) {
+async function createToppings({name, price, image}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO toppings (name, price)
-        VALUES ($1, $2)
+        INSERT INTO toppings (name, price, image)
+        VALUES ($1, $2, $3)
         ON CONFLICT (name) DO NOTHING
         RETURNING *;
-        `, [name, price])
+        `, [name, price, image])
 
         return rows;
 
