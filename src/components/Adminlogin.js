@@ -3,8 +3,14 @@ import { useParams, useNavigate, Link } from "react-router-dom"
 import "./adminlogin.css"
 import "./global.css"
 
-const Adminlogin = () => {
-    const { setCurrentUser } = props
+const Adminlogin = (props) => {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const { setCurrentAdminUser } = props
+    const { setCurrentAdminUserTrue } = props
+
+    const navigate = useNavigate()
+
 
     async function loginFunction(e) {
         e.preventDefault();
@@ -15,8 +21,8 @@ const Adminlogin = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify ({
-                    username: myUsername,
-                    password: myPassword
+                    username: username,
+                    password: password
                 })
             })
             console.log("login is working")
@@ -27,14 +33,11 @@ const Adminlogin = () => {
             } else {
                 const myJWT = result.token;
                 localStorage.setItem("token", myJWT)
-                setCurrentUser({
+                setCurrentAdminUser({
                     username: result.user.username,
-                    id: result.user.userId,
-                    name: result.user.userRealName,
-                    email: result.user.userEmail,
-                    address: result.user.userAddress,
-                    phone: result.user.userPhone
+                    isAdmin: result.user.isAdmin,
                 })
+                setCurrentAdminUserTrue(true)
                 navigate("/")
             }
         } catch (error) {
@@ -45,10 +48,49 @@ const Adminlogin = () => {
 
 
     return (
-        <div>
-            Placeholder
-        </div>
-    )
+        <section id="loginContainer">
+            {/* Login */}
+            <section className="loginTitle">
+                Admin Login
+                <br />
+            </section>
+    
+            <section className="formAndPicture">
+                <form onSubmit={loginFunction}>
+                    <div className="input-wrapper">
+                        <h2>Username</h2>
+                        <input
+                            className="loginBox"
+                            id="username"
+                            type="text"
+                            placeholder=""
+                            value={username}
+                            onChange={(event) => setUsername(event.target.value)}
+                            aria-label="Username"
+                        />
+                    </div>
+                    <div className="input-wrapper">
+                        <h2>Password</h2>
+                        <input
+                            className="loginBox"
+                            id="password"
+                            type="password"
+                            placeholder=""
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            aria-label="Password"
+                        />
+                    </div>
+                    <button className="loginButton" type="submit">
+                        Login
+                    </button>
+                </form>
+                <section className="picture">
+                    This is where a picture of pizza would go. Yeah.
+                </section>
+            </section>
+        </section>
+    );
 }
 
 export default Adminlogin;

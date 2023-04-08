@@ -1,0 +1,83 @@
+#loginContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+h3 {
+    margin: 0;
+}
+.loginTitle{
+    font-size: 4rem;
+    margin-bottom: 5rem;
+}
+
+.formAndPicture {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+}
+/* For editing how the picture appears */
+/* .picture {
+
+} */
+.loginBox {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 25px;
+    width: 450px;
+}
+
+.loginBox:focus {
+    border: 2px solid #cbff5e;
+    outline: none;
+    transition: border-color 0.75s;
+}
+
+.loginButton{
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    font-size : 1rem;
+    font-weight: bold;
+
+    padding: 0.5rem 1rem;
+
+    text-align: center;
+    line-height: 10px;
+
+    height: 30px;
+}
+
+.loginButton:hover {
+    border: 2px solid #cbff5e;
+    color: #cbff5e;
+    outline: none;
+    transition: border-color 0.75s, color 0.75s;
+}
+
+.formsAndPictures
+label {
+    margin-bottom: 4px;
+}

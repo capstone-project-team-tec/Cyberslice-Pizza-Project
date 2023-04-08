@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import "./register.css"
 import "./global.css"
 
-const Register = () => {
+const Register = (props) => {
     //Register
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
@@ -12,6 +12,7 @@ const Register = () => {
     const [ phone, setPhone ] = useState("");
     const [ name, setName ] = useState("");
     const [ CurrentUser, setCurrentUser ] = useState({})
+    const { setCurrentUserTrue } = props
 
     const navigate = useNavigate();
 
@@ -187,6 +188,7 @@ const Register = () => {
                 const myJWT = resultData.token;
                 localStorage.setItem("token", myJWT) 
                 setCurrentUser({username, password, email, address, phone})
+                setCurrentUserTrue(true)
                 navigate("/")
             }
         } catch (error) {

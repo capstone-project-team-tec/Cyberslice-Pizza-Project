@@ -8,6 +8,7 @@ const Login = (props) => {
     //Login
     const [ myUsername, setMyUsername ] = useState("");
     const [ myPassword, setMyPassword ] = useState("");
+    const { setCurrentUserTrue } = props
     
     const {setCurrentUser} = props;
 
@@ -42,6 +43,7 @@ const Login = (props) => {
                     address: result.user.userAddress,
                     phone: result.user.userPhone
                 })
+                setCurrentUserTrue(true)
                 navigate("/")
             }
         } catch (error) {
@@ -61,7 +63,7 @@ const Login = (props) => {
             <section className = "formAndPicture">
                 <form onSubmit={loginFunction}>
                     <div className="input-wrapper">
-                        <h2> Email</h2>
+                        <h2> Username </h2>
                         <input className="loginBox"
                             id="username"
                             type="text"
