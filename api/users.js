@@ -7,7 +7,11 @@ const {
     getUserById,
     getAllUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    createAdminUser,
+    getAdminUser,
+    getAdminUserByUsername
+
 } = require('../db/users');
 
 //dependency imports
@@ -16,7 +20,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 //function imports;
     
-const { requireUser } = require('./utils');
+const { requireUser, requireAdmin } = require('./utils');
 
 usersRouter.use((req,res,next)=>{
     console.log("A request is being made to /users");
@@ -77,6 +81,54 @@ usersRouter.post('/login', async (req,res,next)=>{
     } catch (error) {
         console.log(error);
         next(error);
+    }
+})
+
+usersRouter.post('/adminlogin', async (req,res,next) => {
+    const {username, password} = req.body;
+
+    if (!username || !password) {
+        next({
+            name: "MissingCredentialsError",
+            message: "Please supply both a username and password"
+        })
+    }
+    try {
+        console.log("Calling getAdminUserByUsername in users.js, testing logging in")
+        const user = await getAdminUserByUsername(username);
+        const isAdmin = user.isAdmin
+        if (user) {
+            const areTheyTheSame = await bcrypt.compare(password, user.password);
+            if (areTheyTheSame) {
+                const token = await jwt.sign({username, password}, process.env.JWT_SECRET);
+                res.send(
+                    {
+                        success:true,
+                        user:
+                        {
+                            username,
+                            isAdmin
+                        },
+                        message: "You are now logged in as admin!",
+                        token: token
+                    }).status(200);
+                    } else {
+                        res.send({message: "Wrong Password!"}).status(403)
+                    }
+                } else {
+                    res.send(
+                        {
+                            success: false,
+                            error: {
+                                name: "UserError",
+                                message: "User does not exist. Please create a new account."
+                            },
+                            data: null
+                        }).status(403);
+                }
+    } catch(error) {
+        console.log(error)
+        next(error)
     }
 })
 usersRouter.post('/register', async (req,res,next)=>{
@@ -218,6 +270,30 @@ usersRouter.patch(`/me`, async (req, res, next) => {
 usersRouter.delete('/me', async (req, res, next) => {
     // const { username } = req.user
     const { id } = req.user
+    try {
+    // const user = await getUserByUsername(username);
+      if (!id) {
+          res.send( {
+              name: 'UserNotFoundError',
+              message: 'Could not find a user with that username'
+          } )
+      } else { 
+    // const { id } = req.user
+        await deleteUser(id)
+        res.send({
+            success: true,
+            message: "User was successfully deleted"
+        })
+      }
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  });
+
+  usersRouter.delete('/admin/:id', requireAdmin, async (req, res, next) => {
+
+    // const { username } = req.user
+    const { id } = req.params
     try {
     // const user = await getUserByUsername(username);
       if (!id) {

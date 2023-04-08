@@ -23,6 +23,51 @@ async function createUser({username, password, name, email, address, phone}) {
     }
 }
 
+async function createAdminUser({username, password, isAdmin}) {
+    try {
+        const saltCount = 12;
+        const hashedPassword = await bcrypt.hash(password, saltCount);
+
+        const {rows} = await client.query(`
+        INSERT INTO admin(username, password, "isAdmin")
+        VALUES ($1, $2, $3)
+        ON CONFLICT DO NOTHING
+        RETURNING *;
+        `, [username, hashedPassword, isAdmin]);
+
+        return rows[0]
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function getAdminUser({ username, password }) {
+    console.log("inside of getAdminUser, testing loggin in")
+    try {
+        const { rows : [user] } = await client.query(`
+        SELECT *
+        FROM admin 
+        WHERE username = $1;
+        `, [username])
+
+        if (rows.length === 0) {
+            throw new Error("User not found")
+        }
+
+        const hashedPassword = user.password;
+
+        const isValidPassword = await bcrypt.compare(password, hashedPassword);
+        if (!isValidPassword) {
+            throw new Error("Invalid password")
+        }
+        return user
+
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 async function getUser({ username, password }) {
   console.log("inside of getUser, testing logging in");
     try {
@@ -110,6 +155,26 @@ async function getUserByUsername(userName) {
     }
 }
 
+async function getAdminUserByUsername(userName) {
+    console.log("Getting admin user by username, testing logging in");
+    try {
+        const {rows} = await client.query(`
+        SELECT *
+        FROM admin
+        WHERE username=$1;
+        `, [userName])
+        if(rows){
+            return rows[0];
+        }
+        else{
+            return undefined;
+        }
+
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 async function getAllUsers() {
   try {
       const {rows} = await client.query(`
@@ -163,5 +228,8 @@ module.exports = {
     getUserByUsername,
     getAllUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    createAdminUser,
+    getAdminUser,
+    getAdminUserByUsername
   }

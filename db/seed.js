@@ -5,6 +5,8 @@ const {
     getUser,
     getUserById,
     getUserByUsername,
+    createAdminUser,
+    getAdminUser
   } = require('./users.js');
   const {
     createDessert,
@@ -12,6 +14,7 @@ const {
     getDessertById,
     updateDesserts
   } = require('./desserts.js')
+
   const {
     createDrinks,
     getAllDrinks,
@@ -58,6 +61,7 @@ async function dropTables() {
       DROP TABLE IF EXISTS pizza;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS admin;
     `);
     console.log("Finished dropping tables!");
   } catch (error) {
@@ -79,6 +83,12 @@ async function createTables() {
         password VARCHAR(255) NOT NULL,
         address VARCHAR(255),
         phone VARCHAR(255) UNIQUE
+      );
+      CREATE TABLE admin (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        "isAdmin" BOOLEAN DEFAULT TRUE
       );
       CREATE TABLE products (
           id SERIAL PRIMARY KEY,
@@ -153,6 +163,25 @@ async function createInitialUsers() {
     console.log("Finished creating users!")
   } catch (error) {
     console.error("Error creating users!")
+    throw error
+  }
+}
+
+async function createAdminUsers() {
+  console.log("Starting to create admin users...")
+  try {
+    const adminToCreate = [
+      { username: "charlie", password: "charlie123", isAdmin: true},
+      { username: "tyler", password: "tyler123", isAdmin: true},
+      { username: "emmanuel", password: "emmanuel123", isAdmin: true}
+    ]
+    const admin = await Promise.all(adminToCreate.map(createAdminUser))
+
+    console.log("Admin created")
+    console.log(admin)
+
+  } catch(error) {
+    console.error("Error creating admin users")
     throw error
   }
 }
@@ -412,6 +441,7 @@ async function rebuildDB() {
     await dropTables();
     await createTables();
     await createInitialUsers();
+    await createAdminUsers();
     await createInitialDesserts();
     await createInitialDrinks();
     await createInitialSides();
