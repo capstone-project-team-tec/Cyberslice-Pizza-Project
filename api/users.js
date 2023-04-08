@@ -215,6 +215,29 @@ usersRouter.get('/me', requireUser, async(req,res,next)=>{
     }
 })
 
+usersRouter.get('/admin', requireAdmin, async(req, res, next)=> {
+    try {
+        const user = req.user;
+        if (user){
+            res.send({
+                user
+            });
+        } else{
+            res.send({
+                success: false,
+                error: {
+                    name: 'user not found',
+                    message: 'this user was not found in the system'
+                },
+                data: null
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
+
 // Just a boilerplate (GET BY ID) route; similar code from desserts.js
 usersRouter.get('/:userId', async (req, res, next) => {
     const user = await getUserById(req.params.userId);
@@ -290,29 +313,6 @@ usersRouter.delete('/me', async (req, res, next) => {
     }
   });
 
-  usersRouter.delete('/admin/:id', requireAdmin, async (req, res, next) => {
-
-    // const { username } = req.user
-    const { id } = req.params
-    try {
-    // const user = await getUserByUsername(username);
-      if (!id) {
-          res.send( {
-              name: 'UserNotFoundError',
-              message: 'Could not find a user with that username'
-          } )
-      } else { 
-    // const { id } = req.user
-        await deleteUser(id)
-        res.send({
-            success: true,
-            message: "User was successfully deleted"
-        })
-      }
-    } catch ({ name, message }) {
-      next({ name, message });
-    }
-  });
 
 module.exports = usersRouter
 

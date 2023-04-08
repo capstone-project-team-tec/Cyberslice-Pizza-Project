@@ -8,8 +8,13 @@ const App = () => {
     const [drinks, setDrinks] = useState([]);
     const [desserts, setDesserts] = useState([]);
     const [sides, setSides] = useState([]);
+    const [products, setProducts] = useState([])
+    const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState({});
     const [currentCart, setCurrentCart] = useState({});
+    const [currentAdminUser, setCurrentAdminUser] = useState({})
+    const [currentUserTrue, setCurrentUserTrue ] = useState(false)
+    const [ currentAdminUserTrue, setCurrentAdminUserTrue ] = useState(false)
     
     const isFirstRender = useRef(true);
 
@@ -17,7 +22,12 @@ const App = () => {
         fetchDesserts();
         fetchDrinks();
         fetchSides();
+        // fetchProducts();
+        fetchUsers();
         fetchCurrentUser();
+        fetchCurrentAdminUser();
+
+        // fetchCurrentAdminUser();
     }, [])
     
     useEffect(() => {
@@ -102,7 +112,35 @@ const App = () => {
         } catch (error) {
             console.log(error);
         }
-    }      
+    }    
+    
+    // async function fetchProducts() {
+    //     try {
+    //         const response = await fetch(`http://localhost:1337/api/admin/products`);
+
+    //         const data = await response.json();
+
+    //         setProducts(data)
+
+    //     } catch(error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    async function fetchUsers() {
+        try {
+            const response = await fetch(`http://localhost:1337/api/admin/users`);
+
+            const data = await response.json();
+
+            setUsers(data)
+
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    
 
     async function fetchDrinks() {
         try {
@@ -163,7 +201,32 @@ const App = () => {
     }
 }
 
+    async function fetchCurrentAdminUser() {
+        const token = localStorage.getItem("token");
+
+        if(token) {
+            try {
+                const response = await fetch(`http://localhost:1337/api/users/admin`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
+                const result = await response.json()
+                setCurrentAdminUser(result.user)
+                setCurrentAdminUserTrue(true)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        else {
+            setCurrentAdminUser("")
+        }
+    }
+
 console.log("This is the current user on line 166 of src index file:   ",currentUser)
+console.log("This is the current user on line 167 of src index file:   ",currentAdminUser)
+
 // desserts, drinks, sides,
 
 
@@ -172,22 +235,22 @@ console.log("This is the current user on line 166 of src index file:   ",current
 
         <BrowserRouter>
             <div>
-                <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+                <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} currentAdminUserTrue={currentAdminUserTrue} currentUserTrue={currentUserTrue} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza />}/>
                         <Route path="/drinks" element={<Drinks drinks={drinks} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} />}/>
                         <Route path="/sides" element={<Sides currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} sides={sides}/>} />
                         <Route path="/desserts" element={<Desserts currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} desserts={desserts}/>} />
-                        <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
+                        <Route path="/login" element={<Login setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser}/>} />
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout currentUser={currentUser} currentCart={currentCart} />} />
-                        <Route path="/register" element={<Register setCurrentUser={setCurrentUser}/>} />
-                        <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}/>
+                        <Route path="/register" element={<Register setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
+                        <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>}/>
                         <Route path="/menu" element={<Menu />} />
-                        <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
-                        <Route path="/adminlogin" element={<Adminlogin />} />
+                        <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser}/>} />
+                        <Route path="/adminlogin" element={<Adminlogin setCurrentAdminUser={setCurrentAdminUser} setCurrentAdminUserTrue={setCurrentAdminUserTrue}/>} />
                         <Route path="/payment" element={<Payment fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                     </Routes>
                 <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>

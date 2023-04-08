@@ -6,12 +6,23 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const Header = (props) => {
+    const { currentUser } = props
+    const { currentAdminUser } = props
+    const { currentAdminUserTrue } = props
+    const { currentUserTrue } = props
+    const { setCurrentAdminUserTrue } = props
+    const { setCurrentUserTrue } = props
+    console.log("This is the current user", currentUser)
     const navigate = useNavigate();
 
 
     const handleLogout = (event) => {
         event.preventDefault();
         localStorage.removeItem('token');
+        setCurrentAdminUserTrue(false)
+        setCurrentUserTrue(false)
+
+
         
         navigate('/');
     }
@@ -45,7 +56,8 @@ const Header = (props) => {
             <div id="headerButtonGroup">   
                 <Link to='/menu' className="headerButton"> MENU </Link>
                 <Link to='/locations' className="headerButton"> LOCATIONS </Link> 
-                {localStorage.getItem("token") ? (<Link to="/profile" className="headerButton">PROFILE</Link>):""}
+                {currentUserTrue ? (<Link to="/profile" className="headerButton">PROFILE</Link>):""}
+                {currentAdminUserTrue ? (<Link to="/admin" className="headerButton">ADMIN</Link>):""}
                 {localStorage.getItem("token") ?<Link onClick={handleLogout} className="headerButton"> LOGOUT </Link>: <Link to='/login' className="headerButton"> LOGIN </Link> }
                 <Link to='/orderoptions' className="headerButton"> 
                     <svg id="cartIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">

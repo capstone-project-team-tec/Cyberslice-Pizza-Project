@@ -3,12 +3,94 @@ import { useParams, useNavigate, Link } from "react-router-dom"
 import "./adminlogin.css"
 import "./global.css"
 
-const Adminlogin = () => {
+const Adminlogin = (props) => {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const { setCurrentAdminUser } = props
+    const { setCurrentAdminUserTrue } = props
+
+    const navigate = useNavigate()
+
+
+    async function loginFunction(e) {
+        e.preventDefault();
+        try {
+            const response = await fetch (`http://localhost:1337/api/users/adminlogin`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify ({
+                    username: username,
+                    password: password
+                })
+            })
+            console.log("login is working")
+            const result = await response.json();
+            console.log("This is theresult of logging in line 31 of login component:   ",result)
+            if (!result.token) {
+                alert("Username or password is incorrect, please try again")
+            } else {
+                const myJWT = result.token;
+                localStorage.setItem("token", myJWT)
+                setCurrentAdminUser({
+                    username: result.user.username,
+                    isAdmin: result.user.isAdmin,
+                })
+                setCurrentAdminUserTrue(true)
+                navigate("/")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
     return (
-        <div>
-            Placeholder
-        </div>
-    )
+        <section id="loginContainer">
+            {/* Login */}
+            <section className="loginTitle">
+                Admin Login
+                <br />
+            </section>
+    
+            <section className="formAndPicture">
+                <form onSubmit={loginFunction}>
+                    <div className="input-wrapper">
+                        <h2>Username</h2>
+                        <input
+                            className="loginBox"
+                            id="username"
+                            type="text"
+                            placeholder=""
+                            value={username}
+                            onChange={(event) => setUsername(event.target.value)}
+                            aria-label="Username"
+                        />
+                    </div>
+                    <div className="input-wrapper">
+                        <h2>Password</h2>
+                        <input
+                            className="loginBox"
+                            id="password"
+                            type="password"
+                            placeholder=""
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            aria-label="Password"
+                        />
+                    </div>
+                    <button className="loginButton" type="submit">
+                        Login
+                    </button>
+                </form>
+                <section className="picture">
+                    This is where a picture of pizza would go. Yeah.
+                </section>
+            </section>
+        </section>
+    );
 }
 
 export default Adminlogin;

@@ -6,7 +6,7 @@ const {
     getAllDesserts,
     updateDesserts,
     deleteDessert,
-    getDessertById
+    getDessertById,
 } = require('../db/desserts');
 
 //dependency imports
