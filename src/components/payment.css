@@ -1,0 +1,40 @@
+#paymentComponent {
+    margin-bottom: 30%;    
+}
+  
+#paymentInfoContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+h3 {
+    font-size: 3.5rem;
+}
+
+#paymentTitleContainer {
+    display: flex;
+    justify-content: left;
+    width: 1200px;
+    margin-bottom: 3%;
+    margin-top: 3%;
+}
+  
+.input-row {
+    display: contents;
+}
+  
+.input-field {
+    display: flex;
+    flex-direction: column;
+}
+  
+.input-field input {
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+    outline: none;
+    padding: 5px 0;
+    color: white;
+}
+  

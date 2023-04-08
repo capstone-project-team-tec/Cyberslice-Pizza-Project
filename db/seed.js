@@ -208,8 +208,8 @@ async function createInitialDrinks() {
   console.log("Starting to create drinks...")
   try {
     const drinksToCreate = [
-      { category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/Brownies.jpg"  },
-      { category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/Brownies.jpg"  },
+      { category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/NeuronFizz.jpg"  },
+      { category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/NeuronFizz.jpg"  },
       { category: "drinks", name: "Small Nexus Nectar", price: 2.79, image: "/NexusNectar.jpg"  },
       { category: "drinks", name: "Large Nexus Nectar", price: 3.29, image: "/NexusNectar.jpg" },
       { category: "drinks", name: "Small Circuit Surge", price: 2.79, image: "/CircuitSurge.jpg"  },

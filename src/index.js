@@ -1,8 +1,8 @@
 //This is the Frontend index.js
 import { useEffect, useState, useRef } from "react"
 import { createRoot } from "react-dom/client"
-import { BrowserRouter, Route, Routes, Link, } from "react-router-dom"
-import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu, Profile, Admin, Adminlogin } from "./components"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu, Profile, Admin, Adminlogin, Payment } from "./components"
 
 const App = () => {
     const [drinks, setDrinks] = useState([]);
@@ -186,8 +186,9 @@ console.log("This is the current user on line 166 of src index file:   ",current
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser}/>} />
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}/>
                         <Route path="/menu" element={<Menu />} />
-                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                         <Route path="/adminlogin" element={<Adminlogin />} />
+                        <Route path="/payment" element={<Payment fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                     </Routes>
                 <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             </div>
