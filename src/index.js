@@ -187,7 +187,7 @@ console.log("This is the current user on line 166 of src index file:   ",current
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}/>
                         <Route path="/menu" element={<Menu />} />
                         <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
-                        <Route path="/adminlogin" element={<Adminlogin />} />
+                        <Route path="/adminlogin" element={<Adminlogin setCurrentUser={setCurrentUser}/>} />
                         <Route path="/payment" element={<Payment fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                     </Routes>
                 <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>
