@@ -34,8 +34,11 @@ async function checkoutCart({ cartId, totalCost }) {
             const { rows } = await client.query(`
                 UPDATE carts
                 SET "isCheckedOut" = true, "totalCost" = $2
-                WHERE id = $1;
+                WHERE id = $1
+                RETURNING *;
             `, [cartId, totalCost]);
+
+            return(rows[0]);
         } catch(error) {
             console.log(error);
         }

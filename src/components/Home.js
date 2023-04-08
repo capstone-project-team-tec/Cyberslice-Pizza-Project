@@ -24,7 +24,7 @@ const Home = () => {
             Our state-of-the-art facility fuses cutting-edge technology with artisanal pizza-making. 
             Immerse yourself in a high-tech dystopian wonderland while enjoying our artisanal pizzas crafted with the highest-quality ingredients.
           </p>
-          <Link id="orderNowLink" to="/checkout">ORDER NOW</Link>
+          <Link id="orderNowLink" to="/menu">ORDER NOW</Link>
         </div>
         <div id="pizzaWrapper"> 
           <img id="pizzaOnWindowSillPic" src="/pizzaOnWindowSill.jpg" alt="Image of Pizza on Window Sill"></img>

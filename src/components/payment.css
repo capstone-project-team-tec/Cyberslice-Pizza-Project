@@ -1,23 +1,63 @@
+/* general payment styling */
 #paymentComponent {
-    margin-bottom: 30%;    
+    /* margin-bottom: 30%;  */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: -15%;
 }
   
+/* payment title styling */
+h1 {
+    font-size: 3.5rem;
+    text-decoration: none;
+    height: fit-content;
+    margin: 0 0 0 0;
+}
+
+/* payment info box styling */
 #paymentInfoContainer {
+    margin-top: 3%;
+    height: 400px;
+    width:78.5%;
+    border: 3.5px solid white;
+    border-radius: 3px;
+}
+
+#paymentMethodContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 2%;
+}
+
+#paymentMethod {
+    color: #cbff5e;
+    font-size: 1.6rem;
+    width: 90%;
+}
+
+#paymentInfoFieldsContainerContainer {
+    display: flex;
+    justify-content: center;
+}
+
+#paymentInfoFieldsContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-}
-
-h3 {
-    font-size: 3.5rem;
+    height: 200px;
+    width: 90%;
 }
 
 #paymentTitleContainer {
     display: flex;
     justify-content: left;
-    width: 1200px;
+    width: 78.5%;
     margin-bottom: 3%;
-    margin-top: 3%;
+    margin-top: 6%;
+    height: fit-content;
 }
   
 .input-row {
@@ -27,6 +67,9 @@ h3 {
 .input-field {
     display: flex;
     flex-direction: column;
+    font-family: "Open Sans", 'Courier New', Courier, monospace;
+    font-size: 1.3rem;
+    color: #BDBDBD;
 }
   
 .input-field input {
@@ -36,5 +79,102 @@ h3 {
     outline: none;
     padding: 5px 0;
     color: white;
+    font-family: "Open Sans", 'Courier New', Courier, monospace ;
+    font-size: 1.1rem;
 }
-  
+
+.input-field input:focus {
+    outline: none;
+}
+
+.input-field input:focus:valid {
+    border-bottom: 2px solid #cbff5e;
+}
+
+.input-field input.has-value {
+    border-bottom: 2px solid #cbff5e;
+}
+
+/* lower container styling */
+#lowerContainer {
+    margin-top: 10%;
+    width: 78.5%;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.6rem;
+}
+
+.price {
+    font-family: "Open Sans", 'Courier New', Courier, monospace;
+}
+
+.textNoMarginOrPad {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+#subtotalAndDeliveryFee {
+    border-bottom: 3.5px solid white;
+    display: flex;
+    flex-direction: column;
+}
+
+#subtotal {
+    border: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1%;
+    padding-bottom: 0;
+    height: fit-content;
+}
+
+#subtotalText {
+    color: #BDBDBD;
+}
+
+#deliveryFee {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 0 0;
+    padding-top: 0 0 0 0;
+    height: fit-content;
+    align-items: flex-start;
+}
+
+#deliveryFeeText {
+    color: #BDBDBD;
+}
+
+#total{
+    margin-top: 2%;
+}
+
+#checkoutButtonContainer {
+    display: flex;
+    justify-content: right;
+    margin-top: 5%;
+}
+
+#checkoutButton {
+    border: 3px solid white;
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    font-family: 'Orbitron', sans-serif;
+    width: 200px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.75s, border-color 0.75s;
+    z-index: 1;
+}
+
+#checkoutButton:hover {
+    color: #cbff5e;
+    border-color: #cbff5e;
+    cursor: pointer;
+}
