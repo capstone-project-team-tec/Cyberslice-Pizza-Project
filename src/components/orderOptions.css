@@ -1,27 +1,245 @@
-#button {
+#orderContainer {
     display: flex;
+    flex-direction: column;
+
+    padding-left: 10%;
+
+    margin-bottom: 16rem;
+}
+
+#orderPageTitle{
+    font-size: 4rem;
+
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+}
+
+#choiceContainer{
+    display: flex;
+    flex-direction: row;
+
+    /* border: 2px solid green; */
+    width: 75rem;
+
+    justify-content: space-between;
+}
+
+#deliveryChoice {
+    display: flex;
+    margin-top: 4%; 
+    background-color: black;
+    color: #ccff5eb9;
+
+    border: 2px solid gray;
+    height: 8rem;
+    width: 35rem;
+    font-size: 2rem;
+    letter-spacing: 2px;
     justify-content: center;
-    
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-family: Orbitron, 'Courier New', Courier, monospace; 
+    transition: color 0.5s;
+    transition: background-color 0.5s;
+
+    margin: 0;
 }
-#c {
-    font-size: 20px;
+
+#deliveryChoice:hover {
+    background-color: #cbff5e;
+    color: Black;
 }
-#d {
-    font-size: 20px;
-    margin-left: 10px
+
+#carryoutChoice {
+    display: flex;
+    margin-top: 4%; 
+    background-color: black;
+    color: #ccff5eb9;
+
+    border: 2px solid gray;
+    height: 8rem;
+    width: 35rem;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-family: Orbitron, 'Courier New', Courier, monospace; 
+    transition: color 0.5s;
+    transition: background-color 0.5s;
+
+    margin: 0;
+}
+
+#carryoutChoice:hover {
+    background-color: #cbff5e;
+    color: Black;
 }
 h2 {
     text-align: center;
     text-decoration: underline;
     margin-top: 30px;
 }
-#form {
+
+.deliveryContainer {
+    padding-left: 0.5rem;
+    margin-left: 10%;
+
+    margin-bottom: 20rem;
+
+    max-width: 80%;
+}
+#deliveryFormTitle {
+    color: #cbff5e;
+
+    font-size: 1.5rem;
+
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+#deliveryFormContainer {
+    display: flex;
+
+    flex-direction: row;
+
+    padding-bottom: 4rem;
+}
+
+/* Street column */
+
+#streetFormContainer {
+    width: 450px;
+}
+#streetTitle {
+    padding-bottom: 1rem;
+}
+#streetField {
+    background-color: black;
+    color: white;
+    border-radius: 2px;
     border: 2px solid white;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 2rem;
+
+    width: 25rem;
+    margin: 0;
 }
-.delivery {
-    font-size: 30px;
+#streetField:focus {
+    border: 2px solid #cbff5e;
+    outline: none;
+    transition: border-color 0.75s;
+
+    margin: 0;
 }
+
+/* Apt column */
+#aptFormContainer {
+    width: 200px;
+}
+#aptTitle {
+    padding-bottom: 1rem;
+}
+#aptField {
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 2rem;
+
+    width: 8rem;
+    margin: 0;
+}
+#aptField:focus {
+    border: 2px solid #cbff5e;
+    outline: none;
+    transition: border-color 0.75s;
+
+    margin: 0;
+}
+
+/* State Column */
+
+#stateFormContainer {
+    width: 200px;
+}
+#stateTitle {
+    padding-bottom: 1rem;
+}
+
+#stateField {
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 2rem;
+
+    width: 8rem;
+    margin: 0;
+}
+#stateField:focus {
+    border: 2px solid #cbff5e;
+    outline: none;
+    transition: border-color 0.75s;
+
+    margin: 0;
+}
+
+/* Zip column */
+
+#stateFormContainer {
+    width: 200px;
+}
+#stateTitle {
+    padding-bottom: 1rem;
+}
+
+/* Zip field */
+
+#zipFormContainer {
+    width: 200px;
+}
+#zipTitle {
+    padding-bottom: 1rem;
+}
+
+#zipField {
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 2rem;
+
+    width: 8rem;
+    margin: 0;
+}
+#zipField:focus {
+    border: 2px solid #cbff5e;
+    outline: none;
+    transition: border-color 0.75s;
+
+    margin: 0;
+}
+
 .checkbox {
     display: flex;
     flex-direction: column;
@@ -34,10 +252,138 @@ h3 {
 }
 #submit {
     font-size: 30px;
+
+    margin: 0;
 }
 #deliveryaddress {
     font-size: 30px;
     margin-right: 5px;
 }
 
+#locationsContainer {
+    border: 2px solid white;
 
+    margin-left: 10%;
+
+    margin-bottom: 20rem;
+
+    max-width: 70%;
+}
+
+
+.location {
+    display: flex;
+
+    flex-direction: row;
+    border: 2px solid white;
+
+    border-radius: 0.4rem;
+
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.locationTitle {
+    color: #cbff5e;
+
+    font-size: 1.5rem;
+    
+    padding-bottom: 1rem;
+}
+
+.addressContainer {
+    display: flex;
+
+    flex-direction: row;
+}
+
+/* Street Column */
+.locationStreetContainer {
+    display: flex;
+    flex-direction: column;
+
+    margin-right: 2rem;
+}
+
+.locationStreetTitle {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 1rem;
+
+    color: gray;
+}
+
+.locationStreet {
+    display: flex;
+    flex-direction: row;
+}
+
+/* City column */
+.locationCityContainer {
+    display: flex;
+    flex-direction: column;
+
+    margin-right: 2rem;
+}
+
+.locationCityTitle {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 1rem;
+
+    color: gray;
+}
+
+.locationCity {
+    display: flex;
+    flex-direction: row;
+
+}
+
+/* State Column */
+
+.locationStateContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding-right: 2rem;
+}
+
+.locationStateTitle {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 1rem;
+
+    color: gray;
+}
+
+.locationState {
+    display: flex;
+    flex-direction: row;
+
+}
+
+/* Zip column */
+.locationZipContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.locationZipTitle {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 1rem;
+
+    color: gray;
+}
+
+.locationZip {
+    display: flex;
+    flex-direction: row;
+}
