@@ -57,6 +57,8 @@ async function getProductById(id) {
     }
 }
 
+
+
 async function updateProduct({id, fields = {} }) {
     console.log("Starting updateDesserts");
 
@@ -159,7 +161,7 @@ async function getAllUsers() {
 }
 
 async function updateUser({id, username, name, email, address, phone}) {
-    console.log(id, username)
+    console.log("this is the line 164 id and username", id, username)
     try {
         const { rows: [user] } = await client.query(`
             UPDATE users
@@ -199,5 +201,5 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    fetchAllUsers
+    fetchAllUsers,
 }

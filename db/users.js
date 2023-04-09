@@ -164,11 +164,13 @@ async function getAdminUserByUsername(userName) {
         WHERE username=$1;
         `, [userName])
         if(rows){
+            console.log(rows[0])
             return rows[0];
         }
         else{
             return undefined;
         }
+        
 
     } catch(error) {
         console.log(error)

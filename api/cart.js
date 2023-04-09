@@ -32,7 +32,7 @@ cartRouter.use((req,res,next)=>{
 })
 
 cartRouter.get('/', async (req, res, next) => {
-  if (req.user.id) {
+  if ('user' in req && "id" in req.user) {
     console.log("the cart router is running....")
     try {
       console.log('a user id has been found!!!!!')

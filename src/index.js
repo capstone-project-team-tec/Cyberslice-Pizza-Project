@@ -235,7 +235,7 @@ console.log("This is the current user on line 167 of src index file:   ",current
 
         <BrowserRouter>
             <div>
-                <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} currentAdminUserTrue={currentAdminUserTrue} currentUserTrue={currentUserTrue} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue}/>
+                <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} currentAdminUserTrue={currentAdminUserTrue} setCurrentAdminUser={setCurrentAdminUser} currentUserTrue={currentUserTrue} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza />}/>
@@ -249,7 +249,7 @@ console.log("This is the current user on line 167 of src index file:   ",current
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>}/>
                         <Route path="/menu" element={<Menu />} />
-                        <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser}/>} />
+                        <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser} sides={sides} drinks={drinks} desserts={desserts}/>} />
                         <Route path="/adminlogin" element={<Adminlogin setCurrentAdminUser={setCurrentAdminUser} setCurrentAdminUserTrue={setCurrentAdminUserTrue}/>} />
                         <Route path="/payment" element={<Payment fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                     </Routes>

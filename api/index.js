@@ -1,7 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 const jwt = require('jsonwebtoken');
-const {getUserByUsername} = require('../db');
+const {getUserByUsername, getAdminUserByUsername} = require('../db');
 require("dotenv").config()
 const {JWT_SECRET} = process.env;
 
@@ -18,15 +18,23 @@ apiRouter.use(async(req,res,next)=>{
         try {
             console.log("top of the try block");
             const jwtId = jwt.verify(token, JWT_SECRET);
-            
+            let admin = false
             const username = jwtId.username;
+            if ("isAdmin" in jwtId) {
+                admin = jwtId.isAdmin
+            }
             console.log("This is the JWTid", jwtId);
             console.log("username: " +username);
-            if(username){
+            if(username && admin == false){
                 console.log("top of the if statement in the try block");
                 req.user = await getUserByUsername(username);
-                // console.log("Logging req.user" + req.user);
+                console.log("Logging req.user" + req.user);
                 next();
+            } else {
+                console.log("Started Admin")
+                req.user = await getAdminUserByUsername(username);
+                console.log("Finished admin")
+                next()
             }
         } catch ({name, message}) {
             next({name, message});
