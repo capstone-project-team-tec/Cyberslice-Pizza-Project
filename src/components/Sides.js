@@ -3,19 +3,19 @@ import "./sides.css"
 import "./global.css"
 
 const Sides = (props) => {
-    const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, sides } = props;
-    // const [allSides, setAllSides] = useState([]);
-    const [currentCartId, setCurrentCartId] = useState(props.currentCart.id);
-    const [addedSideId, setAddedSideId] = useState(null);
+  const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, sides } = props;
+  // const [allSides, setAllSides] = useState([]);
+  const [currentCartId, setCurrentCartId] = useState(props.currentCart.id);
+  const [addedSideId, setAddedSideId] = useState(null);
 
-    const showAddedToCartNotification = (id) => {
-        setAddedSideId(id);
-        setTimeout(() => {
-            setAddedSideId(null);
-        }, 2000);
-    };
+  const showAddedToCartNotification = (id) => {
+      setAddedSideId(id);
+      setTimeout(() => {
+          setAddedSideId(null);
+      }, 2000);
+  };
 
-    let guestCartId
+  let guestCartId
   async function createCartForGuest() {
     try {
       const response = await fetch('http://localhost:1337/api/cart', {
@@ -45,7 +45,45 @@ const Sides = (props) => {
     } catch (error) {
       console.error('Error creating cart for guest:', error);
     }
-  }  
+  }
+
+  const AddToCart = ({ side }) => {
+    const [quantity, setQuantity] = useState(1);
+    return (
+      <div id="addToCartContainer">
+        <button id="addToCartButton" onClick={() => {
+          createOrderItemsRow(
+            // currentCartId,
+            side.id,
+            quantity,
+            side.price,
+            side.name
+          ) ; }}
+        > Add to cart</button>
+
+        <section id="addToCartQuantityContainer">
+          <button className="quantityChangeButton" onClick={() => setQuantity((prevQuantity) => prevQuantity - 1)}>
+            -
+          </button>
+          <span id = "quantityContainer">{quantity}</span>
+          <button className="quantityChangeButton" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}>
+            +
+          </button>
+        </section>
+      </div>
+    );
+  };
+  
+  const Sides = ({ sides }) => {
+    return (
+      <div>
+        <h1>Sides</h1>
+        {sides.map((side) => (
+          <AddToCart key={side.id} drink={side} />
+        ))}
+      </div>
+    );
+  };
 
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
@@ -121,38 +159,43 @@ const Sides = (props) => {
 //     }
 //   };
 
-    return(
-        <div>
-            <h1>Cyberslice Sides</h1>
+return (
+  <div>
+    <section id= "sidesContainer">
+      <section id = "sidesPageTitle">Sides</section>
 
-        {
-            sides.length > 0 ? (sides.map((singleSide) => {
-                return (
-                    <div key={singleSide.id}>
-                        <h2>{singleSide.name}</h2>
-                        <h2>Price: {singleSide.price}</h2>
-                        <button
-                            onClick={() => {
-                                createOrderItemsRow(
-                                    // currentCartId,
-                                    singleSide.id,
-                                    1,
-                                    singleSide.price,
-                                    singleSide.name
-                                );
-                            }}
-                        >
-                            Add to Order
-                        </button>
-                        {addedSideId === singleSide.id && (
-                            <span className="added-to-cart-message">Added to cart!</span>
-                        )} 
-                    </div>
-                )
-            })
-            ) : <div>No Sides Yet </div>
-        }
-        </div>
-    )
+      <section id = "itemsList"> 
+        {sides.length > 0 ? (
+          sides.map((singleSide) => {
+            return (
+              <section id = "itemContainer">
+                  <div key={singleSide.id}>
+                    <section id = "imageContainer"> 
+                      <img src = {singleSide.image} id = "itemPic">
+                      </img>
+                    </section>
+
+                    <section id = "itemDetails">
+
+                      <section id = "itemTitle">{singleSide.name}</section>
+                      <section id = "itemCost"> ${singleSide.price}</section>
+
+                      <AddToCart key={singleSide.id} side = {singleSide} />
+                      
+                    </section>
+                    {addedSideId === singleSide.id && (
+                      <span className="added-to-cart-message">Added to cart!</span>
+                    )}
+                  </div>
+                </section>
+            );
+          })
+        ) : (
+          <div>No Drinks Yet</div>
+        )}
+      </section>
+    </section>
+  </div>
+);
 }
 export default Sides;
