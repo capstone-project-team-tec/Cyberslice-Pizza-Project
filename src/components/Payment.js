@@ -13,20 +13,7 @@ const Payment = (props) => {
     const [billingAddress, setBillingAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
-    const [zip, setZip] = useState('');
-    
-    // const handleInputChange = (event) => {
-    //     const inputElement = event.target;
-    //     if (inputElement.value) {
-    //         inputElement.classList.add('has-value');
-    //     } else {
-    //         inputElement.classList.remove('has-value');
-    //     }
-    // };
-
-    // function setPaymentInfo() {
-    //     set
-    // }
+    const [zip, setZip] = useState('');    
 
     const handleInputChange = (event) => {
         const inputElement = event.target;
@@ -122,13 +109,130 @@ const Payment = (props) => {
         console.log("Finished checkout");
     };
 
+    function validateCardHolder(cardHolder) {
+        console.log("validate card holder is running")
+        const numbers = "1234567890";
+
+        for (let i = 0; i < numbers.length; i++) {
+            if (cardHolder.includes(numbers[i])) {
+                console.log("validate card holder returned false")
+                return false;
+            }
+        }
+        console.log("validate card holder returned true")
+        return true;
+    }
+
+    function validateCardNumber(cardNumber) {
+        console.log("validate card number is running")
+        const lowerCardNumber = cardNumber.toLowerCase();
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    
+        for (let i = 0; i < alphabet.length; i++) {
+            if (lowerCardNumber.includes(alphabet[i])) {
+                console.log("validate card number returned false")
+                return false;
+            }
+        }
+        console.log("validate card number returned true")
+        return true;
+    }
+
+    function validateMMYY(MMYY) {
+        console.log("validate MMYY is running")
+        const lowerMMYY = MMYY.toLowerCase();
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    
+        for (let i = 0; i < alphabet.length; i++) {
+            if (lowerMMYY.includes(alphabet[i])) {
+                console.log("validate MMYY returned false")
+                return false;
+            }
+        }
+        console.log("validate MMYY returned true")
+        return true;
+    }
+
+    function validateCVV(CVV) {
+        console.log("validate CVV is running")
+        const lowerCVV = CVV.toLowerCase();
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    
+        for (let i = 0; i < alphabet.length; i++) {
+            if (lowerCVV.includes(alphabet[i])) {
+                console.log("validate CVV returned false")
+                return false;
+            }
+        }
+        console.log("validate CVV returned true")
+        return true;
+    }
+
+    function validateCity(city) {
+        console.log("validate city is running")
+        const numbers = "1234567890";
+
+        for (let i = 0; i < numbers.length; i++) {
+            if (city.includes(numbers[i])) {
+                console.log("validate city returned false")
+                return false;
+            }
+        }
+        console.log("validate city returned true")
+        return true;
+    }
+
+    function validateState(state) {
+        console.log("validate state is running")
+        const numbers = "1234567890";
+
+        for (let i = 0; i < numbers.length; i++) {
+            if (state.includes(numbers[i])) {
+                console.log("validate state returned false")
+                return false;
+            }
+        }
+        console.log("validate state returned true")
+        return true;
+    }
+
+    function validateZip(zip) {
+        console.log("validate zip is running")
+        const lowerZip = zip.toLowerCase();
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    
+        for (let i = 0; i < alphabet.length; i++) {
+            if (lowerZip.includes(alphabet[i])) {
+                console.log("validate zip returned false")
+                return false;
+            }
+        }
+        console.log("validate zip returned true")
+        return true;
+    }
+
     const handleCheckoutClick = () => {
-        setPaymentInfo();
-        if (cardHolder != '' && cardNumber != '' && MMYY != '' && CVV != '' && billingAddress != '' && city != '' && state != '' && zip != '') {
+        if (cardHolder == '' || cardNumber == '' || MMYY == '' || CVV == '' || billingAddress == '' || city == '' || state == '' || zip == '') {
+            {alert("Please fill out all payment information fields.")}    
+        } else if (validateCardHolder(cardHolder) == false) {
+            alert("Please provide a valid card holder name.");
+        } else if (validateCardNumber(cardNumber) == false) {
+            alert("Please provide a valid card number.");
+        } else if (validateMMYY(MMYY) == false) {
+            alert("Please provide a valid expiration date (MM/YY).");
+        } else if (validateCVV(CVV) == false) {
+            alert("Please provide a valid security code.");
+        } else if (validateCity(city) == false) {
+            alert("Please provide a valid city.");
+        } else if (validateState(state) == false) {
+            alert("Please provide a valid state.");
+        } else if (validateZip(zip) == false) {
+            alert("Please provide a valid zip.");
+        } else {
             submitPaymentInfo();
             finalizeCheckOut();
             navigate("/");
-        } else {alert("Please fill out all payment information fields.")}
+        } 
     };
   
     return (

@@ -1,0 +1,62 @@
+/* general styling */
+
+
+/* pizza styling */
+.pizzaContainer {
+  position: relative;
+  border-radius: 20px;
+  height: 500px;
+  width: 500px;
+}
+
+.pizzaLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 500px;
+}
+
+#pizzaLayerBase {
+    border-radius: 20px;
+}
+ 
+#pizzaLayer1 {
+  z-index: 1;
+  /* visibility: hidden; */
+}
+
+#pizzaLayer2 {
+  z-index: 2;
+  /* visibility: hidden; */
+}
+
+#pizzaLayer3 {
+  z-index: 2;
+  /* visibility: hidden; */
+}
+
+#pizzaLayer4 {
+  z-index: 2;
+  /* visibility: hidden; */
+}
+
+#pizzaLayer5 {
+  z-index: 2;
+  /* visibility: hidden; */
+}
+
+#pizzaLayer6 {
+  z-index: 2;
+  /* visibility: hidden; */
+}
+
+/* .content {
+  position: relative;
+  z-index: 3;
+} */
+
+
+.hidden {
+  display: none;
+}
