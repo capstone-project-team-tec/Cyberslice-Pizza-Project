@@ -150,11 +150,6 @@ const Drinks = (props) => {
                         <AddToCart key={singleDrink.id} drink = {singleDrink} />
                         
                       </section>
-                      
-
-                      
-
-                      
                       {addedDrinkId === singleDrink.id && (
                         <span className="added-to-cart-message">Added to cart!</span>
                       )}
