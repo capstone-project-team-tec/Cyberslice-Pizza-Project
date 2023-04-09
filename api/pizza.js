@@ -50,6 +50,7 @@ pizzaRouter.post('/', async (req, res, next) => {
         {
           success: true,
           error: null,
+          pizza: newPizza,
           message: "A new row has been created in pizza table"
         }).status(200)
     } else {
@@ -70,7 +71,7 @@ pizzaRouter.post('/', async (req, res, next) => {
   }
 })
 
-pizzaRouter.post('/:pizzaId', async (req, res, next) => {
+pizzaRouter.post('/:pizzaId/pizzawithtoppings', async (req, res, next) => {
   const { pizzaId } = req.params;
   const { toppingsId, count} = req.body;
   try {
