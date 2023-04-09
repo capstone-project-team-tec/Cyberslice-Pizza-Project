@@ -48,11 +48,14 @@
 }
 
 #itemContainer{
-    border: 2px solid white;
     display: flex;
+
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    background-color: white;
     
     flex-basis: 20%;
-    width: 25rem;
+
     flex-direction: column;
     align-items: center;
 
@@ -66,6 +69,8 @@
     flex-direction: row;
     justify-content: center;
 
+    align-content: space-between;
+
     width: 20rem;
 }
 #itemPic {
@@ -73,10 +78,8 @@
 
     height: 200px;
 
-    max-width: 21rem;
+    max-width: 20rem;
     object-fit:cover;
-
-    margin-bottom: 2rem;
 }
 
 #itemDetails {
@@ -85,32 +88,87 @@
     flex-direction: column;
 
     justify-content: space-around;
-    
-    height: 4rem;
 }
 
 #itemTitle {
-    
+    color: black;
+
+    margin-top: 1rem;
 }
 
 #itemCost {
-    
+    color: black;
+
+    margin-top: 1rem;
 }
 
 #addToCartContainer {
     display: flex;
 
     flex-direction: row;
+
+    margin-top: 1rem;
+
+    margin-bottom: -4rem;
 }
 
-#addToCartButtonContainer{
-    display: flex;
+#addToCartButton{
+    background-color: white;
+    border: 2px solid black; 
+    border-radius: 4px;
+    color: black;
+    cursor: pointer;
 
-    flex-direction: row;
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    font-size : 1rem;
+    font-weight: bold;
+
+
+    width:10rem;
+    text-align: center;
+
+    margin-right: 4rem;
+
+}
+
+#addToCartButton:hover {
+    border: 2px solid black;
+    background-color:#cbff5e;
+    outline: none;
+    transition: color 0.75s;
 }
 
 #addToCartQuantityContainer {
     display: flex;
 
     flex-direction: row;
+
+    justify-content: space-between;
+}
+
+#quantityContainer {
+    display: flex;
+
+    flex-direction: row;
+    
+    justify-content: center;
+
+    padding-top: 0.3rem;
+    color: black;
+    width: 2rem;
+}
+
+.quantityChangeButton{
+    background-color: orange;
+    border: 2px solid black; 
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    font-size : 1rem;
+    font-weight: bold;
+
+    height: 2rem;
+    text-align: center;
 }

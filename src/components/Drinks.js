@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./drinks.css";
 import "./global.css";
 
 const Drinks = (props) => {
   const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, drinks } = props;
-  // const [currentCartId, setCurrentCartId] = useState(props.currentCart.id)
   const [addedDrinkId, setAddedDrinkId] = useState(null);
-  // const [singleDrinkId, setSingleDrinkId] = useState('');
-  // const [singleDrinkPrice, setSingleDrinkPrice] =useState('');
-  // const [singleDrinkName, setSingleDrinkName] =useState('');
+  const [quantity, setQuantity] = useState(1);
 
   const showAddedToCartNotification = (id) => {
     setAddedDrinkId(id);
@@ -47,14 +44,44 @@ const Drinks = (props) => {
     } catch (error) {
       console.error('Error creating cart for guest:', error);
     }
-  } 
-  
-  // useEffect(() => {
-  //   if (Object.keys(currentCart).length != 0) {
-  //     createOrderItem(currentCartId, singleDrinkId, 1, singleDrinkPrice, singleDrinkName);
-  //   }
-  // }, [currentCart]);
+  }
 
+  const AddToCart = ({ drink }) => {
+    const [quantity, setQuantity] = useState(1);
+    return (
+      <div id="addToCartContainer">
+        <button id="addToCartButton" onClick={() => {
+          createOrderItemsRow(
+            // currentCartId,
+            drink.id,
+            quantity,
+            drink.price,
+            drink.name
+          ) ; }}
+        > Add to cart</button>
+
+        <section id="addToCartQuantityContainer">
+          <button className="quantityChangeButton" onClick={() => setQuantity((prevQuantity) => prevQuantity - 1)}>
+            -
+          </button>
+          <span id = "quantityContainer">{quantity}</span>
+          <button className="quantityChangeButton" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}>
+            +
+          </button>
+        </section>
+      </div>
+    );
+  };
+  const Drinks = ({ drinks }) => {
+    return (
+      <div>
+        <h1>Drinks</h1>
+        {drinks.map((drink) => (
+          <AddToCart key={drink.id} drink={drink} />
+        ))}
+      </div>
+    );
+  };
 
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
@@ -114,45 +141,18 @@ const Drinks = (props) => {
                         <img src = {singleDrink.image} id = "itemPic">
                         </img>
                       </section>
+
                       <section id = "itemDetails">
+
                         <section id = "itemTitle">{singleDrink.name}</section>
                         <section id = "itemCost"> ${singleDrink.price}</section>
+
+                        <AddToCart key={singleDrink.id} drink = {singleDrink} />
+                        
                       </section>
                       
 
-                      <section id = "addToCartContainer">
-                        <section id = "addToCartButtonContainer">
-                          <section id = "addToCartButton">
-                            <button onClick={() => {
-                                // setSingleDrinkId(singleDrink.id);
-                                // setSingleDrinkPrice(singleDrink.price);
-                                // setSingleDrinkName(singleDrink.name);
-                                createOrderItemsRow(
-                                  // currentCartId,
-                                  singleDrink.id,
-                                  1,
-                                  singleDrink.price,
-                                  singleDrink.name
-                                ) ; }}
-                            > Add to Order </button>
-                          </section>
-                          
-                          <section id = "addToCartQuantityContainer">
-                            <section id = "subtractorContainer">
-                              -
-                            </section>
-
-                            <section id = "quantityContainer">
-                              1
-                            </section>
-
-                            <section id = "adderContainer">
-                              +
-                            </section>
-                          </section>
-
-                        </section>
-                      </section>
+                      
 
                       
                       {addedDrinkId === singleDrink.id && (
