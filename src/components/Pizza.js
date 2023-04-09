@@ -4,6 +4,7 @@ import "./global.css";
 import { useNavigate } from "react-router-dom";
 
 const Pizza = (props) => {
+    const navigate = useNavigate();
     const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, drinks } = props;
     let layers = [
         { id: "pizzaLayer1", toppingId: 1, name: "Pepperoni", price: 3.99, filename: "1-Pepperoni" },
@@ -13,7 +14,9 @@ const Pizza = (props) => {
         { id: "pizzaLayer5", toppingId: 5, name: "Black Olives", price: 2.99, filename: "5-BlackOlive" },
         { id: "pizzaLayer6", toppingId: 6, name: "24-Carat Gold Flakes", price: 6.99, filename: "6-Gold" },
     ];
-    const [currentPizza, setCurrentPizza] = useState({});
+    // const [currentPizza, setCurrentPizza] = useState({});
+    const [pizzaSize, setPizzaSize] = useState(10);
+    const [basePizzaCost, setBasePizzaCost] = useState(9.99);
 
     const [layerVisibilityAndToppingCount, setLayerVisibilityAndToppingCount] = useState(
         layers.reduce((objectOfLayerVisibilityAndToppingCountForEachLayer, layer) => {
@@ -28,31 +31,89 @@ const Pizza = (props) => {
             [layerId]: { ...previousVisibilityAndToppingCount[layerId], visible: !previousVisibilityAndToppingCount[layerId].visible },
         }));
     };
+
+    const handleSizeAndCostButtonClick = (size, cost) => {
+        setPizzaSize(size);
+        setBasePizzaCost(cost);
+    };
+
+    const concatenatePizzaName = () => {
+        const selectedToppings = layers
+            .filter((layer) => layerVisibilityAndToppingCount[layer.id].visible)
+            .map((layer) => layer.name)
+            .join(", ");
+        return `${pizzaSize} Inch Cheese Pizza${selectedToppings ? ' With ' + selectedToppings : ''}`;
+    };
+
+    const sumPizzaCost = () => {
+        const toppingsCost = layers.reduce((totalCost, layer) => {
+            if (layerVisibilityAndToppingCount[layer.id].visible) {
+                return totalCost + layer.price * layerVisibilityAndToppingCount[layer.id].count;
+            }
+            return totalCost;
+        }, 0);
+        return parseFloat((basePizzaCost + toppingsCost).toFixed(2));
+    };
     
-    async function createPizza() {
+    
+    async function checkPizzaName(pizzaName) {
+        console.log("this is the pizza name in check pizza name:  ",pizzaName)
         try {
-          const response = await fetch('http://localhost:1337/api/pizza', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-          });
-      
-          const result = await response.json();
-          
-          if (result.success) {
-            console.log("created a new pizza:  ",result);
-            setCurrentPizza(result)
-            // const pizzaId = result.id
-            return result 
-          } else {
-            console.log('Failed to create a new pizza:  ', result.error.message);
-            return null;
-          }
+            const response = await fetch(`http://localhost:1337/api/pizza/getpizzabyname/${pizzaName}`, {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json',
+                }
+            });
+            
+            const result = await response.json();
+            console.log("this is check pizza name result:  ",result)
+            if (!result.success) {
+                console.log("no pizza yet created matches the name")
+                return("no pizza yet created matches the name")
+            } else { 
+                console.log("a pizza already created with a name that matches was found")
+                return result.pizza
+            }
         } catch (error) {
-          console.error('Error creating a new pizza:  ', error);
+            console.log(error)
         }
+    }
+
+    async function createPizza(pizzaName) {
+        const returnedPizza = await checkPizzaName(pizzaName)
+        if (returnedPizza == "no pizza yet created matches the name"){
+            try {
+                console.log("this is firing in create pizza because the returned pizza equaled the string")
+            const response = await fetch('http://localhost:1337/api/pizza', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: pizzaName,
+                    basePizzaCost: basePizzaCost,
+                    pizzaSize
+                }),
+            });
+        
+            const result = await response.json();
+            
+            if (result.success) {
+                console.log("created a new pizza:  ",result);
+                // setCurrentPizza(result)
+                // const pizzaId = result.id
+                return result.pizza 
+            } else {
+                console.log('Failed to create a new pizza:  ', result.error.message);
+                return null;
+            }
+            } catch (error) {
+            console.error('Error creating a new pizza:  ', error);
+            }
+        } else {
+            console.log("Need to check this returned pizza:  ",returnedPizza) 
+            return returnedPizza}
     }
 
     const createPizzaWithToppingsTableRow = async (pizzaId, toppingsId, count) => {
@@ -96,11 +157,41 @@ const Pizza = (props) => {
           });
           const result = await response.json();
           console.log(result);
-          showAddedToCartNotification(pizzaId);
         } catch (error) {
           console.log(error);
         }
     };
+    let guestCartId
+    async function createCartForGuest() {
+        try {
+          const response = await fetch('http://localhost:1337/api/cart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+          });
+      
+          const result = await response.json();
+          setCurrentCart({
+            id: result.id,
+            isCheckedOut: result.isCheckedOut,
+            totalCost: result.totalCost,
+            userId: result.userId
+        })
+          // setCurrentCartId(result.id)
+          guestCartId = result.id
+          if (result.success) {
+            console.log('A new cart has been created for the guest. here is the result:  ',result );
+            return result;
+          } else {
+            console.log('Failed to create a new cart for the guest:', result.error.message);
+            return null;
+          }
+        } catch (error) {
+          console.error('Error creating cart for guest:', error);
+        }
+      }
 
     const createOrderItemsRow = async (pizzaId, count, cost, pizzaName) => {
         let cartId;
@@ -122,19 +213,22 @@ const Pizza = (props) => {
     };
 
     const handleOrderButtonClick = async () => {
-        const createdPizza = await createPizza()
+        const pizzaName = concatenatePizzaName();
+        const pizzaCost = sumPizzaCost();
+        const createdPizza = await createPizza(pizzaName);
         if (createdPizza) {   
             console.log("this is the created pizza running through pizzawithtoppings:  ",createdPizza)
             layers.forEach((layer) => {
                 if (layerVisibilityAndToppingCount[layer.id].visible) {
                     createPizzaWithToppingsTableRow(
-                        createdPizza.pizza.id,
+                        createdPizza.id,
                         layer.toppingId,
                         layerVisibilityAndToppingCount[layer.id].count
                     );
                 }
             });
-            
+            await createOrderItemsRow(createdPizza.id, 1, pizzaCost, pizzaName);
+            navigate('/menu');
         } else {console.log("A pizza was neither found nor created.")}
     };
 
@@ -142,6 +236,14 @@ const Pizza = (props) => {
         <div id="pizzaComponent">
             <div id="buildYourOwnPizzaTitle">Build Your Own Pizza</div>
             <div id="middleContainer">
+                <div id="chooseSizeContainer">
+                    <p id="chooseASizeText">Choose A Size (Inches)</p>
+                    <div id="pizzaSizeButtons">
+                        <button onClick={() => handleSizeAndCostButtonClick(10, 9.99)}>10</button>
+                        <button onClick={() => handleSizeAndCostButtonClick(12, 11.99)}>12</button>
+                        <button onClick={() => handleSizeAndCostButtonClick(14, 13.99)}>14</button>
+                    </div>
+                </div>
                 <div className="pizzaContainer">
                     <img
                         className="pizzaLayer"
@@ -184,7 +286,7 @@ const Pizza = (props) => {
                     ))}
                 </div>
             </div>
-            <button onClick={handleOrderButtonClick}>Order Pizza</button>
+            <button onClick={handleOrderButtonClick}>Add Pizza To Order</button>
         </div>
     );
 };

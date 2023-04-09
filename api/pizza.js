@@ -22,29 +22,30 @@ pizzaRouter.use((req,res,next)=>{
   next();
 })
 
-pizzaRouter.get('/', async (req, res, next) => {
-  console.log('the pizza router get function is running......' + req.body.name)
-  if (req.body.name) {
+pizzaRouter.get('/getpizzabyname/:name', async (req, res, next) => {
+  console.log('the pizza router get function is running......' + req.params.name)
+  if (req.params.name) {
     console.log("the pizza router is running....")
     try {
       console.log('a name has been found!!!!!')
-      const name = req.body.name;
+      const name = req.params.name;
       const singlePizza = await fetchPizzaByName(name);
-      console.log("this is singlePizza" + singlePizza);
+      console.log("this is singlePizza",singlePizza);
       res.send(singlePizza);
     } catch (error) {
       console.log(error);
     }
   } else {
     res.status(400).send({ 
-      query: JSON.stringify(req.body.name),
+      query: JSON.stringify(req.params.name),
       message: "The name parameter is missing" });
   }
 });
 
 pizzaRouter.post('/', async (req, res, next) => {
   try {
-    let newPizza = await createPizza();
+    const { name, basePizzaCost, pizzaSize } = req.body
+    let newPizza = await createPizza({name, basePizzaCost, pizzaSize});
     if (newPizza) {
       res.send(
         {
