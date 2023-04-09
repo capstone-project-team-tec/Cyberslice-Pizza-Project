@@ -238,7 +238,7 @@ console.log("This is the current user on line 167 of src index file:   ",current
                 <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} currentAdminUserTrue={currentAdminUserTrue} setCurrentAdminUser={setCurrentAdminUser} currentUserTrue={currentUserTrue} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
-                        <Route path="/pizza" element={<Pizza />}/>
+                        <Route path="/pizza" element={<Pizza drinks={drinks} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>}/>
                         <Route path="/drinks" element={<Drinks drinks={drinks} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} />}/>
                         <Route path="/sides" element={<Sides currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} sides={sides}/>} />
                         <Route path="/desserts" element={<Desserts currentUser={currentUser} fetchUserCurrentCart={fetchUserCurrentCart} currentCart={currentCart} setCurrentCart={setCurrentCart} desserts={desserts}/>} />
