@@ -70,6 +70,37 @@ pizzaRouter.post('/', async (req, res, next) => {
   }
 })
 
+pizzaRouter.post('/:pizzaId', async (req, res, next) => {
+  const { pizzaId } = req.params;
+  const { toppingsId, count} = req.body;
+  try {
+    let newPizzaWithToppingsTableRow = await addToppingsToPizza({pizzaId, toppingsId, count});
+    if (newPizzaWithToppingsTableRow) {
+      res.send(
+        {
+          success: true,
+          error: null,
+          row: newPizzaWithToppingsTableRow,
+          message: "A new row has been created in pizzaWithToppings table"
+        }).status(200)
+    } else {
+      res.send(
+        {
+            success: false,
+            error: {
+                name: "createPizzaWithToppingsRowError",
+                message: "Failed to create a new row in pizzaWithToppings table"
+            },
+            data: null
+        }
+      ).status(403)
+    }
+  } catch (error) {
+      console.log(error);
+      next(error);
+  }
+})
+
 pizzaRouter.patch('/:pizzaId', async (req, res, next) => {
   const id = req.params.pizzaId;
   console.log("pizzaRouter.patch; pizzaId: " + id);
