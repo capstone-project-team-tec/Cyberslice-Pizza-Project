@@ -14,11 +14,11 @@ const {
     getUserByUsername,
     fetchAllUsers,
     updateUser,
-    deleteUser
+    deleteUser,
 } = require('../db/admin');
 
 adminRouter.use((req,res,next)=>{
-    console.log("A request is being made to /products");
+    console.log("A request is being made to /admin");
     next();
 })
 
@@ -41,7 +41,23 @@ adminRouter.get('/users', async(req,res,next)=>{
     }
 })
 
-adminRouter.patch('/:productId', async (req, res, next) => {
+adminRouter.get('/:userId', async (req, res, next) => {
+  const user = await getUserById(req.params.userId);
+  if (!req.params.userId) {
+    console.log(error);
+    next(error);
+  }
+  try {
+    res.send(
+      user
+    );
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+adminRouter.patch('/products/:productId', async (req, res, next) => {
     const id = req.params.productId;
     console.log("productsRouter.patch; productId: " + id);
     const { catergory, name, price } = req.body;
@@ -100,7 +116,8 @@ adminRouter.patch('/:productId', async (req, res, next) => {
     }
   });
 
-  adminRouter.patch(`/:id`, requireAdmin, async (req, res, next) => {
+  adminRouter.patch(`/users/:id`, requireAdmin, async (req, res, next) => {
+    console.log("This is the admin router patch running")
     // const id = req.params.id
     console.log(req.user)
     const { id } = req.params
@@ -142,7 +159,7 @@ adminRouter.patch('/:productId', async (req, res, next) => {
     }
 })
 
-  adminRouter.delete('/:id', requireAdmin, async (req, res, next) => {
+  adminRouter.delete('/users/:id', requireAdmin, async (req, res, next) => {
 
     // const { username } = req.user
     const { id } = req.params

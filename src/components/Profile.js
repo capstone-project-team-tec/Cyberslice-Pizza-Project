@@ -304,7 +304,7 @@ console.log(cartOrderItems)
                                 <input 
                                 type="text"
                                 placeholder="address"
-                                value={address}
+                                defaultValue={thisUser.address}
                                 onChange={(event) => setAddress(event.target.value)}/>
                                 <p> </p>
                                 <button id="button1"type="submit">Update</button>

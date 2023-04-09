@@ -100,7 +100,7 @@ usersRouter.post('/adminlogin', async (req,res,next) => {
         if (user) {
             const areTheyTheSame = await bcrypt.compare(password, user.password);
             if (areTheyTheSame) {
-                const token = await jwt.sign({username, password}, process.env.JWT_SECRET);
+                const token = await jwt.sign({username, password, isAdmin}, process.env.JWT_SECRET);
                 res.send(
                     {
                         success:true,
