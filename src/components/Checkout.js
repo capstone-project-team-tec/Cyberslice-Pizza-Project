@@ -169,6 +169,13 @@ const Checkout = (props) => {
                                         {(orderItem.cost*orderItem.count).toFixed(2)}
                                     </section>
                                 </section>
+
+                                {/* This needs to go to the far right */}
+                                <section className = "removeButtonContainer">
+                                    <button id = "removeButton" onClick={() => handleRemove(orderItem.productId, orderItem.id)}>
+                                        Remove
+                                    </button>
+                                </section>
                                 
                             </section>
                         </div>
