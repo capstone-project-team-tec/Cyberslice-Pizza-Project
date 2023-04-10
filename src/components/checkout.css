@@ -142,14 +142,28 @@ button {
 }
 
 
-#checkoutButton{
+#checkoutButtonForCheckoutComponent{
     display: flex;
     justify-content: flex-end;
+    border: 3px solid white;
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    font-family: 'Orbitron', sans-serif;
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: color 0.75s, border-color 0.75s;
+}
 
-    width: fit-content;
-    max-width: 80%;
-
-    border: 2px solid white;
+#checkoutButtonForCheckoutComponent:hover {
+    color: #cbff5e;
+    border-color: #cbff5e;
+    cursor: pointer;
 }
 
 /* Working on quantity changer */

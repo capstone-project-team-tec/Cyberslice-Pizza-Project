@@ -54,12 +54,6 @@ const CarryoutLocation = ({ title, street, city, state, zip}) => {
                 </section>
                 </section>
             </section>
-
-            <section className="locationSelectButtonContainer">
-                <section id="locationSelectButton">
-                Select
-                </section>
-            </section>
     </section>
     )
 }
@@ -97,11 +91,6 @@ const OrderOptions = (props) => {
                     <button id="deliveryChoice"onClick={DeliveryTrue}>Delivery</button>
                     <button id="carryoutChoice"onClick={CarryoutTrue}>Carry Out</button>
                 </section>
-                <section className="locationSelectButtonContainer">
-                    <section id="locationSelectButton">
-                        Select
-                    </section>
-                </section>
             </section>
 
             {carryOut ? (
@@ -124,7 +113,6 @@ const OrderOptions = (props) => {
                             zip="03429"
                         />
                         <label className="checkbox" htmlFor="checkbox1">
-                            
                             <input type="radio" className = "location"/> 3697 S Red Planet Rd, Mars
                         </label>
                         

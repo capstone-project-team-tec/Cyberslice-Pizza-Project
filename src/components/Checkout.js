@@ -3,18 +3,17 @@ import { useParams, useNavigate, Link } from "react-router-dom"
 import "./checkout.css"
 import "./global.css"
 
-// function getItems(these are the items from the database) {
-//     // 
-// }
 const Checkout = (props) => {
     const { currentCart, currentUser } = props
     const [currentOrderItems, setCurrentOrderItems] = useState([])
     const [anything, setAnything] = useState([])
-    
+    const [updatedOrderItem, setUpdatedOrderItem] = useState({})
+    const [subTotalDisplay,setSubTotalDisplay] = useState(0)
+    const [totalCost, setTotalCost] = useState(0)
     const {id} = useParams()
 
     useEffect(() => {
-        getOrderItemsByCartId();
+         getOrderItemsByCartId();
     }, [currentCart]);
 
     
@@ -56,7 +55,36 @@ const Checkout = (props) => {
         } catch (error) {
           console.log(error);
         }
-      }
+    }
+
+    async function updateOrderItem( orderItemId, count) {
+        console.log("update order item is firing")
+        console.log("orderitemId: ",orderItemId)
+        console.log("orderitemCount: ",count)
+        try {
+            const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    count
+                }),
+            })
+            
+            const result = await response.json();
+            
+            console.log("this is the result for update order item", result)
+            setUpdatedOrderItem(result)
+        
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getOrderItemsByCartId();
+    }, [updatedOrderItem]);
 
     async function handleRemove (productId, orderItemId) {
         const updatedOrderItems = currentOrderItems.filter(
@@ -68,11 +96,25 @@ const Checkout = (props) => {
         await removeOrderItem(productId);
     }
 
-    const subTotalCost = currentOrderItems.reduce((accumulator, orderItem) => {
-        return accumulator + orderItem.cost * orderItem.count;
-      }, 0);      
+    const subTotalCostCalculator = (currentOrderItems) => {
+        let subTotal = 0
+        let finalSubTotal = 0
+        if (currentOrderItems != {}){
+            for (let i=0; i<currentOrderItems.length; i++){
+                subTotal += (currentOrderItems[i].count*currentOrderItems[i].cost)
+                finalSubTotal = subTotal.toFixed(2);
+            }
+        } else {finalSubTotal = 0.00}
+        setSubTotalDisplay(finalSubTotal);
+        let totalCostCalculated = 0
+        let deliveryFee = 10
+        totalCostCalculated = (parseFloat(finalSubTotal)+deliveryFee).toFixed(2);
+        setTotalCost(totalCostCalculated)
+    };      
 
-    // Working on getting a qunatity changer
+    useEffect(() => {
+        subTotalCostCalculator(currentOrderItems);
+    }, [currentOrderItems]);
 
     return (
         <section id = "checkoutContainer">
@@ -81,8 +123,8 @@ const Checkout = (props) => {
             {currentOrderItems.length > 0 ? (
                 currentOrderItems.map((orderItem) => {
                 return (
-                    <section className = "item"> 
-                        <div key={orderItem.id}>
+                    <section key={orderItem.id} className = "item"> 
+                        <div>
                             {/* only one of these should print */}
                             <section className = "itemTitle">{orderItem.productName}</section>
                             <section className = "itemTitle">{orderItem.pizzaName}</section>
@@ -96,7 +138,25 @@ const Checkout = (props) => {
                                     </section>
 
                                     <section className = "detailValue">
-                                        {orderItem.count}
+                                    <select className="selectCountDropdown"
+                                        value={orderItem.count}
+                                        onChange={(event) => {
+                                        event.preventDefault();
+                                        const updatedCost = event.target.value * orderItem.cost;
+                                        updateOrderItem(orderItem.id, event.target.value, updatedCost)    
+                                        }}
+                                        
+                                    >
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
+                                        <option value={6}>6</option>
+                                        <option value={7}>7</option>
+                                        <option value={8}>8</option>
+                                        <option value={9}>9</option>
+                                    </select>
                                     </section>
                                 </section>
 
@@ -106,16 +166,11 @@ const Checkout = (props) => {
                                     </section>
 
                                     <section className = "detailValue">
-                                        {orderItem.cost}
+                                        {(orderItem.cost*orderItem.count).toFixed(2)}
                                     </section>
                                 </section>
                                 
                             </section>
-                            
-                            {/* <h2> Price: {orderItem.cost}</h2>
-                            <h2> ProductId: {orderItem.productId}</h2>
-                            <h2> PizzaId: {orderItem.pizzaId}</h2>
-                            <h2> Count: {orderItem.count}</h2> */}
                         </div>
                     </section>
                 );
@@ -132,7 +187,7 @@ const Checkout = (props) => {
                         </section>
 
                         <section className = "price">
-                            $ {subTotalCost.toFixed(2)}
+                           $ {subTotalDisplay ? subTotalDisplay: 0}
                         </section>
                     </section>
 
@@ -151,14 +206,14 @@ const Checkout = (props) => {
                         </section>
 
                         <section className = "price">
-                            
+                           $ {totalCost}
                         </section>
                     </section>
                 </section>
             </section>
 
             <section id = "buttonContainer"> 
-                <section id = "checkoutButton">Check out</section>
+                <Link to={'/payment'} id = "checkoutButtonForCheckoutComponent">Continue To Payment</Link>
             </section>
         </section>
     )

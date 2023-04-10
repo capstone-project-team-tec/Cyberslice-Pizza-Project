@@ -115,6 +115,21 @@ async function fetchOrderItemsByCartId(cartId) {
     }
 }
 
+async function updateOrderItem({orderItemId, count}) {
+    console.log("the update order items function is running, here is count:  ",count)
+    try {
+        const { rows: [orderItem] } = await client.query(`
+            UPDATE "orderItems"
+            SET count = $2
+            WHERE id = $1
+            RETURNING *;
+        `, [orderItemId, count]);
+        return orderItem;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 async function deleteRowProducts(productId, cartId) {
     console.log("Starting to delete product rows")
     try { 
@@ -163,5 +178,6 @@ module.exports = {
     createOrderItemsRowForPizza,
     fetchOrderItemsByCartId,
     deleteRowProducts,
-    deleteRowPizza
+    deleteRowPizza,
+    updateOrderItem
 }
