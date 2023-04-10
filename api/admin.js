@@ -42,12 +42,13 @@ adminRouter.get('/users', async(req,res,next)=>{
 })
 
 adminRouter.get('/:userId', async (req, res, next) => {
-  const user = await getUserById(req.params.userId);
   if (!req.params.userId) {
     console.log(error);
     next(error);
   }
+  const user = await getUserById(req.params.userId);
   try {
+    console.log("This is the admin router user", user)
     res.send(
       user
     );
@@ -57,45 +58,48 @@ adminRouter.get('/:userId', async (req, res, next) => {
   }
 });
 
-adminRouter.patch('/products/:productId', async (req, res, next) => {
-    const id = req.params.productId;
-    console.log("productsRouter.patch; productId: " + id);
-    const { catergory, name, price } = req.body;
-  
-    console.log(name);
-    console.log(price);
-    const updateFields = {};
+adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) => {
+  const id = req.params.productId;
+  console.log("productsRouter.patch; productId: " + id);
+  const { category, name, price, isActive } = req.body;
 
-    if (catergory) {
-        updateFields.catergory = catergory
-    }
+  console.log(name);
+  console.log(price);
+  const updateFields = {};
+
+  if (category) {
+      updateFields.category = category
+  }
+
+  if (name) {
+    updateFields.name = name;
+  }
+
+  if (price) {
+    updateFields.price = price;
+  }
+
+  if (isActive) {
+    updateFields.isActive = isActive;
+  }
+  try {
+    const updatedProduct = await updateProduct({ id, ...updateFields });
+    console.log("Updated product: " + updatedProduct);
+    res.send(updatedProduct);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
   
-    if (name) {
-      updateFields.name = name;
-    }
-  
-    if (price) {
-      updateFields.price = price;
-    }
-  
-    try {
-      const updatedProduct = await updateProduct({id, fields: updateFields});
-      console.log("Updated product: " + updatedProduct);
-      res.send(updatedProduct);
-    } catch ({ name, message }) {
-      next({ name, message });
-    }
-  });
-  
-  adminRouter.get('/:productId', async (req, res, next) => {
-    const products = await getProductById(req.params.productId);
+  adminRouter.get('/product/:productId', async (req, res, next) => {
     if (!req.params.productId) {
       console.log(error);
       next(error);
     }
+    const product = await getProductById(req.params.productId);
     try {
       res.send(
-        products
+        product
       );
     } catch (error) {
       console.log(error);
@@ -103,7 +107,44 @@ adminRouter.patch('/products/:productId', async (req, res, next) => {
     }
   });
 
-  adminRouter.delete('/:productId', async (req, res, next) => {
+  adminRouter.post('/createproduct', requireAdmin, async(req,res,next)=> {
+    console.log("The create product route is running")
+    try {
+    const productData = req.body
+
+    if (productData.name && productData.price && (productData.category == 'desserts' || productData.category == 'drinks' || productData.category == 'sides')) {
+      let newCreatedProduct = await createProduct({
+        name: productData.name,
+        category: productData.category,
+        price: productData.price
+      })
+      if (newCreatedProduct) {
+        console.log("This is the new created product...",newCreatedProduct);
+        res.send(
+          {
+              success: true,
+              error: null,
+              message: "Product was successfully created."
+          }).status(200)
+      } else {
+        res.send(
+            {
+                success: false,
+                error: {
+                    name: "UserError",
+                    message: "failed to create account"
+                },
+                data: null
+            }).status(403)
+      }
+    }
+    
+    } catch(error) {
+      console.log(error)
+    }
+  })
+
+  adminRouter.delete('/products/:productId', requireAdmin, async (req, res, next) => {
     if (!req.params.productId) {
       console.log(error);
       next(error);
