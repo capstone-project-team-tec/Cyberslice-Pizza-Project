@@ -133,30 +133,30 @@ const Drinks = (props) => {
 
         <section id = "itemsList"> 
           {drinks.length > 0 ? (
-            drinks.map((singleDrink) => {
-              return (
-                <section id = "itemContainer">
-                    <div key={singleDrink.id}>
-                      <section id = "imageContainer"> 
-                        <img src = {singleDrink.image} id = "itemPic">
-                        </img>
-                      </section>
+            drinks.filter(product => product.isActive === true).map((singleDrink) => {
+                return (
+                  <section id = "itemContainer">
+                      <div key={singleDrink.id}>
+                        <section id = "imageContainer"> 
+                          <img src = {singleDrink.image} id = "itemPic">
+                          </img>
+                        </section>
 
-                      <section id = "itemDetails">
+                        <section id = "itemDetails">
 
-                        <section id = "itemTitle">{singleDrink.name}</section>
-                        <section id = "itemCost"> ${singleDrink.price}</section>
+                          <section id = "itemTitle">{singleDrink.name}</section>
+                          <section id = "itemCost"> ${singleDrink.price}</section>
 
-                        <AddToCart key={singleDrink.id} drink = {singleDrink} />
-                        
-                      </section>
-                      {addedDrinkId === singleDrink.id && (
-                        <span className="added-to-cart-message">Added to cart!</span>
-                      )}
-                    </div>
-                  </section>
-              );
-            })
+                          <AddToCart key={singleDrink.id} drink = {singleDrink} />
+                          
+                        </section>
+                        {addedDrinkId === singleDrink.id && (
+                          <span className="added-to-cart-message">Added to cart!</span>
+                        )}
+                      </div>
+                    </section>
+                );
+              })
           ) : (
             <div>No Drinks Yet</div>
           )}
