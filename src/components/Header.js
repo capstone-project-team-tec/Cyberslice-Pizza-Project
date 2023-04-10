@@ -59,7 +59,7 @@ const Header = (props) => {
             <div id="headerButtonGroup">   
                 <Link to='/menu' className="headerButton"> MENU </Link>
                 <Link to='/locations' className="headerButton"> LOCATIONS </Link> 
-                {currentUser && 'username' in currentUser ? (<Link to="/profile" className="headerButton">PROFILE</Link>):""}
+                {currentUser && !('isAdmin' in currentUser) && currentUser.username ? (<Link to="/profile" className="headerButton">PROFILE</Link>) : null}
                 {currentAdminUser && 'isAdmin' in currentAdminUser ? (<Link to="/admin" className="headerButton">ADMIN</Link>):""}
                 {localStorage.getItem("token") ?<Link onClick={handleLogout} className="headerButton"> LOGOUT </Link>: <Link to='/login' className="headerButton"> LOGIN </Link> }
                 <Link to='/orderoptions' className="headerButton"> 

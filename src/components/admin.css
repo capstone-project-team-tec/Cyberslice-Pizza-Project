@@ -144,3 +144,22 @@
     text-decoration: underline;
     font-size: 20px;
 }
+
+#userform {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-right: 2%;
+    z-index: 1;
+}
+
+.userbox {
+    display: flex;
+    flex-direction: column;
+}
+
+#submitbutton {
+    text-align: center;
+}
+
+

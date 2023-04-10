@@ -31,6 +31,8 @@ const Admin = (props) => {
     const [newProductName, setNewProductName] = useState("")
     const [newProductCategory, setNewProductCategory] = useState("")
     const [newProductPrice, setNewProductPrice] = useState("")
+
+    const navigate = useNavigate()
     
 
     function toggleUsersToDeleteandUpdate() {
@@ -66,11 +68,11 @@ const Admin = (props) => {
 
             setUserToEdit(result)
             setMyId(result.id)
-            setUsername(result.username)
-            setName(result.name)
-            setEmail(result.email)
-            setAddress(result.address)
-            setPhone(result.phone)
+            setUsername(result.user.username)
+            setName(result.user.name)
+            setEmail(result.user.email)
+            setAddress(result.user.address)
+            setPhone(result.user.phone)
 
             return result;
         } catch(error) {
@@ -186,8 +188,8 @@ const Admin = (props) => {
         }
     }
 
-    async function createNewProduct (event) {
-        event.preventDefault()
+    async function createNewProduct () {
+        
         console.log("Create new product function is running")
         try {
             const response = await fetch(`http://localhost:1337/api/admin/createproduct`, {
@@ -206,9 +208,15 @@ const Admin = (props) => {
 
             console.log("The create product function finished, this is the result", result)
 
-            setDrinks(result)
-            setDesserts(result)
-            setSides(result)
+            if (newProductCategory == "drinks") {
+                setDrinks(result)
+            } else if (newProductCategory == "sides") {
+                setSides(result)
+            } else if (newProductCategory == "desserts") {
+                setDesserts(result)
+            }
+
+            navigate('/admin')
 
 
         } catch(error) {
@@ -250,10 +258,13 @@ const Admin = (props) => {
 
 
             console.log("this is the result", result)
+            
 
             setDrinks(result)
             setSides(result)
             setDesserts(result)
+
+            location.reload()
         
 
         } catch(error) {
@@ -285,11 +296,22 @@ const Admin = (props) => {
 
             console.log("this is the result", result)
 
+            console.log("This is the product.category", product.category)
+
             setAllProducts(result)
-            setDrinks(result)
-            setSides(result)
-            setDesserts(result)
+            if (product.category == "drinks") {
+                setDrinks(result)
+            } else if (product.category == "sides") {
+                setSides(result)
+            } else if (product.category == "desserts") {
+                setDesserts(result)
+            } else {
+                console.log("unknown category:", product.category);
+              }
             
+            
+            
+            location.reload()
         
 
         } catch(error) {
@@ -350,6 +372,7 @@ const Admin = (props) => {
           await updateUserById(userId, user);
           console.log("Finished running update user by ID");
           alert("User has been updated")
+          navigate('/admin')
         } catch (error) {
           console.error(error);
         }
@@ -360,6 +383,7 @@ const Admin = (props) => {
         await fetchUserById(userId);
         await deleteAccount();
         alert("User has been deleted")
+        navigate('/admin')
         } catch(error) {
             console.log(error)
         }  
@@ -376,7 +400,7 @@ const Admin = (props) => {
         await updateProductById(product)
         console.log("Finished running update product by ID")
         console.log("Product has been updated")
-        alert();
+        alert("Product has been updated");
         } catch (error) {
             console.log(error)
         }
@@ -392,10 +416,17 @@ const Admin = (props) => {
         await deleteProductById(product)
         console.log("Finished running delete product by ID");
         alert("Product has been deleted")
+        
         } catch (error) {
             console.log(error)
         }
     }
+    useEffect(() => {
+       console.log("this is drinks", drinks)
+       console.log("this is desserts", desserts)
+       console.log("this is sides", sides)
+    }, []);
+
     return (
         <div>
             <h2>Welcome to the Admin Page</h2>
@@ -445,28 +476,29 @@ const Admin = (props) => {
                             editUser ? (
                                 <div>
                                     <form onSubmit={(event) => onSubmitEventHandlerUpdateUser(event, singleUser.id)}>
-                                    <section>
-                                    <h6>Enter New Username:</h6>
-                                    <input
-                                    type="text"
-                                    defaultValue={allUsers.username}
-                                    onChange={(event) => setUsername(event.target.value)}
-                                    />
+                                        <div id="userform">
+                                        <section>
+                                            <h6>Enter New Username:</h6>
+                                            <input
+                                            type="text"
+                                            defaultValue={allUsers.username}
+                                            onChange={(event) => setUsername(event.target.value)}
+                                            />
+                                        </section>
+                                        <section>
+                                            <h6>Enter New Name:</h6>
+                                            <input 
+                                            type="text"
+                                            defaultValue={allUsers.name}
+                                            onChange={(event) => setName(event.target.value)}
+                                            />
                                     </section>
                                     <section>
-                                    <h6>Enter New Name:</h6>
-                                    <input 
-                                    type="text"
-                                    defaultValue={allUsers.name}
-                                    onChange={(event) => setName(event.target.value)}
-                                    />
-                                    </section>
-                                    <section>
-                                    <h6>Enter New Email:</h6>
-                                    <input
-                                    type="text"
-                                    defaultValue={allUsers.email}
-                                    onChange={(event) => setEmail(event.target.value)}
+                                            <h6>Enter New Email:</h6>
+                                            <input
+                                            type="text"
+                                            defaultValue={allUsers.email}
+                                            onChange={(event) => setEmail(event.target.value)}
                                     />
                                     </section>
                                     <section>
@@ -484,8 +516,12 @@ const Admin = (props) => {
                                     defaultValue={allUsers.address}
                                     onChange={(event) => setAddress(event.target.value)}/>
                                 </section>
+                                </div>
                                 <p> </p>
-                                <button id="button1"type="submit">Update</button>
+                                <div id="submitbutton">
+                                <button type="submit">Update</button>
+                                </div>
+                
                                     
 
                                     </form>
