@@ -28,13 +28,13 @@ async function fetchPizzaWithToppingsInfo({pizzaId}) {
 }
 
 // pizza table functions
-async function createPizza() {
+async function createPizza({name, basePizzaCost, pizzaSize}) {
     try {
         const { rows } = await client.query(`
             INSERT INTO pizza (name, "basePizzaCost", size)
-            VALUES (NULL, NULL, NULL)
+            VALUES ($1, $2, $3)
             RETURNING *;
-        `);
+        `,[name, basePizzaCost, pizzaSize]);
         return rows[0];
     } catch(error) {
         console.log(error);
@@ -59,7 +59,16 @@ async function fetchPizzaByName(name) {
         SELECT * FROM pizza
         WHERE name=$1;
         `, [name])
-        return pizza
+        console.log("LOOK HERE FOR PIZZA IN FETCHPIZZA:  ",pizza)
+        if (pizza != undefined) {
+            return {
+                pizza,
+                success: true
+            }
+        } else{
+            return {success: false}
+        }
+        
 
     } catch(error) {
         console.log(error);
