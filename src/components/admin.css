@@ -3,3 +3,144 @@
     width: 150px;
     margin-bottom: 10px;
 }
+
+.userorproduct{
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    font-size : 1rem;
+    font-weight: bold;
+
+    padding: 0.5rem 1rem;
+
+    text-align: center;
+    line-height: 10px;
+
+    height: 30px;
+}
+
+#buttoncontainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 130px;
+}
+#buttoncontainerforusersorproducts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 300px;
+}
+
+.productcontainer{
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 10%;
+    margin-top: 5%;
+
+    height: 100%;
+}
+
+.itemsList{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: space-evenly;
+
+    background-color: black;
+    border: 4px solid white;
+
+    border-radius: 4px;
+    border-color: white;
+    max-width: 90%;
+
+    padding-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#alldrinks {
+    margin-bottom: 20%;
+}
+
+/* #createproduct {
+    text-align: center;
+} */
+
+
+.createbox {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    height: 25px;
+    width: 450px;
+}
+.submitform {
+        background-color: black;
+        border: 2px solid white;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    
+        font-family: Orbitron, 'Courier New', Courier, monospace;
+        font-size : 1rem;
+        font-weight: bold;
+    
+        padding: 0.5rem 1rem;
+    
+        text-align: center;
+        line-height: 10px;
+    
+        height: 30px;
+}
+
+.header {
+    color: #32CD32; 
+    text-align: center;
+}
+
+#drinkscontainer {
+    margin-bottom: 10%;
+}
+
+.imageContainerDrinks {
+    margin-left: 6%;
+}
+.imageContainerDesserts {
+    margin-left: 15%;
+}
+.imageContainerSides {
+    margin-left: 15%;
+}
+#parent {
+    border: 2px solid #32CD32; 
+    margin-bottom: 2%;
+    
+}
+#usercontainer {
+    font-size: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10%;
+    margin-left: 2%;
+    margin-bottom: 5%;
+    
+}
+
+#userheader {
+    margin-left: 2%;
+    text-decoration: underline;
+    font-size: 20px;
+}
