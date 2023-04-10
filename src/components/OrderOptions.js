@@ -1,6 +1,6 @@
 //This is the CarryOut or Delivery page
 import { useState } from "react"
-import { useParams, useNavigate, Link, json, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link, json } from "react-router-dom"
 import "./orderOptions.css"
 import "./global.css"
 
