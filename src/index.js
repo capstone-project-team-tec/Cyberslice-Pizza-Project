@@ -191,7 +191,9 @@ const App = () => {
                 }
                 })
                 const result = await response.json()
+                console.log("This is the result of fetchCurrentUser", result)
                 setCurrentUser(result.user)
+                
             } catch(error) {
                 console.log(error)
             }
