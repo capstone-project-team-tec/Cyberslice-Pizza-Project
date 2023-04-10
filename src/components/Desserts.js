@@ -136,8 +136,8 @@ const Desserts = (props) => {
           {desserts.length > 0 ? (
             desserts.filter(product => product.isActive === true).map((singleDessert) => {
               return (
-                <section id = "itemContainer">
-                    <div key={singleDessert.id}>
+                <section key={singleDessert.id} id = "itemContainer">
+                    <div>
                       <section id = "imageContainer"> 
                         <img src = {singleDessert.image} id = "itemPic">
                         </img>

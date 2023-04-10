@@ -168,8 +168,8 @@ return (
         {sides.length > 0 ? (
           sides.filter(product => product.isActive === true).map((singleSide) => {
             return (
-              <section id = "itemContainer">
-                  <div key={singleSide.id}>
+              <section key={singleSide.id} id = "itemContainer">
+                  <div>
                     <section id = "imageContainer"> 
                       <img src = {singleSide.image} id = "itemPic">
                       </img>
@@ -191,7 +191,7 @@ return (
             );
           })
         ) : (
-          <div>No Drinks Yet</div>
+          <div>No Sides Yet</div>
         )}
       </section>
     </section>

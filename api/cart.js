@@ -38,6 +38,7 @@ cartRouter.get('/', async (req, res, next) => {
     try {
       console.log('a user id has been found!!!!!')
       const userId = req.user.id;
+      console.log("this is the fetch user cart route userId on the cart: ",userId)
       const userCarts = await fetchUserCarts(userId);
       console.log("these are the user's carts:   " + userCarts);
       if (userCarts) {

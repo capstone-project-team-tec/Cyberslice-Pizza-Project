@@ -4,12 +4,10 @@ import "./checkout.css"
 import "./global.css"
 
 const Checkout = (props) => {
-    const { currentCart, currentUser } = props
-    const [currentOrderItems, setCurrentOrderItems] = useState([])
+    const { currentCart, currentUser, setCurrentCart, subTotalDisplay, setSubTotalDisplay, totalCost, setTotalCost, currentOrderItems, setCurrentOrderItems} = props
     const [anything, setAnything] = useState([])
     const [updatedOrderItem, setUpdatedOrderItem] = useState({})
-    const [subTotalDisplay,setSubTotalDisplay] = useState(0)
-    const [totalCost, setTotalCost] = useState(0)
+    
     const {id} = useParams()
 
     useEffect(() => {
@@ -220,7 +218,7 @@ const Checkout = (props) => {
             </section>
 
             <section id = "buttonContainer"> 
-                <Link to={'/payment'} id = "checkoutButtonForCheckoutComponent">Continue To Payment</Link>
+                <Link to={'/payment'} id = "continueToPaymentButton">Continue To Payment</Link>
             </section>
         </section>
     )
