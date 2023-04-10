@@ -11,7 +11,8 @@ const {
     createOrderItemsRowForPizza,
     fetchOrderItemsByCartId,
     deleteRowProducts,
-    deleteRowPizza
+    deleteRowPizza,
+    updateOrderItem
 } = require('../db/cart');
 
 const {
@@ -191,6 +192,31 @@ cartRouter.patch('/:cartId', async (req, res, next) => {
     try {
       const checkedOutCart = await checkoutCart(updateFields);
       res.send(checkedOutCart);
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+})
+
+cartRouter.patch('/orderitems/:orderItemId', async (req, res, next) => {
+    const orderItemId = req.params.orderItemId;
+    console.log("cartRouter.patch for order items; orderItemsId: " + orderItemId);
+    const { count, cost } = req.body;
+  
+    console.log("this is the cartRouter.patch for order items count:",count);
+  
+    const updateFields = {};
+  
+    if (orderItemId) {
+        updateFields.orderItemId = orderItemId;
+    }
+  
+    if (count) {
+      updateFields.count = count;
+    } 
+  
+    try {
+      const updatedOrderItem = await updateOrderItem(updateFields);
+      res.send(updatedOrderItem);
     } catch ({ name, message }) {
       next({ name, message });
     }
