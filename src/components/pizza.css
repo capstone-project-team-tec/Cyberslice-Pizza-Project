@@ -164,6 +164,18 @@
   cursor: pointer;
 }
 
+.thisButtonIsActive {
+  background-color:#cbff5e;
+  border-color:#cbff5e;
+  color:black;
+}
+
+.thisButtonIsInactive {
+  background-color: black;
+  border-color:white;
+  color:white;
+}
+
 /* total cost styling */
 .totalCostContainer {
   display: flex;

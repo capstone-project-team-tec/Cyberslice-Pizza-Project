@@ -223,16 +223,17 @@ const Payment = (props) => {
         });
     
         const result = await response.json();
-        setCurrentCart({
-          id: result.id,
-          isCheckedOut: result.isCheckedOut,
-          totalCost: result.totalCost,
-          userId: result.userId
-      })
+        
         // setCurrentCartId(result.id)
         guestCartId = result.id
         if (result.success) {
           console.log('A new cart has been created for the guest. here is the result:  ',result );
+          setCurrentCart({
+                id: result.id,
+                isCheckedOut: result.isCheckedOut,
+                totalCost: result.totalCost,
+                userId: result.userId
+            })
           return result;
         } else {
           console.log('Failed to create a new cart for the guest:', result.error.message);
@@ -270,7 +271,7 @@ const Payment = (props) => {
                 await setCurrentCart(newUserCartForAfterCheckout);
             } else {
                 const newGuestCartForAfterCheckout = await createCartForGuest();
-                await setCurrentCart(newGuestCartForAfterCheckout);
+                // await setCurrentCart(newGuestCartForAfterCheckout);
             }
             await setCurrentOrderItems([]);
             alert("Your order has been successfully completed!")

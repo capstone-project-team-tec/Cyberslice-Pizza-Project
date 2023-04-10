@@ -55,14 +55,13 @@ const Pizza = (props) => {
 
     // this function creates the full name of the pizza depending on the size and toppings selected
     const concatenatePizzaName = () => {
-        const selectedToppings = layers
-            .filter((layer) => layerVisibilityAndToppingCount[layer.id].visible)
-            .map((layer) => {
+        const visibleLayers = layers.filter((layer) => layerVisibilityAndToppingCount[layer.id].visible)
+            const chosenToppings = visibleLayers.map((layer) => {
                 const count = layerVisibilityAndToppingCount[layer.id].count;
                 return layer.name + (count > 1 ? ` (x${count})` : '');
             })
-            .join(", ");
-        return `${pizzaSize} Inch Cheese Pizza${selectedToppings ? ' With ' + selectedToppings : ''}`;
+            const finalChosenToppings = chosenToppings.join(", ");
+        return `${pizzaSize} Inch Cheese Pizza${finalChosenToppings ? ' With ' + finalChosenToppings : ''}`;
     };
 
     // this function calculates the total cost of the pizza based on what layers are visible on the picture and on what size pizza has been selected
@@ -260,31 +259,34 @@ const Pizza = (props) => {
     // this use effect makes buttons stay highlighted when clicked, it includes a feature for initialization where if the data has not rendered in yet to retry the delayedEffect function after 500ms
     useEffect(() => {
 
-        // this function sets the pizza size buttons, topping size buttons, and that 10 inch button so that they can have the highlight effects added to them
+        // this function clears any of the involved local storage items, sets the pizza size buttons, topping size buttons, and that 10 inch button so that they can have the highlight effects added to them, and adds them to localstorage
         function delayedEffect() {
             const pizzaSizeButtonsContainer = document.querySelector('#pizzaSizeButtons');
             const toppingButtonsContainer = document.querySelector('#toppingButtonContainer');
+            const toppingButtons = document.querySelectorAll('.toppingButton');
+            const pizzaSizeButtons = document.querySelectorAll('.pizzaSizeButton');
             const tenInchButton = document.querySelector("#firstPizzaSizeButton");
     
             if (pizzaSizeButtonsContainer && toppingButtonsContainer && tenInchButton) {
+                toppingButtons.forEach((button) => {
+                    localStorage.removeItem(button.id);
+                });
+        
+                localStorage.removeItem('selectedPizzaSize');
+                
                 function activateButton(button) {
-                    button.classList.add('active');
-                    button.style.backgroundColor = '#cbff5e';
-                    button.style.borderColor = '#cbff5e';
-                    button.style.color = 'black';
-                }
+                    button.classList.remove('thisButtonIsInactive');
+                    button.classList.add('thisButtonIsActive');
+                    }
         
                 function deactivateButton(button) {
-                    button.classList.remove('active');
-                    button.style.backgroundColor = 'black';
-                    button.style.borderColor = 'white';
-                    button.style.color = 'white';
+                    button.classList.remove('thisButtonIsActive');
+                    button.classList.add('thisButtonIsInactive');
                 }
         
                 pizzaSizeButtonsContainer.addEventListener('click', (event) => {
                     const button = event.target.closest('.pizzaSizeButton');
                     if (!button) return;
-                    const pizzaSizeButtons = document.querySelectorAll('.pizzaSizeButton');
                     pizzaSizeButtons.forEach(deactivateButton);
                     activateButton(button);
                     localStorage.setItem('selectedPizzaSize', button.id);
@@ -293,29 +295,22 @@ const Pizza = (props) => {
                 toppingButtonsContainer.addEventListener('click', (event) => {
                     const button = event.target.closest('.toppingButton');
                     if (!button) return;
-                    if (button.classList.contains('active')) {
+                    if (button.classList.contains('thisButtonIsActive')) {
                         deactivateButton(button);
                         localStorage.removeItem(button.id);
                     } else {
                         activateButton(button);
-                        localStorage.setItem(button.id, 'active');
+                        localStorage.setItem(button.id, 'thisButtonIsActive');
                     }
                 });
+
+                activateButton(tenInchButton);
+                localStorage.setItem('selectedPizzaSize', tenInchButton.id);
         
-                const selectedPizzaSize = localStorage.getItem('selectedPizzaSize');
-                if (selectedPizzaSize) {
-                    const selectedButton = document.querySelector(`#${selectedPizzaSize}`);
-                    activateButton(selectedButton);
-                } else {
-                    activateButton(tenInchButton);
-                    localStorage.setItem('selectedPizzaSize', tenInchButton.id);
-                }
-        
-                const toppingButtons = document.querySelectorAll('.toppingButton');
                 toppingButtons.forEach((button) => {
-                    if (localStorage.getItem(button.id) === 'active') {
+                    if (localStorage.getItem(button.id) == 'thisButtonIsActive') {
                         activateButton(button);
-                    }
+                    } else {deactivateButton(button)}
                 });
             } else {
                 setTimeout(() => {
@@ -350,7 +345,7 @@ const Pizza = (props) => {
                                     src={`/${layer.filename}.png`}
                                     alt={layer.name}
                                 />
-                                    {layerVisibilityAndToppingCount[layer.id].count == 2 && (
+                                    {layerVisibilityAndToppingCount[layer.id].count == 2 ? (
                                 <img
                                     key={`${layer.id}-second`}
                                     className={`pizzaLayer ${layerVisibilityAndToppingCount[layer.id].visible ? "rotated" : "hidden"}`}
@@ -358,7 +353,7 @@ const Pizza = (props) => {
                                     src={`/${layer.filename}.png`}
                                     alt={layer.name}
                                 />
-                                )}
+                                ) : null}
                             </div>
                         ))}
                     </div>
@@ -368,31 +363,31 @@ const Pizza = (props) => {
                         <p id="chooseASizeText">Choose A Size</p>
                         <div id="pizzaSizeButtons">
                             <button id="firstPizzaSizeButton" className="button pizzaSizeButton" onClick={() => handleSizeAndCostButtonClick(10, 9.99)}>10'</button>
-                            <button className="button pizzaSizeButton" onClick={() => handleSizeAndCostButtonClick(12, 11.99)}>12'</button>
-                            <button className="button pizzaSizeButton" onClick={() => handleSizeAndCostButtonClick(14, 13.99)}>14'</button>
+                            <button id="secondPizzaSizeButton" className="button pizzaSizeButton" onClick={() => handleSizeAndCostButtonClick(12, 11.99)}>12'</button>
+                            <button id="thirdPizzaSizeButton" className="button pizzaSizeButton" onClick={() => handleSizeAndCostButtonClick(14, 13.99)}>14'</button>
                         </div>
                     </div>
                     <div id="toppingButtonContainer">
                         {layers.map((layer) => (
                             <div key={layer.id} className="toppingButtonContainerItem">
-                                <button className="toppingButton" onClick={() => toggleLayerVisibilityAndToppingCount(layer.id)}>
+                                <button id={layer.id} className="toppingButton" onClick={() => toggleLayerVisibilityAndToppingCount(layer.id)}>
                                     {layer.name}
                                 </button>
-                                {layerVisibilityAndToppingCount[layer.id].visible && (
+                                {layerVisibilityAndToppingCount[layer.id].visible ? (
                                     <select className="selectCountDropdown"
                                         value={layerVisibilityAndToppingCount[layer.id].count}
                                         onChange={(event) => {
                                             const newCount = parseInt(event.target.value, 10);
-                                            setLayerVisibilityAndToppingCount((prevState) => ({
-                                                ...prevState,
-                                                [layer.id]: { ...prevState[layer.id], count: newCount },
+                                            setLayerVisibilityAndToppingCount((previousLayerVisibilityAndToppingCount) => ({
+                                                ...previousLayerVisibilityAndToppingCount,
+                                                [layer.id]: { ...previousLayerVisibilityAndToppingCount[layer.id], count: newCount },
                                             }));
                                         }}
                                     >
                                         <option value={1}>1</option>
                                         <option value={2}>2</option>
                                     </select>
-                                )}
+                                ): null}
                             </div>
                         ))}
                     </div>
