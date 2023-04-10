@@ -25,16 +25,16 @@ async function fetchAllUsers() {
     }
 }
 
-async function createProduct({category, name, price, image}) {
+async function createProduct({category, name, price}) {
     try {
         const {rows} = await client.query(`
-        INSERT INTO products (category, name, price, image)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO products (category, name, price, "isActive")
+        VALUES ($1, $2, $3, true)
         ON CONFLICT (name) DO NOTHING
         RETURNING *;
-        `, [category, name, price, image ])
+        `, [category, name, price])
 
-        return rows;
+        return rows[0];
 
     } catch(error) {
         console.log(error)
@@ -59,33 +59,33 @@ async function getProductById(id) {
 
 
 
-async function updateProduct({id, fields = {} }) {
-    console.log("Starting updateDesserts");
+// async function updateProduct({id, fields = {} }) {
+//     console.log("Starting updateDesserts");
 
-    const setString = Object.keys(fields).map(
-        (key, index) => `"${key}"=$${index + 1}`
-    ).join(', ');
+//     const setString = Object.keys(fields).map(
+//         (key, index) => `"${key}"=$${index + 1}`
+//     ).join(', ');
 
-    try {
-        const result = await client.query(`
-            UPDATE products
-            SET ${setString}
-            WHERE id=$${Object.values(fields).length + 1}
-            RETURNING *;
-            `, [...Object.values(fields), id]
-        );
+//     try {
+//         const result = await client.query(`
+//             UPDATE products
+//             SET ${setString}
+//             WHERE id=$${Object.values(fields).length + 1}
+//             RETURNING *;
+//             `, [...Object.values(fields), id]
+//         );
 
-        if (result.rowCount > 0) {
-            console.log("Finished updateProducts");
-            return await getProducById(id);
-        } else {
-            throw new Error("No rows updated.");
-        }
-    } catch(error) {
-        console.log(error);
-        throw error;
-    }
-}
+//         if (result.rowCount > 0) {
+//             console.log("Finished updateProducts");
+//             return await getProducById(id);
+//         } else {
+//             throw new Error("No rows updated.");
+//         }
+//     } catch(error) {
+//         console.log(error);
+//         throw error;
+//     }
+// }
 
 async function deleteProduct(id) {
     try {
@@ -145,14 +145,14 @@ async function getAllUsers() {
     try {
 
         const {rows: [user] } = await client.query(`
-            SELECT id, username FROM users
+            SELECT * FROM users
             WHERE id=$1;
         `,[userId]);
 
         if (!user) {
             return null
         }
-
+        console.log("This is the getUserById User", user)
         return user;
 
     } catch (error) {
@@ -170,12 +170,36 @@ async function updateUser({id, username, name, email, address, phone}) {
             RETURNING *;
         `, [id, username, name, email, address, phone]);
         
+        
 
         return user;
     } catch(error) {
         console.log(error);
     }
 }
+
+async function updateProduct({id, category, price, isActive}) {
+    console.log("Request payload:", {id, category, price, isActive});
+    try {
+        if (!category) {
+            throw new Error("Category value is required.");
+        }
+        const { rows: [product] } = await client.query(`
+            UPDATE products
+            SET category=$2, price=$3, "isActive"=$4
+            WHERE id = $1
+            RETURNING *;
+        `, [id, category, price, isActive]);
+
+        
+
+        return product;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+
 
 async function deleteUser(id) {
     try { 

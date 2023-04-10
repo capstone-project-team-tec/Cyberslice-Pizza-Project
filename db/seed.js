@@ -95,6 +95,7 @@ async function createTables() {
           category VARCHAR(255) NOT NULL,
           name VARCHAR(255) UNIQUE NOT NULL,
           price FLOAT NOT NULL,
+          "isActive" BOOLEAN DEFAULT true,
           image VARCHAR(255)
       ); 
       CREATE TABLE pizza(
@@ -107,6 +108,7 @@ async function createTables() {
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL,
           price FLOAT NOT NULL,
+          "isActive" BOOLEAN DEFAULT true,
           image VARCHAR(255)
       );
       CREATE TABLE carts (
@@ -190,10 +192,10 @@ async function createInitialDesserts() {
   console.log("Starting to create desserts...")
   try {
     const dessertsToCreate = [
-      { category: "desserts", name: "Brownies",  price: 7.99, image: "/Brownies.jpg" },
-      { category: "desserts", name: "Cinnamon Twists",  price: 7.99, image: "/Cinnamon.jpg" },
-      { category: "desserts", name: "Apple Pie", price: 11.99, image: "/ApplePie.jpg" },
-      { category: "desserts", name: "Chocolate Ice Cream", price: 4.99, image: "/Icecream.jpg" },
+      { category: "desserts", name: "Brownies",  price: 7.99, image: "/Brownies.jpg", isActive: true },
+      { category: "desserts", name: "Cinnamon Twists",  price: 7.99, image: "/Cinnamon.jpg", isActive: true  },
+      { category: "desserts", name: "Apple Pie", price: 11.99, image: "/ApplePie.jpg", isActive: true },
+      { category: "desserts", name: "Chocolate Ice Cream", price: 4.99, image: "/Icecream.jpg", isActive: true },
     ]
     const desserts = await Promise.all(dessertsToCreate.map(createDessert))
 
@@ -208,18 +210,18 @@ async function createInitialDrinks() {
   console.log("Starting to create drinks...")
   try {
     const drinksToCreate = [
-      { category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/NeuronFizz.jpg"  },
-      { category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/NeuronFizz.jpg"  },
-      { category: "drinks", name: "Small Nexus Nectar", price: 2.79, image: "/NexusNectar.jpg"  },
-      { category: "drinks", name: "Large Nexus Nectar", price: 3.29, image: "/NexusNectar.jpg" },
-      { category: "drinks", name: "Small Circuit Surge", price: 2.79, image: "/CircuitSurge.jpg"  },
-      { category: "drinks", name: "Large Circuit Surge", price: 3.29, image: "/CircuitSurge.jpg"  },
-      { category: "drinks", name: "Small Binary Burst", price: 2.79, image: "/BinaryBurst.jpg" },
-      { category: "drinks", name: "Large Binary Burst", price: 3.29, image: "/BinaryBurst.jpg"  },
-      { category: "drinks", name: "Small Quantum Cola", price: 2.79, image: "/QuantumCola.jpg"  },
-      { category: "drinks", name: "Large Quantum Cola", price: 3.29, image: "/QuantumCola.jpg"  },
-      { category: "drinks", name: "Small Plasma Pop", price: 2.79, image: "/PlasmaPop.jpg"  },
-      { category: "drinks", name: "Large Plasma Pop", price: 3.29, image: "/PlasmaPop.jpg"  }
+      { category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/NeuronFizz.jpg", isActive: true  },
+      { category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/NeuronFizz.jpg", isActive: true  },
+      { category: "drinks", name: "Small Nexus Nectar", price: 2.79, image: "/NexusNectar.jpg", isActive: true  },
+      { category: "drinks", name: "Large Nexus Nectar", price: 3.29, image: "/NexusNectar.jpg", isActive: true },
+      { category: "drinks", name: "Small Circuit Surge", price: 2.79, image: "/CircuitSurge.jpg", isActive: true  },
+      { category: "drinks", name: "Large Circuit Surge", price: 3.29, image: "/CircuitSurge.jpg", isActive: true  },
+      { category: "drinks", name: "Small Binary Burst", price: 2.79, image: "/BinaryBurst.jpg", isActive: true },
+      { category: "drinks", name: "Large Binary Burst", price: 3.29, image: "/BinaryBurst.jpg", isActive: true  },
+      { category: "drinks", name: "Small Quantum Cola", price: 2.79, image: "/QuantumCola.jpg", isActive: true  },
+      { category: "drinks", name: "Large Quantum Cola", price: 3.29, image: "/QuantumCola.jpg", isActive: true  },
+      { category: "drinks", name: "Small Plasma Pop", price: 2.79, image: "/PlasmaPop.jpg", isActive: true  },
+      { category: "drinks", name: "Large Plasma Pop", price: 3.29, image: "/PlasmaPop.jpg", isActive: true  }
     ]
     const drinks = await Promise.all(drinksToCreate.map(createDrinks))
 
@@ -233,13 +235,13 @@ async function createInitialSides() {
   console.log("Starting to create sides...")
   try {
     const sidesToCreate = [
-      { category: "sides", name: "Salad", price: 6.99, image: "/Salad.jpeg"},
-      { category: "sides", name: "4ct Breadsticks", price: 4.99, image: "/Breadsticks.jpg"},
-      { category: "sides", name: "6ct Breadsticks", price: 6.99, image: "/Breadsticks.jpg"},
-      { category: "sides", name: "8ct Wings", price: 11.99, image: "/Wings.jpg"},
-      { category: "sides", name: "12ct Wings", price: 13.99, image: "/Wings.jpg"},
-      { category: "sides", name: "Marinara Cup", price: .99, image: "/MarinaraCupWithLogo.jpg"},
-      { category: "sides", name: "Icing Cup", price: 1.99, image: "/IcingCup.jpg"}
+      { category: "sides", name: "Salad", price: 6.99, image: "/Salad.jpeg", isActive: true},
+      { category: "sides", name: "4ct Breadsticks", price: 4.99, image: "/Breadsticks.jpg", isActive: true},
+      { category: "sides", name: "6ct Breadsticks", price: 6.99, image: "/Breadsticks.jpg", isActive: true},
+      { category: "sides", name: "8ct Wings", price: 11.99, image: "/Wings.jpg", isActive: true},
+      { category: "sides", name: "12ct Wings", price: 13.99, image: "/Wings.jpg", isActive: true},
+      { category: "sides", name: "Marinara Cup", price: .99, image: "/MarinaraCupWithLogo.jpg", isActive: true},
+      { category: "sides", name: "Icing Cup", price: 1.99, image: "/IcingCup.jpg", isActive: true}
       
 
     ]
@@ -257,12 +259,12 @@ async function createInitialToppings() {
   console.log("Starting to create toppings...")
   try {
     const toppingsToCreate = [
-      { name: "Pepperoni", price: 3.99, image: "/1-Pepperoni.png"},
-      { name: "Sausage", price: 3.99, image: "/2-Sausage.png"},
-      { name: "GreenPepper", price: 2.99, image: "/3-GreenPepper.png"},
-      { name: "Onion", price: 2.99, image: "/4-Onions.png"},
-      { name: "Black Olives", price: 2.99, image: "/5-BlackOlive.png"},
-      { name: "24-Carat Gold Flakes", price: 6.99, image: "/6-Gold.png"}
+      { name: "Pepperoni", price: 3.99, image: "/1-Pepperoni.png", isActive: true},
+      { name: "Sausage", price: 3.99, image: "/2-Sausage.png", isActive: true},
+      { name: "GreenPepper", price: 2.99, image: "/3-GreenPepper.png", isActive: true},
+      { name: "Onion", price: 2.99, image: "/4-Onions.png", isActive: true},
+      { name: "Black Olives", price: 2.99, image: "/5-BlackOlive.png", isActive: true},
+      { name: "24-Carat Gold Flakes", price: 6.99, image: "/6-Gold.png", isActive: true}
     ]
     const toppings = await Promise.all(toppingsToCreate.map(createToppings))
 
