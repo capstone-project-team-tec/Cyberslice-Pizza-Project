@@ -133,7 +133,7 @@ const Drinks = (props) => {
 
         <section id = "itemsList"> 
           {drinks.length > 0 ? (
-            drinks.filter(product => product.isActive === true).map((singleDrink) => {
+            drinks.map((singleDrink) => {
               return (
                 <section id = "itemContainer">
                     <div key={singleDrink.id}>

@@ -10,6 +10,7 @@ const Checkout = (props) => {
     const { currentCart, currentUser } = props
     const [currentOrderItems, setCurrentOrderItems] = useState([])
     const [anything, setAnything] = useState([])
+    
     const {id} = useParams()
 
     useEffect(() => {
@@ -71,6 +72,8 @@ const Checkout = (props) => {
         return accumulator + orderItem.cost * orderItem.count;
       }, 0);      
 
+    // Working on getting a qunatity changer
+
     return (
         <section id = "checkoutContainer">
             <section id = "checkoutPageTitle">My Cart</section>
@@ -105,13 +108,6 @@ const Checkout = (props) => {
                                     <section className = "detailValue">
                                         {orderItem.cost}
                                     </section>
-                                </section>
-
-                                {/* This needs to go to the far right */}
-                                <section className = "removeButtonContainer">
-                                    <button id = "removeButton" onClick={() => handleRemove(orderItem.productId, orderItem.id)}>
-                                        Remove
-                                    </button>
                                 </section>
                                 
                             </section>
