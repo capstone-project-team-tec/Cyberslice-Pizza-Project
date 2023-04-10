@@ -166,7 +166,7 @@ return (
 
       <section id = "itemsList"> 
         {sides.length > 0 ? (
-          sides.map((singleSide) => {
+          sides.filter(product => product.isActive === true).map((singleSide) => {
             return (
               <section id = "itemContainer">
                   <div key={singleSide.id}>

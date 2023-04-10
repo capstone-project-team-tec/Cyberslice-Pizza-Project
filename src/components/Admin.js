@@ -21,9 +21,9 @@ const Admin = (props) => {
     const [producImg, setProductImg] = useState("");
     const [productId, setProductId] = useState("")
     const [editUser, setEditUser] = useState(false)
-    const [editSides, setEditSides] = useState(false)
-    const [editDesserts, setEditDesserts] = useState(false)
-    const [editDrinks, setEditDrinks] = useState(false)
+    const [editSides, setEditSides] = useState(null)
+    const [editDesserts, setEditDesserts] = useState(null)
+    const [editDrinks, setEditDrinks] = useState(null)
     const { products, users, currentUser, drinks, sides, desserts, setDrinks, setSides, setDesserts } = props
     const [allUsers, setAllUsers] = useState({})
     const [allProducts, setAllProducts] = useState({})
@@ -43,14 +43,14 @@ const Admin = (props) => {
     function editUserForm() {
         setEditUser(!editUser)
     }
-    function editSidesForm() {
-        setEditSides(!editSides)
+    function editSidesForm(productId) {
+        setEditSides(productId === editSides ? null : productId)
     }
-    function editDessertsForm() {
-        setEditDesserts(!editDesserts)
+    function editDessertsForm(productId) {
+        setEditDesserts(productId === editDesserts ? null : productId)
     }
-    function editDrinksForm() {
-        setEditDrinks(!editDrinks)
+    function editDrinksForm(productId) {
+        setEditDrinks(productId === editDrinks ? null : productId)
     }
 
     async function fetchUserById(userId) {
@@ -399,22 +399,48 @@ const Admin = (props) => {
     return (
         <div>
             <h2>Welcome to the Admin Page</h2>
-            <button onClick={toggleUsersToDeleteandUpdate}>Users</button>
-            <button onClick={toggleDrinksToDeleteandUpdate}>Prdoucts</button>
-
+            <div id="buttoncontainerforusersorproducts">
+            <button className="userorproduct"onClick={toggleUsersToDeleteandUpdate}>View Users</button>
+            <button className="userorproduct"onClick={toggleDrinksToDeleteandUpdate}>View Products</button>
+            </div>
             {
         toggleUsers && users.length > 0 ? (
             users.map((singleUser) => {
                 return (
                     <div key={singleUser.id}>
-                        <h2>Id: {singleUser.id}</h2>
-                        <h2>Username: {singleUser.username}</h2>
-                        <h2>Name: {singleUser.name}</h2>
-                        <h2>Email: {singleUser.email}</h2>
-                        <h2>Phone: {singleUser.phone}</h2>
-                        <h2>Address: {singleUser.address}</h2>
-                        <button onClick={editUserForm}>Edit User</button>
-                        <button onSubmit={(event) => onSubmitEventHandlerDeleteUser(event, singleUser.id)}>Delete This Account</button>
+                        <div id="parent">
+                            <h4 id="userheader">{singleUser.name}'s Info</h4>
+                            <div id="usercontainer">
+                        <section className="infocolumn">
+                        <h2>Id:</h2>
+                        <h2>{singleUser.id}</h2>
+                        </section>
+                        <section className="infocolumn">
+                        <h2>Username:</h2>
+                        <h2>{singleUser.username}</h2>
+                        </section>
+                        <section className="infocolumn">
+                        <h2>Name:</h2>
+                        <h2>{singleUser.name}</h2>
+                        </section>
+                        <section className="infocolumn">
+                        <h2>Email:</h2>
+                        <h2>{singleUser.email}</h2>
+                        </section>
+                        <section className="infocolumn">
+                        <h2>Phone:</h2>
+                        <h2>{singleUser.phone}</h2>
+                        </section>
+                        <section className="infocolumn">
+                        <h2>Address:</h2>
+                        <h2>{singleUser.address}</h2>
+                        </section>
+                        </div>
+                        </div>
+                        <div id="buttoncontainer">
+                        <button onClick={editUserForm} className="userorproduct">Edit {singleUser.name}</button>
+                        <button className = "userorproduct" onSubmit={(event) => onSubmitEventHandlerDeleteUser(event, singleUser.id)}>Delete This Account</button>
+                        </div>
                         {
                             editUser ? (
                                 <div>
@@ -476,116 +502,139 @@ const Admin = (props) => {
   toggleProducts && drinks.length > 0 && sides.length > 0 && desserts.length > 0 ? (
     <div>
         <form onSubmit={(event) => createNewProduct(event)}>
-            <h3>Create Product</h3>
-            <p>To Update Product Name, Please Create A New Product and Delete This Product</p>
+            <h3 id="createproduct">Create Product</h3>
+            <p> </p>
+            <div id="createform">
             <input 
+            className="createbox"
             type="text"
             placeholder="New Product Name"
             value={newProductName}
             onChange={(event) => setNewProductName(event.target.value)}
             />
             <input 
+            className="createbox"
             type="text"
             placeholder="Category"
             value={newProductCategory}
             onChange={(event) => setNewProductCategory(event.target.value)}
             />
             <input 
+            className="createbox"
             type="text"
             placeholder="Price"
             value={newProductPrice}
             onChange={(event) => setNewProductPrice(event.target.value)}
             />
-            <button type="submit">Create</button>
+            <button className="submitform"type="submit">Create</button>
+            </div>
         </form>
-      <h1>Drinks</h1>
+      <h1 className="header">Drinks</h1>
+      <section className="productcontainer" id="drinkscontainer">
+      <section className="itemsList">
       {drinks.filter(product => product.isActive === true).map((singleDrink) => (
-        <section id="itemContainer" key={singleDrink.id}>
+        <section key={singleDrink.id}>
+            <div className="imageContainerDrinks">
           <img src={singleDrink.image} id="itemPic" />
-          <section id="itemTitle">{singleDrink.name}</section>
-          <section id="itemCost">${singleDrink.price}</section>
-          <button onClick={editDrinksForm}>Update Drink</button>
-          {
-            editDrinks ? (
+          </div>
+          <section>{singleDrink.name}</section>
+          <section>${singleDrink.price}</section>
+          <button onClick={() => editDrinksForm(singleDrink.id)}>Update Drink</button>
+          {editDrinks === singleDrink.id && (
                 <form onSubmit={(event) => onSubmitEventHandlerUpdateProduct(event, singleDrink.id)}>
-                    <h5>Edit Price</h5>
-                    <input 
+                  <p>To Update Product Name, Please Create A New Product and Delete This Product</p>
+                  <h5>Edit Price</h5>
+                  <input 
                     type="text"
                     defaultValue={productPrice}
                     onChange={(event) => setProductPrice(event.target.value)}
-                    />
-                    <h5>Edit Category</h5>
-                    <input 
+                  />
+                  <h5>Edit Category</h5>
+                  <input 
                     type="text"
                     defaultValue={productCategory}
                     onChange={(event) => setProductCategory(event.target.value)}
-                    />
-                    <p> </p>
-                    <button type="submit">Update</button>
+                  />
+                  <p> </p>
+                  <button type="submit">Update</button>
                 </form>
-            ): ""
-          }
+              )}
           <button onClick={() => onSubmitEventHandlerDeleteProduct(singleDrink.id)}>Delete Drink</button>
         </section>
       ))}
-      <h1>Desserts</h1>
+      </section>
+      </section>
+      <h1 className="header">Desserts</h1>
+      <section className="productcontainer" id="drinkscontainer">
+      <section className="itemsList">
       {desserts.filter(product => product.isActive === true).map((singleDessert) => (
         <div key={singleDessert.id}>
+            <div className="imageContainerDesserts">
+        <img src={singleDessert.image} id="itemPic" />
+        </div>
           <h2>{singleDessert.name}</h2>
-          <h2>Price: {singleDessert.price}</h2>
-          <button onClick={editDessertsForm}>Update Dessert</button>
-          {
-            editDesserts ? (
+          <h2>Price: ${singleDessert.price}</h2>
+          <button onClick={() => editDessertsForm(singleDessert.id)}>Update Dessert</button>
+          {editDesserts === singleDessert.id && (
                 <form onSubmit={(event) => onSubmitEventHandlerUpdateProduct(event, singleDessert.id)}>
-                    <h5>Edit Price</h5>
-                    <input 
+                  <p>To Update Product Name, Please Create A New Product and Delete This Product</p>
+                  <h5>Edit Price</h5>
+                  <input 
                     type="text"
                     defaultValue={productPrice}
                     onChange={(event) => setProductPrice(event.target.value)}
-                    />
-                    <h5>Edit Category</h5>
-                    <input 
+                  />
+                  <h5>Edit Category</h5>
+                  <input 
                     type="text"
                     defaultValue={productCategory}
                     onChange={(event) => setProductCategory(event.target.value)}
-                    />
-                    <p> </p>
-                    <button type="submit">Update</button>
+                  />
+                  <p> </p>
+                  <button type="submit">Update</button>
                 </form>
-            ): ""
-          }
+              )}
           <button onClick={() => onSubmitEventHandlerDeleteProduct(singleDessert.id)}>Delete Dessert</button>
         </div>
       ))}
-      <h1>Sides</h1>
+        </section>
+      </section>
+      <h1 className="header">Sides</h1>
+      <section className="productcontainer" id="alldrinks">
+      <section className="itemsList">
       {sides.filter(product => product.isActive === true).map((singleSide) => (
         <div key={singleSide.id}>
+            <div className="imageContainerSides">
+            <img src={singleSide.image} id="itemPic" />
+            </div>
           <h2>{singleSide.name}</h2>
-          <h2>Price: {singleSide.price}</h2>
-          <button onClick={editSidesForm}>Update Side</button>
-          {
-            editSides ? (
+          <h2>Price: ${singleSide.price}</h2>
+          <button onClick={() => editSidesForm(singleSide.id)}>Update Side</button>
+          
+            {editSides === singleSide.id && (
                 <form onSubmit={(event) => onSubmitEventHandlerUpdateProduct(event, singleSide.id)}>
-                    <h5>Edit Price</h5>
-                    <input 
+                  <p>To Update Product Name, Please Create A New Product and Delete This Product</p>
+                  <h5>Edit Price</h5>
+                  <input 
                     type="text"
                     defaultValue={productPrice}
                     onChange={(event) => setProductPrice(event.target.value)}
-                    />
-                    <h5>Edit Category</h5>
-                    <input 
+                  />
+                  <h5>Edit Category</h5>
+                  <input 
                     type="text"
                     defaultValue={productCategory}
                     onChange={(event) => setProductCategory(event.target.value)}
-                    />
-                    <p> </p>
-                    <button type="submit">Update</button>
+                  />
+                  <p> </p>
+                  <button type="submit">Update</button>
                 </form>
-            ): ""
-          }
+              )}
           <button onClick={() => onSubmitEventHandlerDeleteProduct(singleSide.id)}>Delete Side</button>
         </div>
       ))}
+      </section>
+      </section>
     </div>
   ) : null
 }
