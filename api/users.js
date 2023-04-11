@@ -10,7 +10,8 @@ const {
     deleteUser,
     createAdminUser,
     getAdminUser,
-    getAdminUserByUsername
+    getAdminUserByUsername,
+    orderOptionsCartUpdateDeliveryAddress
 
 } = require('../db/users');
 
@@ -312,6 +313,29 @@ usersRouter.delete('/me', async (req, res, next) => {
       next({ name, message });
     }
   });
+
+  usersRouter.patch('/:id/updatedelivery', async (req, res, next) => {
+    const id = req.params.id;
+    console.log("Update request for delivery address is running")
+    const { address } = req.user;
+
+    const updateFields = {};
+
+    if (id) {
+        updateFields.id = id
+    }
+
+    if (address) {
+        updateFields.address = address
+    }
+    try {
+        const updatedDelivery = await orderOptionsCartUpdateDeliveryAddress(updateFields);
+        console.log("Update request for delivery address is finished")
+        res.send(updatedDelivery)
+    } catch(error) {
+        console.log(error)
+    }
+})
 
 
 module.exports = usersRouter

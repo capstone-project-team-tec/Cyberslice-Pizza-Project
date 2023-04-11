@@ -57,18 +57,7 @@ async function orderOptionsCartUpdateOrderLocation({ cartId, orderLocation}) {
     }
 }
 
-async function orderOptionsCartUpdateDeliveryAddress({ cartId, deliveryAddress }) {
-    try {
-        const { rows } = await client.query(`
-        UPDATE carts
-        SET "deliveryAddress" = $2
-        WHERE id = $1
-        RETURNING *;
-        `, [cartId, deliveryAddress])
-    } catch(error) {
-        console.log(error)
-    }
-}
+
 
 async function fetchUserCarts(userId) {
     try {
@@ -205,7 +194,6 @@ module.exports = {
     fetchOrderItemsByCartId,
     deleteRowProducts,
     deleteRowPizza,
-    orderOptionsCartUpdateDeliveryAddress,
     orderOptionsCartUpdateOrderLocation,
     updateOrderItem
 }

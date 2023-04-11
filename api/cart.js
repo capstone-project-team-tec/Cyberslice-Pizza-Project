@@ -13,7 +13,6 @@ const {
     deleteRowProducts,
     deleteRowPizza,
     updateOrderItem,
-    orderOptionsCartUpdateDeliveryAddress,
     orderOptionsCartUpdateOrderLocation
 } = require('../db/cart');
 
@@ -175,27 +174,7 @@ cartRouter.post('/:cartId/payment', async (req, res, next) => {
     }
 })
 
-cartRouter.patch('/:cartId/updatedelivery', async (req, res, next) => {
-    const cartId = req.params.cartId;
-    console.log("Patch request for delivery address is running")
-    const { deliveryAddress } = req.body;
 
-    const updateFields = {};
-
-    if (cartId) {
-        updateFields.cartId = cartId
-    }
-
-    if (deliveryAddress) {
-        updateFields.deliveryAddress = deliveryAddress
-    }
-    try {
-        const updatedDelivery = await orderOptionsCartUpdateDeliveryAddress(updateFields);
-        res.send(updatedDelivery)
-    } catch(error) {
-        console.log(error)
-    }
-})
 
 cartRouter.patch('/:cartId/orderlocation', async (req, res, next) => {
     const cartId = req.params.cartId;

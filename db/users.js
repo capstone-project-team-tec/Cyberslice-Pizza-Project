@@ -219,6 +219,21 @@ async function deleteUser(id) {
   }
 }
 
+async function orderOptionsCartUpdateDeliveryAddress({ id, address }) {
+    try {
+        const { rows: [user] } = await client.query(`
+        UPDATE users
+        SET address = $2
+        WHERE id = $1
+        RETURNING *;
+        `, [id, address])
+
+        return user
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 // name, email, address, phone
 // name=$3, email=$4, address=$5, phone=$6
 
@@ -233,5 +248,6 @@ module.exports = {
     deleteUser,
     createAdminUser,
     getAdminUser,
-    getAdminUserByUsername
+    getAdminUserByUsername,
+    orderOptionsCartUpdateDeliveryAddress
   }
