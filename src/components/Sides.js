@@ -4,7 +4,6 @@ import "./global.css"
 
 const Sides = (props) => {
   const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, sides } = props;
-  // const [allSides, setAllSides] = useState([]);
   const [currentCartId, setCurrentCartId] = useState(props.currentCart.id);
   const [addedSideId, setAddedSideId] = useState(null);
 
@@ -127,37 +126,6 @@ const Sides = (props) => {
     }
     createOrderItem(cartId, productId, count, cost, productName);
   };
-
-//   const createOrderItemsRow = async (cartId, productId, count, cost, productName) => {
-//     if (props.currentCart == {}){
-//         await createCartForGuest();
-//         cartId = guestCartId
-//         console.log("no current user was found in sides")
-//     } else {
-//         console.log("a current user was found in sides.  ",props.currentCart)
-//     }
-//     try {
-//       const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           cartId,
-//           productId,
-//           count,
-//           cost,
-//           productName
-//         }),
-//       });
-
-//       const result = await response.json();
-//       console.log(result);
-//       showAddedToCartNotification(productId);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
 
 return (
   <div>

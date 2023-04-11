@@ -116,8 +116,8 @@ async function createTables() {
           "userId" INTEGER REFERENCES users(id),
           "isCheckedOut" BOOLEAN DEFAULT FALSE,
           "totalCost" FLOAT,
-          "deliveryAddress" VARCHAR(255) REFERENCES users(address),
-          "orderLocation" VARCHAR(255) 
+          "deliveryAddress" VARCHAR(255),
+          "orderLocation" VARCHAR(255)
       );
       CREATE TABLE "pizzaWithToppings" (
           id SERIAL PRIMARY KEY,
@@ -283,8 +283,25 @@ async function createPizzaWithToppings() {
 
     console.log("Creating initial pizza ID...");
 
-    const createdPizza = await createPizza();
-    const secondCreatedPizza = await createPizza();
+    const pizzaTemp1 = [
+      { 
+        name: null,
+        basePizzaCost: null,
+        size: null
+      }
+    ];
+
+    const pizzaTemp2 = [
+      { 
+        name: null,
+        basePizzaCost: null,
+        size: null
+      }
+    ];
+
+
+    const createdPizza = await createPizza(pizzaTemp1);
+    const secondCreatedPizza = await createPizza(pizzaTemp2);
 
     console.log(createdPizza)
     console.log("this is createdpizza.id ....." + createdPizza.id)
@@ -407,7 +424,7 @@ async function createInitialOrderItemsRowsForCartsUsingProducts() {
 async function createInitialOrderItemsRowsForCartsUsingPizza() {
   console.log("Starting to create orderItems rows for a cart using pizza...")
   try {
-    const createdRow = await createOrderItemsRowForPizza({cartId:1, pizzaId:2, count:1, cost: 111111.99});
+    const createdRow = await createOrderItemsRowForPizza({cartId:1, pizzaId:2, count:1, cost:111111.99});
     const createdRow2 = await createOrderItemsRowForPizza({cartId:2, pizzaId:1, count:2, cost:2222222.99});
     const createdRow3 = await createOrderItemsRowForPizza({cartId:1, pizzaId:1, count:2, cost:3333333.99});
 

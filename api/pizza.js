@@ -9,14 +9,7 @@ const {
     fetchPizzaByName
 } = require('../db/pizza');
 
-//dependency imports
 require('dotenv').config();
-// Do we even need this?
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require("bcrypt");
-
-// const { requireUser } = require('./utils');
-
 pizzaRouter.use((req,res,next)=>{
   console.log("A request is being made to /pizza");
   next();
@@ -73,8 +66,8 @@ pizzaRouter.post('/', async (req, res, next) => {
 })
 
 pizzaRouter.post('/:pizzaId/pizzawithtoppings', async (req, res, next) => {
-  const { pizzaId } = req.params;
-  const { toppingsId, count} = req.body;
+  const {pizzaId} = req.params;
+  const {toppingsId, count} = req.body;
   try {
     let newPizzaWithToppingsTableRow = await addToppingsToPizza({pizzaId, toppingsId, count});
     if (newPizzaWithToppingsTableRow) {
@@ -106,7 +99,7 @@ pizzaRouter.post('/:pizzaId/pizzawithtoppings', async (req, res, next) => {
 pizzaRouter.patch('/:pizzaId', async (req, res, next) => {
   const id = req.params.pizzaId;
   console.log("pizzaRouter.patch; pizzaId: " + id);
-  const { name, basePizzaCost, size } = req.body;
+  const {name, basePizzaCost, size} = req.body;
 
   console.log("this is line 57" + name);
   console.log("this is line 58" + basePizzaCost);
@@ -129,8 +122,8 @@ pizzaRouter.patch('/:pizzaId', async (req, res, next) => {
   try {
     const updatePizza = await addDetailsToPizza(id, updateFields);
     res.send(updatePizza);
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch ({name, message}) {
+    next({name, message});
   }
 });
 
