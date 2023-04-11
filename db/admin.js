@@ -57,36 +57,6 @@ async function getProductById(id) {
     }
 }
 
-
-
-// async function updateProduct({id, fields = {} }) {
-//     console.log("Starting updateDesserts");
-
-//     const setString = Object.keys(fields).map(
-//         (key, index) => `"${key}"=$${index + 1}`
-//     ).join(', ');
-
-//     try {
-//         const result = await client.query(`
-//             UPDATE products
-//             SET ${setString}
-//             WHERE id=$${Object.values(fields).length + 1}
-//             RETURNING *;
-//             `, [...Object.values(fields), id]
-//         );
-
-//         if (result.rowCount > 0) {
-//             console.log("Finished updateProducts");
-//             return await getProducById(id);
-//         } else {
-//             throw new Error("No rows updated.");
-//         }
-//     } catch(error) {
-//         console.log(error);
-//         throw error;
-//     }
-// }
-
 async function deleteProduct(id) {
     try {
         const product = await getProductById(id);
@@ -118,30 +88,29 @@ async function getAllUsers() {
     } catch (error) {
         console.log(error)
     }
-  }
+}
 
-  async function getUserByUsername(userName) {
+async function getUserByUsername(userName) {
     console.log("Getting user by username, testing logging in");
-      try {
-          const {rows} = await client.query(`
-              SELECT *
-              FROM users
-              WHERE username=$1;
-          `, [userName])
-  
-          // console.log(rows);
-          if(rows){
-              return rows[0];
-          }
-          else{
-              return undefined;
-          }
-      } catch (error) {
-          console.log(error);
-      }
-  }
+        try {
+            const {rows} = await client.query(`
+                SELECT *
+                FROM users
+                WHERE username=$1;
+            `, [userName])
 
-  async function getUserById(userId) {
+            if(rows){
+                return rows[0];
+            }
+            else{
+                return undefined;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+}
+
+async function getUserById(userId) {
     try {
 
         const {rows: [user] } = await client.query(`
@@ -170,8 +139,6 @@ async function updateUser({id, username, name, email, address, phone}) {
             RETURNING *;
         `, [id, username, name, email, address, phone]);
         
-        
-
         return user;
     } catch(error) {
         console.log(error);
@@ -191,15 +158,11 @@ async function updateProduct({id, category, price, isActive}) {
             RETURNING *;
         `, [id, category, price, isActive]);
 
-        
-
         return product;
     } catch(error) {
         console.log(error);
     }
 }
-
-
 
 async function deleteUser(id) {
     try { 

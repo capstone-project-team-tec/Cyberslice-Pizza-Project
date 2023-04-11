@@ -61,17 +61,12 @@
     max-width: 90%;
 
     padding-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 10rem;
 }
 
 #alldrinks {
     margin-bottom: 20%;
 }
-
-/* #createproduct {
-    text-align: center;
-} */
-
 
 .createbox {
     background-color: black;
@@ -125,7 +120,6 @@
 #parent {
     border: 2px solid #32CD32; 
     margin-bottom: 2%;
-    
 }
 #usercontainer {
     font-size: 100%;
@@ -136,7 +130,6 @@
     margin-right: 10%;
     margin-left: 2%;
     margin-bottom: 5%;
-    
 }
 
 #userheader {

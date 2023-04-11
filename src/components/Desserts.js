@@ -132,7 +132,7 @@ const Desserts = (props) => {
       <section id= "dessertsContainer">
         <section id = "dessertsPageTitle">Desserts</section>
 
-        <section id = "itemsList"> 
+        <section className = "itemsList"> 
           {desserts.length > 0 ? (
             desserts.filter(product => product.isActive === true).map((singleDessert) => {
               return (

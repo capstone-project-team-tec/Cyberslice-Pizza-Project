@@ -25,7 +25,7 @@ adminRouter.use((req,res,next)=>{
 adminRouter.get('/products', async(req,res,next)=>{
     try {
         const products = await fetchAllProducts();
-        res.send( products );
+        res.send(products);
       } catch (error) {
         next(error);
       }
@@ -35,7 +35,7 @@ adminRouter.get('/users', async(req,res,next)=>{
   console.log("get all users request is running")
   try {
       const users = await fetchAllUsers();
-      res.send( users );
+      res.send(users);
     } catch (error) {
       next(error);
     }
@@ -49,9 +49,7 @@ adminRouter.get('/:userId', async (req, res, next) => {
   const user = await getUserById(req.params.userId);
   try {
     console.log("This is the admin router user", user)
-    res.send(
-      user
-    );
+    res.send(user);
   } catch (error) {
     console.log(error);
     next(error);
@@ -98,9 +96,7 @@ adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) =
     }
     const product = await getProductById(req.params.productId);
     try {
-      res.send(
-        product
-      );
+      res.send(product);
     } catch (error) {
       console.log(error);
       next(error);
@@ -152,15 +148,15 @@ adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) =
     try {
       const deletedProduct = await deleteProduct(req.params.productId);
       res.send(deletedProduct);
-    } catch ({ name, message }) {
-      next({ name, message });
+    } catch ({name, message}) {
+      next({name, message});
     }
   });
 
   adminRouter.patch(`/users/:id`, requireAdmin, async (req, res, next) => {
     console.log("This is the admin router patch running")
-    // const id = req.params.id
     console.log(req.user)
+
     const { id } = req.params
     const { username, name, email, address, phone} = req.body
     const updateFields = {}
@@ -183,7 +179,6 @@ adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) =
         updateFields.phone = phone
     }
     
-    
     try {
       if (!id) {
         res.send({
@@ -201,9 +196,7 @@ adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) =
 })
 
   adminRouter.delete('/users/:id', requireAdmin, async (req, res, next) => {
-
-    // const { username } = req.user
-    const { id } = req.params
+    const {id} = req.params
     try {
     const id = await getUserByUsername(username);
       if (!id) {
@@ -212,7 +205,6 @@ adminRouter.patch('/products/:productId', requireAdmin, async (req, res, next) =
               message: 'Could not find a user with that username'
           } )
       } else { 
-    // const { id } = req.user
         await deleteUser(id)
         res.send({
             success: true,

@@ -11,11 +11,6 @@ const {
 
 //dependency imports
 require('dotenv').config();
-// Do we even need this?
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require("bcrypt");
-
-// const { requireUser } = require('./utils');
 
 dessertsRouter.use((req,res,next)=>{
     console.log("A request is being made to /desserts");
@@ -25,7 +20,7 @@ dessertsRouter.use((req,res,next)=>{
 dessertsRouter.get('/', async(req,res,next)=>{
     try {
         const desserts = await getAllDesserts();
-        res.send( desserts );
+        res.send(desserts);
       } catch (error) {
         next(error);
       }
@@ -34,7 +29,7 @@ dessertsRouter.get('/', async(req,res,next)=>{
 dessertsRouter.patch('/:dessertId', async (req, res, next) => {
   const id = req.params.dessertId;
   console.log("dessertsRouter.patch; desssertId: " + id);
-  const { name, price } = req.body;
+  const {name, price} = req.body;
 
   console.log(name);
   console.log(price);
@@ -52,8 +47,8 @@ dessertsRouter.patch('/:dessertId', async (req, res, next) => {
     const updatedDessert = await updateDesserts({id, fields: updateFields});
     console.log("Updated dessert: " + updatedDessert);
     res.send(updatedDessert);
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch ({name, message}) {
+    next({name, message});
   }
 });
 
@@ -64,9 +59,7 @@ dessertsRouter.get('/:dessertId', async (req, res, next) => {
     next(error);
   }
   try {
-    res.send(
-      dessert
-    );
+    res.send(dessert);
   } catch (error) {
     console.log(error);
     next(error);
@@ -81,8 +74,8 @@ dessertsRouter.delete('/:dessertId', async (req, res, next) => {
   try {
     const deletedDessert = await deleteDessert(req.params.dessertId);
     res.send(deletedDessert);
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch ({name, message}) {
+    next({name, message});
   }
 });
 

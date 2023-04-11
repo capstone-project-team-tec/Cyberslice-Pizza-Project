@@ -21,13 +21,7 @@ const {
     createPaymentInformationForOrderRow
 } = require('../db/paymentInformationForOrder');
 
-//dependency imports
 require('dotenv').config();
-// Do we even need this?
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require("bcrypt");
-
-// const { requireUser } = require('./utils');
 
 cartRouter.use((req,res,next)=>{
   console.log("A request is being made to /cart");

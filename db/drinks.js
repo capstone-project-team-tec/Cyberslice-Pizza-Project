@@ -10,7 +10,6 @@ async function createDrinks({category, name, price, image}) {
         `, [category, name, price, image ])
 
         return rows;
-
     } catch(error) {
         console.log(error)
     }
@@ -31,13 +30,12 @@ async function getAllDrinks() {
 
 async function getDrinkById(id) {
     try {
-        const {rows: [product] } = await client.query(`
+        const {rows: [product]} = await client.query(`
         SELECT * FROM products
         WHERE id=$1 AND category='drinks';
         `, [id])
 
         return product
-
     } catch(error) {
         console.log(error)
     }

@@ -11,11 +11,6 @@ const {
 
 //dependency imports
 require('dotenv').config();
-// Do we even need this?
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require("bcrypt");
-
-// const { requireUser } = require('./utils');
 
 sidesRouter.use((req,res,next)=>{
     console.log("A request is being made to /sides");
@@ -25,7 +20,7 @@ sidesRouter.use((req,res,next)=>{
 sidesRouter.get('/', async(req,res,next)=>{
     try {
         const sides = await getAllSides();
-        res.send( sides );
+        res.send(sides);
       } catch (error) {
         next(error);
       }
@@ -34,7 +29,7 @@ sidesRouter.get('/', async(req,res,next)=>{
 sidesRouter.patch('/:sideId', async (req, res, next) => {
   const id = req.params.sideId;
   console.log("sidesRouter.patch; sideId: " + id);
-  const { name, price } = req.body;
+  const {name, price} = req.body;
 
   console.log(name);
   console.log(price);
@@ -52,8 +47,8 @@ sidesRouter.patch('/:sideId', async (req, res, next) => {
     const updatedSide = await updateSides({id, fields: updateFields});
     console.log("Updated side: " + updatedSide);
     res.send(updatedSide);
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch ({name, message}) {
+    next({name, message});
   }
 });
 
@@ -64,9 +59,7 @@ sidesRouter.get('/:sideId', async (req, res, next) => {
     next(error);
   }
   try {
-    res.send(
-      side
-    );
+    res.send(side);
   } catch (error) {
     console.log(error);
     next(error);

@@ -17,7 +17,7 @@ async function addToppingsToPizza({pizzaId, toppingsId, count}) {
 
 async function fetchPizzaWithToppingsInfo({pizzaId}) {
     try {
-        const { rows : [user] } = await client.query(`
+        const {rows : [user]} = await client.query(`
             SELECT *
             FROM pizzaWithToppings
             WHERE pizzaID = $1;
@@ -30,7 +30,7 @@ async function fetchPizzaWithToppingsInfo({pizzaId}) {
 // pizza table functions
 async function createPizza({name, basePizzaCost, pizzaSize}) {
     try {
-        const { rows } = await client.query(`
+        const {rows} = await client.query(`
             INSERT INTO pizza (name, "basePizzaCost", size)
             VALUES ($1, $2, $3)
             RETURNING *;
@@ -43,7 +43,7 @@ async function createPizza({name, basePizzaCost, pizzaSize}) {
 
 async function addDetailsToPizza(id, {name, basePizzaCost, size}) {
     try {
-        const { rows } = await client.query(`
+        const {rows} = await client.query(`
             UPDATE pizza
             SET name = $2, "basePizzaCost" = $3, size = $4
             WHERE id = $1;
@@ -65,11 +65,10 @@ async function fetchPizzaByName(name) {
                 pizza,
                 success: true
             }
-        } else{
+        }else{
             return {success: false}
         }
         
-
     } catch(error) {
         console.log(error);
     }
