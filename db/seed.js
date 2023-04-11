@@ -115,7 +115,9 @@ async function createTables() {
           id SERIAL PRIMARY KEY,
           "userId" INTEGER REFERENCES users(id),
           "isCheckedOut" BOOLEAN DEFAULT FALSE,
-          "totalCost" FLOAT 
+          "totalCost" FLOAT,
+          "deliveryAddress" VARCHAR(255) REFERENCES users(address),
+          "orderLocation" VARCHAR(255) 
       );
       CREATE TABLE "pizzaWithToppings" (
           id SERIAL PRIMARY KEY,

@@ -1,71 +1,78 @@
 //This is the CarryOut or Delivery page
 import { useState } from "react"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useParams, useNavigate, Link, json, useNavigate } from "react-router-dom"
 import "./orderOptions.css"
 import "./global.css"
 
-const CarryoutLocation = ({ title, street, city, state, zip}) => {
-    return (
-        <section className="location">
-            <section className="locationInfoContainer">
-                <section className="locationTitle">
-                {title}
-                </section>
+// const CarryoutLocation = ({ title, street, city, state, zip}) => {
+//     return (
+//         <section className="location">
+//             <section className="locationInfoContainer">
+//                 <section className="locationTitle">
+//                 {title}
+//                 </section>
 
-                <section className="addressContainer">
-                <section className="locationStreetContainer">
-                    <section className="locationStreetTitle">
-                    Street
-                    </section>
+//                 <section className="addressContainer">
+//                 <section className="locationStreetContainer">
+//                     <section className="locationStreetTitle">
+//                     Street
+//                     </section>
 
-                    <section className="locationStreet">
-                    {street}
-                    </section>
-                </section>
+//                     <section className="locationStreet">
+//                     {street}
+//                     </section>
+//                 </section>
 
-                <section className="locationCityContainer">
-                    <section className="locationCityTitle">
-                    City
-                    </section>
+//                 <section className="locationCityContainer">
+//                     <section className="locationCityTitle">
+//                     City
+//                     </section>
 
-                    <section className="locationCity">
-                    {city}
-                    </section>
-                </section>
+//                     <section className="locationCity">
+//                     {city}
+//                     </section>
+//                 </section>
 
-                <section className="locationStateContainer">
-                    <section className="locationStateTitle">
-                    State
-                    </section>
+//                 <section className="locationStateContainer">
+//                     <section className="locationStateTitle">
+//                     State
+//                     </section>
 
-                    <section className="locationState">
-                    {state}
-                    </section>
-                </section>
+//                     <section className="locationState">
+//                     {state}
+//                     </section>
+//                 </section>
 
-                <section className="locationZipContainer">
-                    <section className="locationZipTitle">
-                    Zip
-                    </section>
+//                 <section className="locationZipContainer">
+//                     <section className="locationZipTitle">
+//                     Zip
+//                     </section>
 
-                    <section className="locationZip">
-                    {zip}
-                    </section>
-                </section>
-                </section>
-            </section>
-    </section>
-    )
-}
+//                     <section className="locationZip">
+//                     {zip}
+//                     </section>
+//                 </section>
+//                 </section>
+//             </section>
+//     </section>
+//     )
+// }
 const OrderOptions = (props) => {
     const [carryOut, setCarryOut] = useState(false)
     const [delivery, setDelivery] = useState(false)
     const [deliveryAddress, setDeliveryAddress] = useState("")
+    const [orderLocation, setOrderLocation] = useState("")
+
+    
 
     const [deliveryStreet, setDeliveryStreet] = useState("")
     const [deliveryApt, setDeliveryApt] = useState("")
     const [deliveryState, setDeliveryState] = useState("")
     const [deliveryZip, setDeliveryZip] = useState("")
+
+    const { currentCart, currentUser, setCurrentCart } = props
+
+    const navigate = useNavigate()
 
     function CarryoutTrue() {
         setCarryOut(!carryOut)
@@ -78,6 +85,45 @@ const OrderOptions = (props) => {
         setDelivery(!delivery)
         if (carryOut) {
             setCarryOut(!carryOut)
+        }
+    }
+
+    async function updateDeliveryAddress () {
+        try {
+            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}/updatedelivery`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: currentCart.id,
+                    deliveryAddress: deliveryAddress
+                })
+            })
+            const result = await response.json()
+            setCurrentCart(result)
+
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    async function updateLocationRequest () {
+        try {
+            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}/updatelocation`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: currentCart.id,
+                    orderLocation: orderLocation
+                })
+            })
+            const result = await response.json()
+            setCurrentCart(result)
+        } catch(error) {
+            console.log(error)
         }
     }
     return(
@@ -96,8 +142,8 @@ const OrderOptions = (props) => {
             {carryOut ? (
                 <div id="locationsContainer">
                     <h3>Please Select Location:</h3>
-                    <form>
-                        <CarryoutLocation 
+                    <form onSubmit={updateLocationRequest}>
+                        {/* <CarryoutLocation 
                             title="Red Row Alley"
                             street="3697 S Red Planet Rd"
                             city="Colony 15"
@@ -111,7 +157,7 @@ const OrderOptions = (props) => {
                             city="Ulaanbaatar"
                             state="Mongolia"
                             zip="03429"
-                        />
+                        /> */}
                         <label className="checkbox" htmlFor="checkbox1">
                             <input type="radio" className = "location"/> 3697 S Red Planet Rd, Mars
                         </label>
@@ -130,8 +176,12 @@ const OrderOptions = (props) => {
                     </div>
                 ): ""}
             {delivery ? (
+                <div>
+                {currentUser.address.length == 0 ? (
+
+                
                     
-                    <form id="form" className="deliveryContainer">
+                    <form id="form" className="deliveryContainer" onSubmit={updateDeliveryAddress}>
                         <section id="deliveryFormTitle">
                             Delivery address
                         </section>
@@ -197,8 +247,12 @@ const OrderOptions = (props) => {
                                 </section>
                             </section>
                         </section>
-                        <button id="submit" type="submit"><Link to="/checkout">(View Cart?) (Checkout?)</Link></button>
+                        <button id="submit" type="submit"><Link to="/checkout">Continue to Checkout</Link></button>
                     </form>
+                    ): navigate('/checkout')
+                }
+                    </div>
+        
                 ): ""}
         </div>
     )

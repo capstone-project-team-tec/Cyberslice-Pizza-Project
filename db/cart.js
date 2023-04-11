@@ -5,8 +5,8 @@ const { client } = require("./client");
 async function createCartWithoutUser() {
     try {
         const { rows } = await client.query(`
-            INSERT INTO carts ("userId", "isCheckedOut", "totalCost")
-            VALUES (NULL, false, NULL)
+            INSERT INTO carts ("userId", "isCheckedOut", "totalCost", "deliveryAddress", "orderLocation")
+            VALUES (NULL, false, NULL, NULL, NULL)
             RETURNING *;
         `);
         console.log("This is rows zero:   ",rows[0])
@@ -19,8 +19,8 @@ async function createCartWithoutUser() {
 async function createCartForUser(userId) {
     try {
         const { rows } = await client.query(`
-            INSERT INTO carts ("userId", "isCheckedOut", "totalCost")
-            VALUES ($1, false, NULL)
+            INSERT INTO carts ("userId", "isCheckedOut", "totalCost", "deliveryAddress", "orderLocation")
+            VALUES ($1, false, NULL, NULL, NULL)
             RETURNING *;
         `, [userId]);
         return rows[0];
@@ -42,6 +42,32 @@ async function checkoutCart({ cartId, totalCost }) {
         } catch(error) {
             console.log(error);
         }
+}
+
+async function orderOptionsCartUpdateOrderLocation({ cartId, orderLocation}) {
+    try {
+        const { rows } = await client.query(`
+        UPDATE carts
+        SET "orderLocation" = $2
+        WHERE id = $1
+        RETURNING *;
+        `, [cartId, orderLocation])
+    } catch(error) {
+        console.log(error)
+    }
+}
+
+async function orderOptionsCartUpdateDeliveryAddress({ cartId, deliveryAddress }) {
+    try {
+        const { rows } = await client.query(`
+        UPDATE carts
+        SET "deliveryAddress" = $2
+        WHERE id = $1
+        RETURNING *;
+        `, [cartId, deliveryAddress])
+    } catch(error) {
+        console.log(error)
+    }
 }
 
 async function fetchUserCarts(userId) {
@@ -179,5 +205,7 @@ module.exports = {
     fetchOrderItemsByCartId,
     deleteRowProducts,
     deleteRowPizza,
+    orderOptionsCartUpdateDeliveryAddress,
+    orderOptionsCartUpdateOrderLocation,
     updateOrderItem
 }

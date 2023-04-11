@@ -68,11 +68,11 @@ const Admin = (props) => {
 
             setUserToEdit(result)
             setMyId(result.id)
-            setUsername(result.user.username)
-            setName(result.user.name)
-            setEmail(result.user.email)
-            setAddress(result.user.address)
-            setPhone(result.user.phone)
+            setUsername(result.username)
+            setName(result.name)
+            setEmail(result.email)
+            setAddress(result.address)
+            setPhone(result.phone)
 
             return result;
         } catch(error) {
@@ -98,7 +98,7 @@ const Admin = (props) => {
         if (email != ''){updatedEmail = email}
         else {updatedEmail = user.email}
 
-        if (address != '') {updatedAddress = name}
+        if (address != '') {updatedAddress = address}
         else {updatedAddress = user.address}
 
         if (phone != '') {updatedPhone = phone}
@@ -348,15 +348,15 @@ const Admin = (props) => {
       }
 
 
-    async function setUserDefaultState (user) {
-        console.log("This is the user",  user)
-        setUsername(user.username)
-        setName(user.name)
-        setEmail(user.email)
-        setPhone(user.phone)
-        setAddress(user.address)
+    // async function setUserDefaultState (user) {
+    //     console.log("This is the user",  user)
+    //     setUsername(user.username)
+    //     setName(user.name)
+    //     setEmail(user.email)
+    //     setPhone(user.phone)
+    //     setAddress(user.address)
 
-    }
+    // }
 
     async function onSubmitEventHandlerUpdateUser(event, userId) {
         try {
@@ -367,7 +367,7 @@ const Admin = (props) => {
           const user = await fetchUserById(userId);
           console.log("Finished running fetch user by ID");
         //   await setUserDefaultState(user)
-        console.log(name, email, phone, address)
+            console.log(name, email, phone, address)
           console.log("Starting to run update user by ID");
           await updateUserById(userId, user);
           console.log("Finished running update user by ID");
