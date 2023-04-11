@@ -5,7 +5,7 @@ import "./global.css";
 
 const Payment = (props) => {
     const navigate = useNavigate();
-    const { fetchUserCurrentCart,currentUser, currentCart, setCurrentCart, setCurrentUser } = props;
+    const { fetchUserCurrentCart,currentUser, currentCart, setCurrentCart, setCurrentUser, subTotalDisplay, setSubTotalDisplay, totalCost, setTotalCost, currentOrderItems, setCurrentOrderItems, fetchCurrentUser, createCartForUser } = props;
     const [cardHolder, setCardHolder] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [MMYY, setMMYY] = useState('');
@@ -95,7 +95,7 @@ const Payment = (props) => {
                 },
 
                 body: JSON.stringify ({
-                    totalCost: '799.12'
+                    totalCost: totalCost
                 })
             })
 
@@ -210,10 +210,42 @@ const Payment = (props) => {
         console.log("validate zip returned true")
         return true;
     }
+// fetchCurrentUser, createCartForUser
+    let guestCartId
+    async function createCartForGuest() {
+      try {
+        const response = await fetch('http://localhost:1337/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+    
+        const result = await response.json();
+        setCurrentCart({
+          id: result.id,
+          isCheckedOut: result.isCheckedOut,
+          totalCost: result.totalCost,
+          userId: result.userId
+      })
+        // setCurrentCartId(result.id)
+        guestCartId = result.id
+        if (result.success) {
+          console.log('A new cart has been created for the guest. here is the result:  ',result );
+          return result;
+        } else {
+          console.log('Failed to create a new cart for the guest:', result.error.message);
+          return null;
+        }
+      } catch (error) {
+        console.error('Error creating cart for guest:', error);
+      }
+    }
 
-    const handleCheckoutClick = () => {
+    const handleCheckoutClick = async () => {
         if (cardHolder == '' || cardNumber == '' || MMYY == '' || CVV == '' || billingAddress == '' || city == '' || state == '' || zip == '') {
-            {alert("Please fill out all payment information fields.")}    
+            alert("Please fill out all payment information fields.")    
         } else if (validateCardHolder(cardHolder) == false) {
             alert("Please provide a valid card holder name.");
         } else if (validateCardNumber(cardNumber) == false) {
@@ -229,8 +261,19 @@ const Payment = (props) => {
         } else if (validateZip(zip) == false) {
             alert("Please provide a valid zip.");
         } else {
-            submitPaymentInfo();
-            finalizeCheckOut();
+            await submitPaymentInfo();
+            await finalizeCheckOut();
+
+            if (currentUser) {
+                console.log("this is the current user:   ", currentUser);
+                const newUserCartForAfterCheckout = await  fetchUserCurrentCart();
+                await setCurrentCart(newUserCartForAfterCheckout);
+            } else {
+                const newGuestCartForAfterCheckout = await createCartForGuest();
+                await setCurrentCart(newGuestCartForAfterCheckout);
+            }
+            await setCurrentOrderItems([]);
+            alert("Your order has been successfully completed!")
             navigate("/");
         } 
     };
@@ -289,7 +332,7 @@ const Payment = (props) => {
                 <div id="subtotalAndDeliveryFee">
                     <div id="subtotal">
                         <p id="subtotalText" className="textNoMarginOrPad">Subtotal:</p>
-                        <p className="price  textNoMarginOrPad">$23.12</p>
+                        <p className="price  textNoMarginOrPad">${subTotalDisplay}</p>
                     </div>
                     <div id="deliveryFee">
                         <p id="deliveryFeeText" className="textNoMarginOrPad">Delivery Fee:</p>
@@ -298,7 +341,7 @@ const Payment = (props) => {
                 </div>
                 <div id="total">
                     <p  className="textNoMarginOrPad">Total:</p>
-                    <p className="price textNoMarginOrPad">$33.12</p>
+                    <p className="price textNoMarginOrPad">${totalCost}</p>
                 </div>
                 <div id="checkoutButtonContainer">
                     <button id="checkoutButton" type="submit" onClick={handleCheckoutClick}>

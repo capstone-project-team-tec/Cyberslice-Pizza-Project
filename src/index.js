@@ -12,9 +12,12 @@ const App = () => {
     const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState({});
     const [currentCart, setCurrentCart] = useState({});
-    const [currentAdminUser, setCurrentAdminUser] = useState({})
-    const [currentUserTrue, setCurrentUserTrue ] = useState(false)
-    const [ currentAdminUserTrue, setCurrentAdminUserTrue ] = useState(false)
+    const [currentAdminUser, setCurrentAdminUser] = useState({});
+    const [currentUserTrue, setCurrentUserTrue ] = useState(false);
+    const [ currentAdminUserTrue, setCurrentAdminUserTrue ] = useState(false);
+    const [subTotalDisplay,setSubTotalDisplay] = useState(0);
+    const [totalCost, setTotalCost] = useState(0);
+    const [currentOrderItems, setCurrentOrderItems] = useState([])
     
     const isFirstRender = useRef(true);
 
@@ -93,9 +96,10 @@ const App = () => {
             });
 
             const result = await response.json();
+            console.log("this is the fetch user cart result: ",result)
             if (!result.failure){
                 console.log("this is the result of fetch user current cart, it has not yet been filtered, this is line 91 of src index file:   ",result);
-                let filteredResult = result.filter(cart => cart.isCheckedOut == false);
+                let filteredResult = result.filter(cart => cart.isCheckedOut == false && cart.userId == currentUser.id);
                 if (filteredResult.length > 0){
                     const cartForState = filteredResult[0];
                     setCurrentCart(cartForState);
@@ -247,13 +251,13 @@ console.log("This is the current user on line 167 of src index file:   ",current
                         <Route path="/login" element={<Login setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser}/>} />
                         <Route path="/locations" element={<Locations />} />
-                        <Route path="/checkout" element={<Checkout currentUser={currentUser} currentCart={currentCart} />} />
+                        <Route path="/checkout" element={<Checkout currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>} />
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>}/>
                         <Route path="/menu" element={<Menu />} />
                         <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser} sides={sides} drinks={drinks} desserts={desserts} setDrinks={setDrinks} setSides={setSides} setDesserts={setDesserts}/>} />
                         <Route path="/adminlogin" element={<Adminlogin setCurrentAdminUser={setCurrentAdminUser} setCurrentAdminUserTrue={setCurrentAdminUserTrue}/>} />
-                        <Route path="/payment" element={<Payment fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
+                        <Route path="/payment" element={<Payment fetchCurrentUser={fetchCurrentUser} createCartForUser={createCartForUser} currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
                     </Routes>
                 <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             </div>

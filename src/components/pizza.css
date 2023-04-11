@@ -123,6 +123,7 @@
   align-items: center;
   transition: color 0.75s, border-color 0.75s;
   z-index: 1;
+  cursor: pointer;
 }
 
 .button {
@@ -139,6 +140,7 @@
   align-items: center;
   transition: color 0.75s, border-color 0.75s;
   z-index: 1;
+  cursor: pointer;
 }
 
 .button:hover {
@@ -159,6 +161,7 @@
 
 #orderButton {
   width: 200px;
+  cursor: pointer;
 }
 
 /* total cost styling */

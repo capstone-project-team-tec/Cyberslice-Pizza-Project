@@ -47,16 +47,16 @@ async function checkoutCart({ cartId, totalCost }) {
 async function fetchUserCarts(userId) {
     try {
 
-        const {rows: carts } = await client.query(`
+        const {rows } = await client.query(`
             SELECT * FROM carts
-            WHERE "userId"=$1 AND "isCheckedOut"=true;
+            WHERE "userId"=$1;
         `,[userId]);
 
-        if (!carts || carts.length == 0) {
+        if (!rows || rows.length == 0) {
             return null
         }
 
-        return carts;
+        return rows;
 
     } catch (error) {
         console.log(error);
