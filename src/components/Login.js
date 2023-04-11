@@ -85,10 +85,9 @@ const Login = (props) => {
                     <button className="loginButton" type="submit"> Login </button>
                 </form>
                 <section className = "picture">
-                    This is where a picture of pizza would go. Yeah.
+                    <img id="slicesInRows" src="/slicesInRows.jpg" alt="Image of pizza slices in rows"/>
                 </section>
-            </section>
-
+                </section>
             <h5 className="noAccountMessage">Don't Have An Account? <Link id="signUp" to="/register">Sign Up</Link></h5>
             <h5 className="noAccountMessage" id="logInAsAdmin" ><Link id="signUp" to="/adminlogin">Log In As Admin Here</Link></h5>
         </section>
