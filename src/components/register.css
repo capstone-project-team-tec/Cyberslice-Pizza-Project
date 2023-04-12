@@ -109,7 +109,9 @@ h2 {
 .formAndPicture {
     display: flex;
     flex-direction: row;
-
-    align-items: center;
+    width: 90%;
+    max-width: 1400px;
+    justify-content: space-between;
     z-index: 1;
 }
+

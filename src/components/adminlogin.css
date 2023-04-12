@@ -76,6 +76,14 @@ h3 {
     transition: border-color 0.75s, color 0.75s;
 }
 
+.formAndPicture {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    max-width: 1400px;
+    justify-content: space-between;
+}
+
 .formsAndPictures
 label {
     margin-bottom: 4px;
