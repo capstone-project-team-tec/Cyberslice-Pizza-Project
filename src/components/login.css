@@ -40,14 +40,15 @@ h3 {
 .formAndPicture {
     display: flex;
     flex-direction: row;
-
-    justify-content: space-between;
-    align-items: center;
 }
-/* For editing how the picture appears */
-/* .picture {
 
-} */
+.formsAndPictures
+label {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4px;
+}
+
 .loginBox {
     background-color: black;
     color: white;
@@ -93,7 +94,9 @@ h3 {
     transition: border-color 0.75s, color 0.75s;
 }
 
-.formsAndPictures
-label {
-    margin-bottom: 4px;
+
+
+#slicesInRows {
+    width: 300px;
+    height: 300px;
 }
