@@ -44,22 +44,27 @@ async function checkoutCart({ cartId, totalCost }) {
         }
 }
 
-async function orderOptionsCartUpdateOrderLocation({ cartId, orderLocation}) {
+async function orderOptionsCartInsertOrderLocationorDeliveryAddress({ cartId, deliveryAddress, orderLocation}) {
     try {
-        const {rows} = await client.query(`
+        const { rows } = await client.query(`
         UPDATE carts
-        SET "orderLocation" = $2
+        SET "deliveryAddress" = $2, "orderLocation" = $3
         WHERE id = $1
         RETURNING *;
-        `, [cartId, orderLocation])
+        `, [cartId, deliveryAddress, orderLocation])
+
+        return(rows[0])
     } catch(error) {
         console.log(error)
     }
 }
 
+
+
 async function fetchUserCarts(userId) {
     try {
-        const {rows} = await client.query(`
+
+        const {rows } = await client.query(`
             SELECT * FROM carts
             WHERE "userId"=$1;
         `,[userId]);
@@ -75,6 +80,7 @@ async function fetchUserCarts(userId) {
     }
 }
 
+
 // orderItems table functions
 async function createOrderItemsRowForProduct({cartId, productId, count, cost, productName}) {
     try {
@@ -82,7 +88,7 @@ async function createOrderItemsRowForProduct({cartId, productId, count, cost, pr
         INSERT INTO "orderItems" ("cartId", "productId", count, cost, "productName")
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
-        `, [cartId, productId, count, cost, productName])
+        `, [ cartId, productId, count, cost, productName ])
 
         return rows;
 
@@ -97,7 +103,7 @@ async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost, pizzaN
         INSERT INTO "orderItems" ("cartId", "pizzaId", count, cost, "pizzaName")
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
-        `, [cartId, pizzaId, count, cost, pizzaName])
+        `, [ cartId, pizzaId, count, cost, pizzaName ])
 
         return rows;
 
@@ -110,11 +116,14 @@ async function fetchOrderItemsByCartId(cartId) {
     console.log("starting to fetch order items by cart id")
     try {
 
-        const {rows} = await client.query(`
+        const {rows } = await client.query(`
             SELECT * FROM "orderItems"
             WHERE "cartId"=$1;
         `,[cartId]);
 
+        // if (!orderItems || orderItems.length == 0) {
+        //     return null
+        // }
         console.log("This is the order items return", rows)
         return rows;
 
@@ -126,7 +135,7 @@ async function fetchOrderItemsByCartId(cartId) {
 async function updateOrderItem({orderItemId, count}) {
     console.log("the update order items function is running, here is count:  ",count)
     try {
-        const {rows: [orderItem]} = await client.query(`
+        const { rows: [orderItem] } = await client.query(`
             UPDATE "orderItems"
             SET count = $2
             WHERE id = $1
@@ -153,13 +162,14 @@ async function deleteRowProducts(productId, cartId) {
         console.log("Finished deleting product rows")
 
         return rows[0];
+      
     } catch (error) {
       throw error;
     }
   }
   async function deleteRowPizza(pizzaId) {
     console.log("Starting to delete pizza rows")
-    try {
+    try { 
         const {rows} = await client.query(`
             DELETE FROM "orderItems"
             WHERE "pizzaId"=$1
@@ -168,10 +178,13 @@ async function deleteRowProducts(productId, cartId) {
         console.log("Finished deleting pizza rows ")
 
         return rows[0];
+        
+        
     } catch (error) {
       throw error;
     }
   }
+
   
 
 module.exports = {
@@ -184,6 +197,6 @@ module.exports = {
     fetchOrderItemsByCartId,
     deleteRowProducts,
     deleteRowPizza,
-    orderOptionsCartUpdateOrderLocation,
+    orderOptionsCartInsertOrderLocationorDeliveryAddress,
     updateOrderItem
 }
