@@ -286,7 +286,7 @@ const Register = (props) => {
                     
                 </form>
                 <section className = "picture">
-                    This is where a picture of pizza would go. Yeah.
+                <img id="slicesInRows" src="/slicesInRows.jpg" alt="Image of pizza slices in rows"/>
                 </section>
             </section>
         </section>

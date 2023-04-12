@@ -213,7 +213,7 @@ const Pizza = (props) => {
         } catch (error) {
             console.error('Error creating cart for guest:', error);
         }
-      }
+    }
 
     // this checks for a current cart and if there is none then it creates one and then creates the orderItem table entry  
     const createOrderItemsRow = async (pizzaId, count, cost, pizzaName) => {

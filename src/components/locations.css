@@ -70,10 +70,17 @@
 .locationInfoContainer {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .locationTitle {
     padding-left: 5%;
+    width: 40% !important;
+    max-width: 255px !important;
+}
+
+.locationStreetContainer {
+    width: calc(100%*0.3333333);
 }
 
 .addressContainer {
