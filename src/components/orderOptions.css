@@ -387,3 +387,8 @@ h3 {
     display: flex;
     flex-direction: row;
 }
+
+.orderOptionsButtonHighlight {
+    background-color: #cbff5e !important;
+    color: Black !important;
+}

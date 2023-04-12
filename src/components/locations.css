@@ -45,3 +45,37 @@
     max-width: 90%;
     margin-bottom: 1rem;
 }
+
+#imageAndAddresses {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#locationsContainer {
+    margin: 10% 0 0 0 !important;
+    border: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.location {
+    width: 100% !important;
+    padding-left: 0 !important;
+    display: flex;
+    align-items: center;
+
+}
+
+.locationInfoContainer {
+    display: flex;
+    align-items: center;
+}
+
+.locationTitle {
+    padding-left: 5%;
+}
+
+.addressContainer {
+    padding-right: 10% 
+}
