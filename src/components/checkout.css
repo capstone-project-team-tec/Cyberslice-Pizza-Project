@@ -108,7 +108,7 @@ button {
 #subtotal{
     display: flex;
     flex-direction: row;
-
+    font-size: 1.6rem;
     justify-content: space-between;
 
     margin-bottom: 0.5rem;
@@ -206,9 +206,13 @@ button {
 }
 
 .deliveryFeeCheckout {
-    font-size: 25px;
+    font-size: 1.6rem;
 }
 
 .totalCheckout {
-    font-size: 25px;
+    font-size: 1.6rem;
+}
+
+.price {
+    font-size: 1.6rem;
 }
