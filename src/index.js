@@ -25,18 +25,15 @@ const App = () => {
         fetchDesserts();
         fetchDrinks();
         fetchSides();
-        // fetchProducts();
         fetchUsers();
         fetchCurrentUser();
         fetchCurrentAdminUser();
-
-        // fetchCurrentAdminUser();
     }, [])
     
     useEffect(() => {
         if (isFirstRender.current) {
-          isFirstRender.current = false;
-          return;
+            isFirstRender.current = false;
+            return;
         }
         fetchUserCurrentCart();
     }, [currentUser]);
@@ -50,110 +47,81 @@ const App = () => {
         try {
             const token = localStorage.getItem("token")
             const response = await fetch('http://localhost:1337/api/cart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                userId: currentUser.id
-            }),
-          });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    userId: currentUser.id
+                }),
+            });
       
-          const result = await response.json();
-          console.log("this is the create cart for user result:   ",result)
-          setCurrentCart({
-            id: result.id,
-            userId: result.userId,
-            isCheckedOut: result.isCheckedOut,
-            totalCost: result.totalCost,
-            deliveryAddress: result.deliveryAddress,
-            orderLocation: result.orderLocation})
-          if (result.success) {
-            console.log('A new cart has been created for the user. here is the result:  ',result );
-            return result;
-          } else {
-            console.log('Failed to create a new cart for the user:', result.error.message);
-            return null;
-          }
+            const result = await response.json();
+            
+            setCurrentCart({
+                id: result.id,
+                userId: result.userId,
+                isCheckedOut: result.isCheckedOut,
+                totalCost: result.totalCost,
+                deliveryAddress: result.deliveryAddress,
+                orderLocation: result.orderLocation
+            })
+            if (result.success) {
+                return result;
+            } else {
+                return null;
+            }
         } catch (error) {
-          console.error('Error creating cart for user:', error);
+            console.error('Error creating cart for user:', error);
         }
-      }
+    }
 
     async function fetchUserCurrentCart() {
         try {
             const token = localStorage.getItem("token");
         
             if (!token) {
-            console.log("No token found, skipping request");
-            return;
+                return;
             }
-        console.log("this is line 77 right before the response triggers")
             const response = await fetch(`http://localhost:1337/api/cart`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
             });
 
             const result = await response.json();
-            console.log("this is the fetch user cart result: ",result)
             if (!result.failure){
-                console.log("this is the result of fetch user current cart, it has not yet been filtered, this is line 91 of src index file:   ",result);
                 let filteredResult = result.filter(cart => cart.isCheckedOut == false && cart.userId == currentUser.id);
                 if (filteredResult.length > 0){
                     const cartForState = filteredResult[0];
                     setCurrentCart(cartForState);
-                    console.log("filtered result was not empty")
                 } else {
-                    console.log("this is the current user id:   ",currentUser.id)
-                    createCartForUser(currentUser.id)
-                    console.log("filtered result was in fact empty")
+                    createCartForUser();
                 }
             } else {
-                console.log("the result failure had a truthy value for fetchUserCurrentCart request, creating an initial cart for the user now.");
-                createCartForUser(currentUser.id);
+                createCartForUser();
             }
         } catch (error) {
             console.log(error);
         }
     }    
     
-    // async function fetchProducts() {
-    //     try {
-    //         const response = await fetch(`http://localhost:1337/api/admin/products`);
-
-    //         const data = await response.json();
-
-    //         setProducts(data)
-
-    //     } catch(error) {
-    //         console.log(error)
-    //     }
-    // }
-
     async function fetchUsers() {
         try {
             const response = await fetch(`http://localhost:1337/api/admin/users`);
-
             const data = await response.json();
-
             setUsers(data)
-
         } catch(error) {
             console.log(error)
         }
     }
 
-    
-
     async function fetchDrinks() {
         try {
             const response = await fetch(`http://localhost:1337/api/drinks`);
-
             const data = await response.json();
-
             setDrinks(data)
         } catch(error) {
             console.log(error)
@@ -163,11 +131,8 @@ const App = () => {
     async function fetchDesserts() {
         try {
             const response = await fetch(`http://localhost:1337/api/desserts`);
-
             const data = await response.json()
-
             setDesserts(data)
-
         } catch(error) {
             console.log(error)
         }
@@ -176,9 +141,7 @@ const App = () => {
     async function fetchSides() {
         try {
             const response = await fetch(`http://localhost:1337/api/sides`);
-
             const data = await response.json();
-
             setSides(data)
         } catch(error) {
             console.log(error)
@@ -187,27 +150,24 @@ const App = () => {
 
     async function fetchCurrentUser() {
         const token = localStorage.getItem("token");
-        
         if (token) {
             try {
-            const response = await fetch(`http://localhost:1337/api/users/me`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                }
+                const response = await fetch(`http://localhost:1337/api/users/me`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
                 })
                 const result = await response.json()
-                console.log("This is the result of fetchCurrentUser", result)
                 setCurrentUser(result.user)
-                
             } catch(error) {
                 console.log(error)
             }
+        }
+        else {
+            setCurrentUser("")
+        }
     }
-    else {
-        setCurrentUser("")
-    }
-}
 
     async function fetchCurrentAdminUser() {
         const token = localStorage.getItem("token");
@@ -232,18 +192,10 @@ const App = () => {
         }
     }
 
-console.log("This is the current user on line 166 of src index file:   ",currentUser)
-console.log("This is the current user on line 167 of src index file:   ",currentAdminUser)
-
-// desserts, drinks, sides,
-
-
-
     return (
-
         <BrowserRouter>
             <div>
-                <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} currentAdminUserTrue={currentAdminUserTrue} setCurrentAdminUser={setCurrentAdminUser} currentUserTrue={currentUserTrue} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue}/>
+                <Header currentUser={currentUser} setCurrentUser={setCurrentUser} currentAdminUser={currentAdminUser} setCurrentAdminUser={setCurrentAdminUser} setCurrentAdminUserTrue={setCurrentAdminUserTrue} setCurrentUserTrue={setCurrentUserTrue} setCurrentCart={setCurrentCart}/>
                     <Routes>
                         <Route path="/" element={<Home />}/>
                         <Route path="/pizza" element={<Pizza drinks={drinks} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>}/>
@@ -253,13 +205,13 @@ console.log("This is the current user on line 167 of src index file:   ",current
                         <Route path="/login" element={<Login setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser} setCurrentUser={setCurrentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>} />
                         <Route path="/locations" element={<Locations />} />
-                        <Route path="/checkout" element={<Checkout currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>} />
+                        <Route path="/checkout" element={<Checkout currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} currentCart={currentCart} />} />
                         <Route path="/register" element={<Register setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>}/>
                         <Route path="/menu" element={<Menu />} />
                         <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser} sides={sides} drinks={drinks} desserts={desserts} setDrinks={setDrinks} setSides={setSides} setDesserts={setDesserts}/>} />
                         <Route path="/adminlogin" element={<Adminlogin setCurrentAdminUser={setCurrentAdminUser} setCurrentAdminUserTrue={setCurrentAdminUserTrue}/>} />
-                        <Route path="/payment" element={<Payment fetchCurrentUser={fetchCurrentUser} createCartForUser={createCartForUser} currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser}/>} />
+                        <Route path="/payment" element={<Payment setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} subTotalDisplay={subTotalDisplay} fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>} />
                     </Routes>
                 <Footer currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             </div>
