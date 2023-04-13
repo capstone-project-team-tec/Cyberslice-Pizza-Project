@@ -6,16 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const Header = (props) => {
-    const { currentUser } = props
-    const { currentAdminUser } = props
-    const { currentAdminUserTrue, setCurrentAdminUser } = props
-    const { currentUserTrue, setCurrentUser } = props
-    
-    const { setCurrentAdminUserTrue } = props
-    const { setCurrentUserTrue } = props
-    console.log("This is the current user", currentUser)
+    const { currentUser, currentAdminUser, setCurrentAdminUser, setCurrentUser, setCurrentAdminUserTrue, setCurrentUserTrue, setCurrentCart } = props
     const navigate = useNavigate();
-
 
     const handleLogout = (event) => {
         event.preventDefault();
@@ -24,9 +16,7 @@ const Header = (props) => {
         setCurrentAdminUser({})
         setCurrentAdminUserTrue(false)
         setCurrentUserTrue(false)
-
-
-        
+        setCurrentCart({})
         navigate('/');
     }
 

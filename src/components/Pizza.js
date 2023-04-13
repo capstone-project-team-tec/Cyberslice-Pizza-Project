@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./pizza.css";
 import "./global.css";
-import { useNavigate } from "react-router-dom";
 
 const Pizza = (props) => {
     const navigate = useNavigate();
@@ -34,7 +34,6 @@ const Pizza = (props) => {
                 ...previousVisibilityAndToppingCount,
                 [layerId]: { ...previousVisibilityAndToppingCount[layerId], visible: !previousVisibilityAndToppingCount[layerId].visible },
             };
-            setDisplayCost(sumPizzaCost(updatedState));
             return updatedState;
         });
     };
@@ -77,7 +76,6 @@ const Pizza = (props) => {
     
     // this function checks if a pizza name has already been made in the table before and if so returns it otherwise it returns a string checked for in the createPizza function
     async function checkPizzaName(pizzaName) {
-        console.log("this is the pizza name in check pizza name:  ",pizzaName)
         try {
             const response = await fetch(`http://localhost:1337/api/pizza/getpizzabyname/${pizzaName}`, {
                 method: 'GET',
@@ -87,12 +85,9 @@ const Pizza = (props) => {
             });
             
             const result = await response.json();
-            console.log("this is check pizza name result:  ",result)
             if (!result.success) {
-                console.log("no pizza yet created matches the name")
                 return("no pizza yet created matches the name")
             } else { 
-                console.log("a pizza already created with a name that matches was found")
                 return result.pizza
             }
         } catch (error) {
@@ -105,7 +100,6 @@ const Pizza = (props) => {
         const returnedPizza = await checkPizzaName(pizzaName)
         if (returnedPizza == "no pizza yet created matches the name"){
             try {
-                console.log("this is firing in create pizza because the returned pizza equaled the string")
                 const response = await fetch('http://localhost:1337/api/pizza', {
                     method: 'POST',
                     headers: {
@@ -121,26 +115,20 @@ const Pizza = (props) => {
                 const result = await response.json();
             
                 if (result.success) {
-                    console.log("created a new pizza:  ",result);
                     return result.pizza 
                 } else {
-                    console.log('Failed to create a new pizza:  ', result.error.message);
                     return null;
                 }
             } catch (error) {
                 console.error('Error creating a new pizza:  ', error);
             }
-        } else {
-            console.log("Need to check this returned pizza:  ",returnedPizza) 
+        } else { 
             return returnedPizza
         }
     }
 
     // this function creates an entry in the pizzaWithToppings table which relates the pizza id of the pizza being purchased to the toppings being used on that pizza and stores the count of toppings
     const createPizzaWithToppingsTableRow = async (pizzaId, toppingsId, count) => {
-        console.log("this is the pizza id:  ",pizzaId)
-        console.log("this is the toppings id:  ",toppingsId)
-        console.log("this is the count:  ",count)
         try {
             const response = await fetch(`http://localhost:1337/api/pizza/${pizzaId}/pizzawithtoppings`, {
                 method: "POST",
@@ -148,14 +136,10 @@ const Pizza = (props) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    pizzaId, 
                     toppingsId, 
                     count
                 }),
             });
-            const result = await response.json();
-            console.log(result);
-          
         } catch (error) {
             console.log(error);
         }
@@ -177,13 +161,12 @@ const Pizza = (props) => {
                     pizzaName
                 }),
             });
-            const result = await response.json();
-            console.log(result);
         } catch (error) {
             console.log(error);
         }
     };
-    let guestCartId
+
+    // this function creates a cart for a guest user and sets the current cart state to the result of the post request. It also returns the result.
     async function createCartForGuest() {
         try {
             const response = await fetch('http://localhost:1337/api/cart', {
@@ -202,34 +185,28 @@ const Pizza = (props) => {
                 userId: result.userId
             })
             
-            guestCartId = result.id
             if (result.success) {
-                console.log('A new cart has been created for the guest. here is the result:  ',result );
                 return result;
             } else {
-                console.log('Failed to create a new cart for the guest:', result.error.message);
                 return null;
             }
         } catch (error) {
             console.error('Error creating cart for guest:', error);
         }
-      }
+    }
 
     // this checks for a current cart and if there is none then it creates one and then creates the orderItem table entry  
     const createOrderItemsRow = async (pizzaId, count, cost, pizzaName) => {
         let cartId;
         if (Object.keys(currentCart).length == 0) {
-            console.log("this is createOrderItemsRow firing on the if currentCart length equals zero");
             if (currentUser) {
-                console.log("this is the current user:   ", currentUser);
                 await fetchUserCurrentCart();
                 cartId = currentCart.id;
             } else {
                 await createCartForGuest();
-                cartId = guestCartId;
+                cartId = currentCart.id;
             }
         } else {
-            console.log("a current cart was found in sides.  ", currentCart);
             cartId = currentCart.id;
         }
         createOrderItem(cartId, pizzaId, count, cost, pizzaName);
@@ -241,7 +218,6 @@ const Pizza = (props) => {
         const pizzaCost = displayCost;
         const createdPizza = await createPizza(pizzaName);
         if (createdPizza) {   
-            console.log("this is the created pizza running through pizzawithtoppings:  ",createdPizza)
             layers.forEach((layer) => {
                 if (layerVisibilityAndToppingCount[layer.id].visible) {
                     createPizzaWithToppingsTableRow(
@@ -253,7 +229,7 @@ const Pizza = (props) => {
             });
             await createOrderItemsRow(createdPizza.id, 1, pizzaCost, pizzaName);
             navigate('/menu');
-        } else {console.log("A pizza was neither found nor created.")}
+        } else {return}
     };
 
     // this use effect makes buttons stay highlighted when clicked, it includes a feature for initialization where if the data has not rendered in yet to retry the delayedEffect function after 500ms
@@ -262,12 +238,12 @@ const Pizza = (props) => {
         // this function clears any of the involved local storage items, sets the pizza size buttons, topping size buttons, and that 10 inch button so that they can have the highlight effects added to them, and adds them to localstorage
         function delayedEffect() {
             const pizzaSizeButtonsContainer = document.querySelector('#pizzaSizeButtons');
-            const toppingButtonsContainer = document.querySelector('#toppingButtonContainer');
             const toppingButtons = document.querySelectorAll('.toppingButton');
             const pizzaSizeButtons = document.querySelectorAll('.pizzaSizeButton');
             const tenInchButton = document.querySelector("#firstPizzaSizeButton");
     
-            if (pizzaSizeButtonsContainer && toppingButtonsContainer && tenInchButton) {
+            if (pizzaSizeButtonsContainer && toppingButtons && tenInchButton) {
+                
                 toppingButtons.forEach((button) => {
                     localStorage.removeItem(button.id);
                 });
@@ -277,7 +253,7 @@ const Pizza = (props) => {
                 function activateButton(button) {
                     button.classList.remove('thisButtonIsInactive');
                     button.classList.add('thisButtonIsActive');
-                    }
+                }
         
                 function deactivateButton(button) {
                     button.classList.remove('thisButtonIsActive');
@@ -292,17 +268,17 @@ const Pizza = (props) => {
                     localStorage.setItem('selectedPizzaSize', button.id);
                 });
         
-                toppingButtonsContainer.addEventListener('click', (event) => {
-                    const button = event.target.closest('.toppingButton');
-                    if (!button) return;
-                    if (button.classList.contains('thisButtonIsActive')) {
-                        deactivateButton(button);
-                        localStorage.removeItem(button.id);
-                    } else {
-                        activateButton(button);
-                        localStorage.setItem(button.id, 'thisButtonIsActive');
-                    }
-                });
+                toppingButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        if (button.classList.contains('thisButtonIsActive')) {
+                            deactivateButton(button);
+                            localStorage.removeItem(button.id);
+                        } else {
+                            activateButton(button);
+                            localStorage.setItem(button.id, 'thisButtonIsActive');
+                        }
+                    });
+                });                
 
                 activateButton(tenInchButton);
                 localStorage.setItem('selectedPizzaSize', tenInchButton.id);
@@ -345,14 +321,14 @@ const Pizza = (props) => {
                                     src={`/${layer.filename}.png`}
                                     alt={layer.name}
                                 />
-                                    {layerVisibilityAndToppingCount[layer.id].count == 2 ? (
-                                <img
-                                    key={`${layer.id}-second`}
-                                    className={`pizzaLayer ${layerVisibilityAndToppingCount[layer.id].visible ? "rotated" : "hidden"}`}
-                                    id={`${layer.id}-second`}
-                                    src={`/${layer.filename}.png`}
-                                    alt={layer.name}
-                                />
+                                {layerVisibilityAndToppingCount[layer.id].count == 2 ? (
+                                    <img
+                                        key={`${layer.id}-second`}
+                                        className={`pizzaLayer ${layerVisibilityAndToppingCount[layer.id].visible ? "rotated" : "hidden"}`}
+                                        id={`${layer.id}-second`}
+                                        src={`/${layer.filename}.png`}
+                                        alt={layer.name}
+                                    />
                                 ) : null}
                             </div>
                         ))}
@@ -380,7 +356,7 @@ const Pizza = (props) => {
                                             const newCount = parseInt(event.target.value, 10);
                                             setLayerVisibilityAndToppingCount((previousLayerVisibilityAndToppingCount) => ({
                                                 ...previousLayerVisibilityAndToppingCount,
-                                                [layer.id]: { ...previousLayerVisibilityAndToppingCount[layer.id], count: newCount },
+                                                [layer.id]: { ...previousLayerVisibilityAndToppingCount[layer.id], count: newCount }
                                             }));
                                         }}
                                     >

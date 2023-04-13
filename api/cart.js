@@ -2,6 +2,7 @@ const express = require("express");
 const { createHashRouter } = require("react-router-dom");
 const cartRouter = express.Router();
 
+// Database function wrappers.
 const { 
     createCartWithoutUser,
     createCartForUser,
@@ -16,17 +17,20 @@ const {
     orderOptionsCartInsertOrderLocationorDeliveryAddress
 } = require('../db/cart');
 
+// Payment information function wrapper.
 const {
     createPaymentInformationForOrderRow
 } = require('../db/paymentInformationForOrder');
 
 require('dotenv').config();
 
+// Logs a message for every request made.
 cartRouter.use((req,res,next)=>{
   console.log("A request is being made to /cart");
   next();
 })
 
+// GET the cart of the user.
 cartRouter.get('/', async (req, res, next) => {
   if ('user' in req && "id" in req.user) {
     console.log("the cart router is running....")
@@ -55,6 +59,7 @@ cartRouter.get('/', async (req, res, next) => {
   }
 });
 
+// GET the order items from a Cart given its ID.
 cartRouter.get('/:cartId', async (req, res, next) => {
     const id = req.params.cartId;
     console.log("fetching orderItems entries per cart id; cartId: " + id);
@@ -68,6 +73,7 @@ cartRouter.get('/:cartId', async (req, res, next) => {
     } 
 );
 
+// POST a new row in the carts table, generating a new cart for the user.
 cartRouter.post('/', async (req, res, next) => {
     try {
         const { userId } = req.body;
@@ -105,6 +111,7 @@ cartRouter.post('/', async (req, res, next) => {
     }
 });
 
+// POST a new order item row with given values.
 cartRouter.post('/orderitems', async (req, res, next) => {
     try {
         const { cartId, productId, pizzaId, count, cost, productName, pizzaName } = req.body;
@@ -140,6 +147,7 @@ cartRouter.post('/orderitems', async (req, res, next) => {
     }
 });
 
+// POST a new row in the paymentInformationTable to hold payment info.
 cartRouter.post('/:cartId/payment', async (req, res, next) => {
     try {
         const cartId = req.params.cartId;
@@ -168,6 +176,7 @@ cartRouter.post('/:cartId/payment', async (req, res, next) => {
     }
 })
 
+// PATCH the cart's order items cartId, delivery, and order location.
 cartRouter.patch('/:cartId/orderoptions', async (req, res, next) => {
     console.log("Patching order items in cart is running")
         const cartId = req.params.cartId;
@@ -195,8 +204,7 @@ cartRouter.patch('/:cartId/orderoptions', async (req, res, next) => {
     }
 })
 
-
-
+// PATCH the order location.
 cartRouter.patch('/:cartId/orderlocation', async (req, res, next) => {
     const cartId = req.params.cartId;
     console.log("Patch request for locations is running")
@@ -219,6 +227,7 @@ cartRouter.patch('/:cartId/orderlocation', async (req, res, next) => {
     }
 })
 
+// PATCH a cart's ID and total cost by its ID.
 cartRouter.patch('/:cartId', async (req, res, next) => {
     const cartId = req.params.cartId;
     console.log("cartRouter.patch; cartId: " + cartId);
@@ -244,6 +253,8 @@ cartRouter.patch('/:cartId', async (req, res, next) => {
     }
 })
 
+
+// PATCH updates an order items count.
 cartRouter.patch('/orderitems/:orderItemId', async (req, res, next) => {
     const orderItemId = req.params.orderItemId;
     console.log("cartRouter.patch for order items; orderItemsId: " + orderItemId);
@@ -269,6 +280,7 @@ cartRouter.patch('/orderitems/:orderItemId', async (req, res, next) => {
     }
 })
 
+// DELETE a product on the cart by its ID.
 cartRouter.delete("/orderitems/:productId", async (req, res, next) => {
     const { productId } = req.params
 
@@ -294,6 +306,8 @@ cartRouter.delete("/orderitems/:productId", async (req, res, next) => {
     }
 })
 
+
+// DELETE a pizza in the cart by its ID.
 cartRouter.delete("/orderitems/:pizzaId", async (req, res, next) => {
     const { pizzaId } = req.params
     try {
