@@ -1,10 +1,12 @@
 //This is the Frontend index.js
-import { useEffect, useState, useRef } from "react"
-import { createRoot } from "react-dom/client"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu, Profile, Admin, Adminlogin, Payment } from "./components"
+import {useEffect, useState, useRef} from "react"
+import {createRoot} from "react-dom/client"
+import {BrowserRouter, Route, Routes} from "react-router-dom"
+import {Checkout, Desserts, Drinks, Home, Locations, Login, OrderOptions, Pizza, Sides, Header, Footer, Register, Menu, Profile, Admin, Adminlogin, Payment} from "./components"
 
 const App = () => {
+
+    // State variables to manage data of the user's options.
     const [drinks, setDrinks] = useState([]);
     const [desserts, setDesserts] = useState([]);
     const [sides, setSides] = useState([]);
@@ -14,13 +16,15 @@ const App = () => {
     const [currentCart, setCurrentCart] = useState({});
     const [currentAdminUser, setCurrentAdminUser] = useState({});
     const [currentUserTrue, setCurrentUserTrue ] = useState(false);
-    const [ currentAdminUserTrue, setCurrentAdminUserTrue ] = useState(false);
+    const [currentAdminUserTrue, setCurrentAdminUserTrue ] = useState(false);
     const [subTotalDisplay,setSubTotalDisplay] = useState(0);
     const [totalCost, setTotalCost] = useState(0);
     const [currentOrderItems, setCurrentOrderItems] = useState([])
-    
+
+    // useRef hook reference object used across components, determines if component is being rendered.
     const isFirstRender = useRef(true);
 
+    // useEffect hooks that fetches data from the server.
     useEffect(()=> {
         fetchDesserts();
         fetchDrinks();
@@ -30,6 +34,7 @@ const App = () => {
         fetchCurrentAdminUser();
     }, [])
     
+    // hook executed after every update of currentUser. Gets shopping cart data.
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
@@ -38,10 +43,12 @@ const App = () => {
         fetchUserCurrentCart();
     }, [currentUser]);
 
+    // log current cart
     useEffect(() => {
         console.log("true current cart: ", currentCart);
     }, [currentCart]);
-      
+    
+    // Creates the cart for an authorized user.
     async function createCartForUser() {
         console.log("create cart for user function has started running...")
         try {
@@ -77,6 +84,7 @@ const App = () => {
         }
     }
 
+    // Fetches and sets the current authorized user's cart via JWT.
     async function fetchUserCurrentCart() {
         try {
             const token = localStorage.getItem("token");
@@ -106,8 +114,9 @@ const App = () => {
         } catch (error) {
             console.log(error);
         }
-    }    
+    }
     
+    // Sets data for the user from the admin.
     async function fetchUsers() {
         try {
             const response = await fetch(`http://localhost:1337/api/admin/users`);
@@ -118,6 +127,7 @@ const App = () => {
         }
     }
 
+    // Sets drinks.
     async function fetchDrinks() {
         try {
             const response = await fetch(`http://localhost:1337/api/drinks`);
@@ -128,6 +138,7 @@ const App = () => {
         }
     }
     
+    // Sets desserts.
     async function fetchDesserts() {
         try {
             const response = await fetch(`http://localhost:1337/api/desserts`);
@@ -138,6 +149,7 @@ const App = () => {
         }
     }
 
+    // Sets sides.
     async function fetchSides() {
         try {
             const response = await fetch(`http://localhost:1337/api/sides`);
@@ -148,6 +160,7 @@ const App = () => {
         }
     }
 
+    // Sets the current authorized user.
     async function fetchCurrentUser() {
         const token = localStorage.getItem("token");
         if (token) {
@@ -169,6 +182,7 @@ const App = () => {
         }
     }
 
+    // Sets the current authorized admin user.
     async function fetchCurrentAdminUser() {
         const token = localStorage.getItem("token");
 
