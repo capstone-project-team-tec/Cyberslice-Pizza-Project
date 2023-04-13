@@ -1,6 +1,7 @@
 const express = require("express");
 const usersRouter = express.Router();
 
+// Database function wrappers for users.
 const { 
     createUser,
     getUserByUsername,
@@ -15,18 +16,24 @@ const {
 
 } = require('../db/users');
 
-//dependency imports
+// Dependency imports
+
 require('dotenv').config();
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 //function imports;
-    
+
+// Importing middleware functions used in the user route handlers.
 const { requireUser, requireAdmin } = require('./utils');
 
+// Logs a message for every request made to /users
 usersRouter.use((req,res,next)=>{
     console.log("A request is being made to /users");
     next();
 })
+
+// POST a login request with a username and password.
 usersRouter.post('/login', async (req,res,next)=>{
     const {username,password} = req.body;
     if(!username || !password){
@@ -85,6 +92,8 @@ usersRouter.post('/login', async (req,res,next)=>{
     }
 })
 
+
+// POST an admin login request.
 usersRouter.post('/adminlogin', async (req,res,next) => {
     const {username, password} = req.body;
 
@@ -102,51 +111,42 @@ usersRouter.post('/adminlogin', async (req,res,next) => {
             const areTheyTheSame = await bcrypt.compare(password, user.password);
             if (areTheyTheSame) {
                 const token = await jwt.sign({username, password, isAdmin}, process.env.JWT_SECRET);
-                res.send(
+                res.send({
+                    success:true,
+                    user:
                     {
-                        success:true,
-                        user:
-                        {
-                            username,
-                            isAdmin
-                        },
-                        message: "You are now logged in as admin!",
-                        token: token
-                    }).status(200);
-                    } else {
-                        res.send({message: "Wrong Password!"}).status(403)
-                    }
+                        username,
+                        isAdmin
+                    },
+                    message: "You are now logged in as admin!",
+                    token: token
+                }).status(200);
                 } else {
-                    res.send(
-                        {
-                            success: false,
-                            error: {
-                                name: "UserError",
-                                message: "User does not exist. Please create a new account."
-                            },
-                            data: null
-                        }).status(403);
+                    res.send({message: "Wrong Password!"}).status(403)
+                }
+                } else {
+                    res.send({
+                        success: false,
+                        error: {
+                            name: "UserError",
+                            message: "User does not exist. Please create a new account."
+                        },
+                        data: null
+                    }).status(403);
                 }
     } catch(error) {
         console.log(error)
         next(error)
     }
 })
+
+// POST a user register request.
 usersRouter.post('/register', async (req,res,next)=>{
     // const {username, password } = req.body;
     try {
         const userData = req.body;
-        // const alreadyExists = await getUserByUsername(userData.username);|
-        // if(alreadyExists){
-        //     res.send({
-        //         name: 'UserExistsError',
-        //         message: 'A user by that username already exists'
-        //     });
-        // }
         if (userData.username && userData.password && userData.password.length >= 8 && userData.username.length >= 8) {
-            // let newSaltValue = await bcrypt.genSalt(12)
-            // console.log(userData.password);
-            // let newHashedPassword = await bcrypt.hash(userData.password, newSaltValue)
+            
             let newCreatedUser = await createUser({
                 username: userData.username,
                 password: userData.password,
@@ -155,27 +155,25 @@ usersRouter.post('/register', async (req,res,next)=>{
                 address: userData.address,
                 phone: userData.phone
             })
-            // NORMALLY, you would also be generating a JWT on top of hashing the password, and sending that JWT with the response.send method.
+
             if (newCreatedUser) {
                 console.log("This is the new created user...",newCreatedUser);
                 const token = await jwt.sign({id: newCreatedUser.id, username: newCreatedUser.username},process.env.JWT_SECRET, {expiresIn: '1w'} );
-                res.send(
-                {
+                res.send({
                     success: true,
                     error: null,
                     token: token,
                     message: "Thanks for signing up for our service."
                 }).status(200)
             } else {
-                res.send(
-                    {
-                        success: false,
-                        error: {
-                            name: "UserError",
-                            message: "failed to create account"
-                        },
-                        data: null
-                    }).status(403)
+                res.send({
+                    success: false,
+                    error: {
+                        name: "UserError",
+                        message: "failed to create account"
+                    },
+                    data: null
+                }).status(403)
             }
         }
     } catch (error) {
@@ -184,15 +182,17 @@ usersRouter.post('/register', async (req,res,next)=>{
     }
 })
 
+// GET all the users.
 usersRouter.get('/', async(req,res,next)=>{
     try {
         const users = await getAllUsers();
-        res.send( users );
+        res.send(users);
       } catch (error) {
         next(error);
       }
 })
 
+// GET details of current user.
 usersRouter.get('/me', requireUser, async(req,res,next)=>{
     try {
         const user = req.user;
@@ -216,6 +216,7 @@ usersRouter.get('/me', requireUser, async(req,res,next)=>{
     }
 })
 
+// GET details of the admin.
 usersRouter.get('/admin', requireAdmin, async(req, res, next)=> {
     try {
         const user = req.user;
@@ -239,7 +240,7 @@ usersRouter.get('/admin', requireAdmin, async(req, res, next)=> {
     }
 })
 
-// Just a boilerplate (GET BY ID) route; similar code from desserts.js
+// GET a user by their ID.
 usersRouter.get('/:userId', async (req, res, next) => {
     const user = await getUserById(req.params.userId);
     if (!req.params.userId) {
@@ -256,13 +257,14 @@ usersRouter.get('/:userId', async (req, res, next) => {
     }
 });
 
+// PATCH the current profile. 
 usersRouter.patch(`/me`, async (req, res, next) => {
     // const id = req.params.id
     console.log(req.user)
-    const { id } = req.user
-    const { username, name, email, address, phone} = req.body
+    const {id} = req.user
+    const {username, name, email, address, phone} = req.body
     const updateFields = {}
-    if(id) {
+    if (id) {
         updateFields.id = id
     }
     if (username) {
@@ -289,35 +291,32 @@ usersRouter.patch(`/me`, async (req, res, next) => {
     }
 })
 
-// Just a boilerplate; some similar code from desserts.js
-
+// DELETE the current account.
 usersRouter.delete('/me', async (req, res, next) => {
-    // const { username } = req.user
-    const { id } = req.user
+    const {id} = req.user
     try {
-    // const user = await getUserByUsername(username);
       if (!id) {
-          res.send( {
-              name: 'UserNotFoundError',
-              message: 'Could not find a user with that username'
-          } )
+        res.send({
+            name: 'UserNotFoundError',
+            message: 'Could not find a user with that username'
+        })
       } else { 
-    // const { id } = req.user
         await deleteUser(id)
         res.send({
             success: true,
             message: "User was successfully deleted"
         })
       }
-    } catch ({ name, message }) {
-      next({ name, message });
+    } catch ({name, message}) {
+      next({name, message});
     }
   });
 
+// PATCH the delivery address.
   usersRouter.patch('/:id/updatedelivery', async (req, res, next) => {
     const id = req.params.id;
     console.log("Update request for delivery address is running")
-    const { address } = req.user;
+    const {address} = req.user;
 
     const updateFields = {};
 
@@ -337,7 +336,4 @@ usersRouter.delete('/me', async (req, res, next) => {
     }
 })
 
-
 module.exports = usersRouter
-
-

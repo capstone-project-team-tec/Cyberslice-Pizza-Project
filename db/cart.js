@@ -1,10 +1,9 @@
 const { client } = require("./client");
 
-
-// cart table functions
+// Creates a cart without associating it to a user. For guests.
 async function createCartWithoutUser() {
     try {
-        const { rows } = await client.query(`
+        const {rows} = await client.query(`
             INSERT INTO carts ("userId", "isCheckedOut", "totalCost", "deliveryAddress", "orderLocation")
             VALUES (NULL, false, NULL, NULL, NULL)
             RETURNING *;
@@ -16,9 +15,10 @@ async function createCartWithoutUser() {
     }
 }
 
+// Create a cart for a logged in user.
 async function createCartForUser(userId) {
     try {
-        const { rows } = await client.query(`
+        const {rows} = await client.query(`
             INSERT INTO carts ("userId", "isCheckedOut", "totalCost", "deliveryAddress", "orderLocation")
             VALUES ($1, false, NULL, NULL, NULL)
             RETURNING *;
@@ -29,24 +29,26 @@ async function createCartForUser(userId) {
     }
 }
 
-async function checkoutCart({ cartId, totalCost }) {
+// Checkout the cart.
+async function checkoutCart({cartId, totalCost}) {
     try {
-            const { rows } = await client.query(`
-                UPDATE carts
-                SET "isCheckedOut" = true, "totalCost" = $2
-                WHERE id = $1
-                RETURNING *;
-            `, [cartId, totalCost]);
+        const {rows} = await client.query(`
+            UPDATE carts
+            SET "isCheckedOut" = true, "totalCost" = $2
+            WHERE id = $1
+            RETURNING *;
+        `, [cartId, totalCost]);
 
-            return(rows[0]);
-        } catch(error) {
-            console.log(error);
-        }
+        return(rows[0]);
+    } catch(error) {
+        console.log(error);
+    }
 }
 
-async function orderOptionsCartInsertOrderLocationorDeliveryAddress({ cartId, deliveryAddress, orderLocation}) {
+//
+async function orderOptionsCartInsertOrderLocationorDeliveryAddress({cartId, deliveryAddress, orderLocation}) {
     try {
-        const { rows } = await client.query(`
+        const {rows} = await client.query(`
         UPDATE carts
         SET "deliveryAddress" = $2, "orderLocation" = $3
         WHERE id = $1
@@ -59,12 +61,9 @@ async function orderOptionsCartInsertOrderLocationorDeliveryAddress({ cartId, de
     }
 }
 
-
-
 async function fetchUserCarts(userId) {
     try {
-
-        const {rows } = await client.query(`
+        const {rows} = await client.query(`
             SELECT * FROM carts
             WHERE "userId"=$1;
         `,[userId]);

@@ -1,6 +1,7 @@
 const express = require("express");
 const sidesRouter = express.Router();
 
+// Database function wrappers for sides.
 const { 
     createSide,
     getAllSides,
@@ -9,14 +10,16 @@ const {
     deleteSide
 } = require('../db/sides');
 
-//dependency imports
+// Dependency imports
 require('dotenv').config();
 
+// Logs a message for every request made to /sides
 sidesRouter.use((req,res,next)=>{
     console.log("A request is being made to /sides");
     next();
 })
 
+// GET all the sides.
 sidesRouter.get('/', async(req,res,next)=>{
     try {
         const sides = await getAllSides();
@@ -26,6 +29,7 @@ sidesRouter.get('/', async(req,res,next)=>{
       }
 })
 
+// PATCH a side by its ID.
 sidesRouter.patch('/:sideId', async (req, res, next) => {
   const id = req.params.sideId;
   console.log("sidesRouter.patch; sideId: " + id);
@@ -52,6 +56,7 @@ sidesRouter.patch('/:sideId', async (req, res, next) => {
   }
 });
 
+// GET a side by its ID.
 sidesRouter.get('/:sideId', async (req, res, next) => {
   const side = await getSideById(req.params.sideId);
   if (!req.params.sideId) {
@@ -66,6 +71,7 @@ sidesRouter.get('/:sideId', async (req, res, next) => {
   }
 });
 
+// DELETE a side by its ID.
 sidesRouter.delete('/:sideId', async (req, res, next) => {
   if (!req.params.sideId) {
     console.log(error);

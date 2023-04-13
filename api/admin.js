@@ -3,14 +3,13 @@ const { requireAdmin } = require("./utils");
 const adminRouter = express.Router()
 require("dotenv").config()
 
-// Database function wrappers
+// Database function wrappers for admin.
 const { 
     createProduct,
     fetchAllProducts,
     updateProduct,
     deleteProduct,
     getProductById,
-    getAllUsers,
     getUserById,
     getUserByUsername,
     fetchAllUsers,
@@ -18,7 +17,7 @@ const {
     deleteUser,
 } = require('../db/admin');
 
-// Logs a message for every request made.
+// Logs a message for every request made to /admin
 adminRouter.use((req,res,next)=>{
     console.log("A request is being made to /admin");
     next();
