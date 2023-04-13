@@ -1,5 +1,6 @@
 const { client } = require("./client")
 
+// Create sides in the products table.
 async function createSides({category, name, price, image}) {
     try {
         const {rows} = await client.query(`
@@ -10,12 +11,12 @@ async function createSides({category, name, price, image}) {
         `, [category, name, price, image ])
 
         return rows;
-
     } catch(error) {
         console.log(error)
     }
 }
 
+// Get all the sides from the products table.
 async function getAllSides() {
     try {
         const {rows} = await client.query(`
@@ -29,6 +30,7 @@ async function getAllSides() {
     }
 }
 
+// Get sides by the ID.
 async function getSideById(id) {
     try {
         const {rows: [product] } = await client.query(`
@@ -43,6 +45,7 @@ async function getSideById(id) {
     }
 }
 
+// Updates sides from the products table.
 async function updateSides({id, fields = {} }) {
     console.log("Starting updateSides");
 
@@ -71,6 +74,7 @@ async function updateSides({id, fields = {} }) {
     }
 }
 
+// Delete a side by its ID.
 async function deleteSide(id) {
     try {
         const side = await getSideById(id);

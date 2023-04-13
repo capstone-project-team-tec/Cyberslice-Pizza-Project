@@ -1,6 +1,6 @@
 const {client} = require("./client");
 
-// pizza with toppings table functions
+// Adds row to pizzaWithToppings, associated a toppingsID and a pizzaID with each other. 
 async function addToppingsToPizza({pizzaId, toppingsId, count}) {
     try {
         const {rows} = await client.query(`
@@ -15,6 +15,7 @@ async function addToppingsToPizza({pizzaId, toppingsId, count}) {
     }
 }
 
+// Fetch a pizza with toppings.
 async function fetchPizzaWithToppingsInfo({pizzaId}) {
     try {
         const {rows : [user]} = await client.query(`
@@ -27,7 +28,7 @@ async function fetchPizzaWithToppingsInfo({pizzaId}) {
     }
 }
 
-// pizza table functions
+// Create a new pizza in the pizza table.
 async function createPizza({name, basePizzaCost, pizzaSize}) {
     try {
         const {rows} = await client.query(`
@@ -41,6 +42,7 @@ async function createPizza({name, basePizzaCost, pizzaSize}) {
     }
 }
 
+// Add details to a pizza.
 async function addDetailsToPizza(id, {name, basePizzaCost, size}) {
     try {
         const {rows} = await client.query(`
@@ -48,11 +50,13 @@ async function addDetailsToPizza(id, {name, basePizzaCost, size}) {
             SET name = $2, "basePizzaCost" = $3, size = $4
             WHERE id = $1;
         `, [id, name, basePizzaCost, size]);
+        return rows[0];
     } catch(error) {
         console.log(error);
     }
 }
 
+// Retrieve a pizza from the pizza table its name.
 async function fetchPizzaByName(name) {
     try {
         const {rows: [pizza] } = await client.query(`

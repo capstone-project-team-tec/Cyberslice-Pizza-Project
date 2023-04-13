@@ -1,5 +1,6 @@
 const { client } = require("./client")
 
+// Create a new row in the Toppings table, with a name, price, and image.
 async function createToppings({name, price, image}) {
     try {
         const {rows} = await client.query(`
@@ -16,6 +17,7 @@ async function createToppings({name, price, image}) {
     }
 }
 
+// Get all toppings from toppings table.
 async function getAllToppings() {
     try {
         const {rows} = await client.query(`
@@ -28,6 +30,7 @@ async function getAllToppings() {
     }
 }
 
+// Get a topping by its ID.
 async function getToppingsById(id) {
     try {
         const {rows: [toppings] } = await client.query(`
@@ -42,6 +45,7 @@ async function getToppingsById(id) {
     }
 }
 
+// Update a topping's name and price.
 async function updateToppings({name, price}) {
     try {
         const {rows} = await client.query(`
@@ -60,5 +64,4 @@ module.exports = {
     getAllToppings,
     getToppingsById,
     updateToppings
-    // deleteToppings
 }
