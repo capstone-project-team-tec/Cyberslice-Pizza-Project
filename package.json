@@ -9,6 +9,7 @@
     "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
     "server:dev": "nodemon index.js",
+    "server": "node index.js",
     "seed:test": "npm run test:watch db",
     "start:api": "npm run start:dev",
     "test:api": "npm run test:watch api"
