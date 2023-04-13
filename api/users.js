@@ -163,7 +163,8 @@ usersRouter.post('/register', async (req,res,next)=>{
                     success: true,
                     error: null,
                     token: token,
-                    message: "Thanks for signing up for our service."
+                    message: "Thanks for signing up for our service.",
+                    user: newCreatedUser
                 }).status(200)
             } else {
                 res.send({

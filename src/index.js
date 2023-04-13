@@ -206,7 +206,7 @@ const App = () => {
                         <Route path="/orderoptions" element={<OrderOptions currentUser={currentUser} setCurrentUser={setCurrentUser} currentCart={currentCart} setCurrentCart={setCurrentCart}/>} />
                         <Route path="/locations" element={<Locations />} />
                         <Route path="/checkout" element={<Checkout currentOrderItems={currentOrderItems} setCurrentOrderItems={setCurrentOrderItems} totalCost={totalCost} setTotalCost={setTotalCost} subTotalDisplay={subTotalDisplay} setSubTotalDisplay={setSubTotalDisplay} currentCart={currentCart} />} />
-                        <Route path="/register" element={<Register setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
+                        <Route path="/register" element={<Register createCartForUser={createCartForUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>} />
                         <Route path="/profile" element={<Profile currentCart={currentCart} currentUser={currentUser} setCurrentUser={setCurrentUser} setCurrentUserTrue={setCurrentUserTrue}/>}/>
                         <Route path="/menu" element={<Menu />} />
                         <Route path="/admin" element={<Admin fetchUserCurrentCart={fetchUserCurrentCart} currentUser={currentUser} currentCart={currentCart} setCurrentCart={setCurrentCart} setCurrentUser={setCurrentUser} products={products} users={users} currentAdminUser={currentAdminUser} sides={sides} drinks={drinks} desserts={desserts} setDrinks={setDrinks} setSides={setSides} setDesserts={setDesserts}/>} />

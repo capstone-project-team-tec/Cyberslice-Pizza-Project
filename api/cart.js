@@ -33,33 +33,34 @@ cartRouter.use((req,res,next)=>{
 
 // GET the cart of the user.
 cartRouter.get('/', async (req, res, next) => {
-  if ('user' in req) {
-    if ("id" in req.user) {
-        console.log("the cart router is running....")
-        try {
-        console.log('a user id has been found!!!!!')
-        const userId = req.user.id;
-        console.log("this is the fetch user cart route userId on the cart: ",userId)
-        const userCarts = await fetchUserCarts(userId);
-        console.log("these are the user's carts:   " + userCarts);
-        if (userCarts) {
-            res.send(userCarts);
+    if ('user' in req) {
+        if ("id" in req.user) {
+            console.log("the cart router is running....")
+            try {
+                console.log('a user id has been found!!!!!')
+                const userId = req.user.id;
+                console.log("this is the fetch user cart route userId on the cart: ",userId)
+                const userCarts = await fetchUserCarts(userId);
+                console.log("these are the user's carts:   " + userCarts);
+                if (userCarts) {
+                    res.send(userCarts);
+                } else {
+                    res.status(404).send({
+                    status: 'not_found',
+                    failure: true,
+                    message: `No carts found for user with ID: ${userId}`,
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
         } else {
-            res.status(404).send({
-            status: 'not_found',
-            failure: true,
-            message: `No carts found for user with ID: ${userId}`,
-            });
+            res.status(400).send({ 
+            query: JSON.stringify(req.body.userId),
+            message: "The name parameter is missing" });
         }
-        } catch (error) {
-        console.log(error);
-        }
-  } else {
-    res.status(400).send({ 
-      query: JSON.stringify(req.body.userId),
-      message: "The name parameter is missing" });
-  }
-}});
+    }
+});
 
 // GET the order items from a Cart given its ID.
 cartRouter.get('/:cartId', async (req, res, next) => {
