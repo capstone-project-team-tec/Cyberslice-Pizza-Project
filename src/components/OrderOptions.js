@@ -4,59 +4,6 @@ import { useParams, useNavigate, Link, json } from "react-router-dom"
 import "./orderOptions.css"
 import "./global.css"
 
-// const CarryoutLocation = ({ title, street, city, state, zip}) => {
-//     const [selectedStoreLocation, setSelectedStoreLocation] = useState("")
-//         <section className="location" id={title}>
-//             <section className="locationInfoContainer">
-//                 <section className="locationTitle">
-//                 {title}
-//                 </section>
-//                 <input type="radio" onClick={setSelectedStoreLocation({street} + {city} + {state} + {zip})}/>
-//                 <section className="addressContainer">
-//                 <section className="locationStreetContainer">
-//                     <section className="locationStreetTitle">
-//                     Street
-//                     </section>
-
-//                     <section className="locationStreet">
-//                     {street}
-//                     </section>
-//                 </section>
-
-//                 <section className="locationCityContainer">
-//                     <section className="locationCityTitle">
-//                     City
-//                     </section>
-
-//                     <section className="locationCity">
-//                     {city}
-//                     </section>
-//                 </section>
-
-//                 <section className="locationStateContainer">
-//                     <section className="locationStateTitle">
-//                     State
-//                     </section>
-
-//                     <section className="locationState">
-//                     {state}
-//                     </section>
-//                 </section>
-
-//                 <section className="locationZipContainer">
-//                     <section className="locationZipTitle">
-//                     Zip
-//                     </section>
-
-//                     <section className="locationZip">
-//                     {zip}
-//                     </section>
-//                 </section>
-//                 </section>
-//             </section>
-//     </section>
-    
-// }
 const OrderOptions = (props) => {
     const [carryOut, setCarryOut] = useState(false)
     const [delivery, setDelivery] = useState(false)
@@ -137,16 +84,35 @@ const OrderOptions = (props) => {
                 </section>
             </section>
 
+            {delivery ? (
+                <div>
+                    <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
+                        <div id="alldeliveryform">
+                        <h3>Enter Delivery Address:</h3>
+                        <input
+                        id="deliveryform" 
+                        type="text"
+                        placeholder="Delivery Address"
+                        onChange = {(event) => setDeliveryAddress(event.target.value)}
+                        />
+                       </div>
+                    </form>
+                </div>
+                
+        
+                ): ""
+                }
+
             {carryOut || delivery ? (
                 <div id="locationsContainer">
-                <h3>Please Select Location:</h3>
-                <form>
+                <h3 id="selectlocation">Select A Location:</h3>
+                <form id="formLocationContainer">
                 <section className="location">
             <section className="locationInfoContainer">
-                <section className="locationTitle">
-                "Manhattan Road"
-                </section>
                 <input type="radio" name="location" onClick={() => setSelectedStoreLocation("4342 N Liberty Road, New York City, New York, 10001")} />
+                <section className="locationTitle">
+                Cyber Net
+                </section>
                 <section className="addressContainer">
                 <section className="locationStreetContainer">
                     <section className="locationStreetTitle">
@@ -192,10 +158,10 @@ const OrderOptions = (props) => {
     </section>
     <section className="location">
             <section className="locationInfoContainer">
-                <section className="locationTitle">
-                Red Planet Road
-                </section>
                 <input type="radio" name="location" onClick={() => setSelectedStoreLocation("3697 S Red Planet Road," + " New York City," + " New York," + " 70810")}/>
+                <section className="locationTitle">
+                    Techno Corp
+                </section>
                 <section className="addressContainer">
                 <section className="locationStreetContainer">
                     <section className="locationStreetTitle">
@@ -241,10 +207,10 @@ const OrderOptions = (props) => {
     </section>
     <section className="location" >
             <section className="locationInfoContainer">
+            <input type="radio" name="location" onClick={() => setSelectedStoreLocation("6201 Whispering Pines Lane, New York City, New York, 03429")}/>
                 <section className="locationTitle">
-                Whispering Pines
+                Synth Runner
                 </section>
-                <input type="radio" name="location" onClick={() => setSelectedStoreLocation("6201 Whispering Pines Lane, New York City, New York, 03429")}/>
                 <section className="addressContainer">
                 <section className="locationStreetContainer">
                     <section className="locationStreetTitle">
@@ -288,33 +254,15 @@ const OrderOptions = (props) => {
                 </section>
             </section>
     </section>
-            </form>
-    {/* <button id="submit"type="submit"><Link to="/checkout">Next</Link></button> */}
-
-                    
+            </form>   
                     </div>
                 ): ""}
-            {delivery ? (
-                <div>
-                    <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
-                        <h4>Please enter Delivery Address</h4>
-                        <input 
-                        type="text"
-                        placeholder="Delivery Address"
-                        // value={deliveryAddress}
-                        onChange = {(event) => setDeliveryAddress(event.target.value)}
-                        />
-                       
-                    </form>
-                </div>
-                
-        
-                ): ""
-                }
                 {
                     delivery || carryOut ? (
                         <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
-                    <button type="submit">Continue To Cart</button>
+                            <div id="buttoncartcontainer">
+                            <Link to="/checkout"><button type="submit" id="submitbuttontocart">Continue To Cart</button></Link>
+                    </div>
                     </form>
                     ):""
                 }
