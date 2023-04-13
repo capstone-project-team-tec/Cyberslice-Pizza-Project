@@ -1,10 +1,12 @@
 const express = require('express');
 const apiRouter = express.Router();
+
 const jwt = require('jsonwebtoken');
 const {getUserByUsername, getAdminUserByUsername} = require('../db');
 require("dotenv").config()
 const {JWT_SECRET} = process.env;
 
+// Middleware that checks for a valid JSON Web Token in the header's Authroization field.
 apiRouter.use(async(req,res,next)=>{
     // console.log("This is the top of the routeHandler");
     const prefix='Bearer ';
@@ -46,36 +48,39 @@ apiRouter.use(async(req,res,next)=>{
         });
     }
 });
+
+// Middleware that checks if the the user was set.
 apiRouter.use((req,res,next) =>{
     if(req.user){
         console.log("User is set: ",req.user);
     }
     next();
 });
+
+// Imported router objects.
 const usersRouter = require('./users');
 const dessertsRouter = require('./desserts');
 const drinksRouter = require('./drinks');
 const sidesRouter = require('./sides');
 const pizzaRouter = require('./pizza');
-const cartRouter = require('./cart')
-const adminRouter = require('./admin')
-// const activitiesRouter = require('./activities');
-// const routinesRouter = require('./routines');
-// const routine_activitiesRouter = require('./routine_activities');
+const cartRouter = require('./cart');
+const adminRouter = require('./admin');
+
+// Mounting paths for the imported router objects.
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/desserts', dessertsRouter);
 apiRouter.use('/drinks', drinksRouter);
 apiRouter.use('/sides', sidesRouter);
 apiRouter.use('/pizza', pizzaRouter);
 apiRouter.use('/cart', cartRouter);
-apiRouter.use('/admin', adminRouter )
-// apiRouter.use('/activities', activitiesRouter);
-// apiRouter.use('/routines', routinesRouter);
-// apiRouter.use('/routine_activities', routine_activitiesRouter);
+apiRouter.use('/admin', adminRouter);
+
+// Error handling middleware function.
 apiRouter.use((error,req,res,next)=>{
     res.send({
         name: error.name,
         message: error.message
     });
 });
+
 module.exports = apiRouter;
