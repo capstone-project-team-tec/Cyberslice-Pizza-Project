@@ -1,6 +1,6 @@
 const { client } = require("./client");
 
-
+// Create a dessert in the products table.
 async function createDessert({category, name, price, image}) {
     try {
         const {rows} = await client.query(`
@@ -17,6 +17,7 @@ async function createDessert({category, name, price, image}) {
     }
 }
 
+// Get all desserts from the products table.
 async function getAllDesserts() {
     try {
         const {rows} = await client.query(`
@@ -30,6 +31,7 @@ async function getAllDesserts() {
     }
 }
 
+// Get a dessert by its ID.
 async function getDessertById(id) {
     console.log("Starting getDessertById");
     try {
@@ -46,6 +48,7 @@ async function getDessertById(id) {
     }
 }
 
+// Update a dessert.
 async function updateDesserts({id, fields = {} }) {
     console.log("Starting updateDesserts");
 
@@ -74,6 +77,7 @@ async function updateDesserts({id, fields = {} }) {
     }
 }
 
+// Delete a dessert by its ID.
 async function deleteDessert(id) {
     try {
         const dessert = await getDessertById(id);

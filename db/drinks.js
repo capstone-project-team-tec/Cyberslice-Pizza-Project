@@ -1,5 +1,6 @@
 const {client} = require("./client")
 
+// Create drinks into the products table.
 async function createDrinks({category, name, price, image}) {
     try {
         const {rows} = await client.query(`
@@ -15,6 +16,7 @@ async function createDrinks({category, name, price, image}) {
     }
 }
 
+// Get all the drinks from the products table.
 async function getAllDrinks() {
     try {
         const {rows} = await client.query(`
@@ -28,6 +30,7 @@ async function getAllDrinks() {
     }
 }
 
+// Get a drink by their ID.
 async function getDrinkById(id) {
     try {
         const {rows: [product]} = await client.query(`
@@ -41,6 +44,7 @@ async function getDrinkById(id) {
     }
 }
 
+// Update drinks.
 async function updateDrinks({id, fields = {} }) {
     console.log("Starting updateDrinks");
 
@@ -69,13 +73,14 @@ async function updateDrinks({id, fields = {} }) {
     }
 }
 
+// Delete a drink when given their ID.
 async function deleteDrink(id) {
     try {
         const drink = await getDrinkById(id);
         if (!drink) {
             throw {
                 name: 'DessertNotFoundError',
-                message: 'Could not find a dessert with that id'
+                message: 'Did not find a dessert with that id'
             }
         }
         await client.query(`

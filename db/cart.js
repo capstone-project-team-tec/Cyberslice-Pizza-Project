@@ -45,7 +45,7 @@ async function checkoutCart({cartId, totalCost}) {
     }
 }
 
-//
+// Updates a carts order locations or delivery address.
 async function orderOptionsCartInsertOrderLocationorDeliveryAddress({cartId, deliveryAddress, orderLocation}) {
     try {
         const {rows} = await client.query(`
@@ -61,6 +61,7 @@ async function orderOptionsCartInsertOrderLocationorDeliveryAddress({cartId, del
     }
 }
 
+// Fetches the current user's carts by their ID.
 async function fetchUserCarts(userId) {
     try {
         const {rows} = await client.query(`
@@ -79,8 +80,7 @@ async function fetchUserCarts(userId) {
     }
 }
 
-
-// orderItems table functions
+// Creates a new row of product information in the orderItems table.
 async function createOrderItemsRowForProduct({cartId, productId, count, cost, productName}) {
     try {
         const {rows} = await client.query(`
@@ -96,6 +96,7 @@ async function createOrderItemsRowForProduct({cartId, productId, count, cost, pr
     }
 }
 
+// Creates a new row of pizza information in the orderItems table.
 async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost, pizzaName}) {
     try {
         const {rows} = await client.query(`
@@ -111,18 +112,15 @@ async function createOrderItemsRowForPizza({cartId, pizzaId, count, cost, pizzaN
     }
 }
 
+// Fetches the order items from a cart by their ID.
 async function fetchOrderItemsByCartId(cartId) {
     console.log("starting to fetch order items by cart id")
     try {
-
         const {rows } = await client.query(`
             SELECT * FROM "orderItems"
             WHERE "cartId"=$1;
         `,[cartId]);
 
-        // if (!orderItems || orderItems.length == 0) {
-        //     return null
-        // }
         console.log("This is the order items return", rows)
         return rows;
 
@@ -131,6 +129,7 @@ async function fetchOrderItemsByCartId(cartId) {
     }
 }
 
+// Update an orderItem's ID and quantity.
 async function updateOrderItem({orderItemId, count}) {
     console.log("the update order items function is running, here is count:  ",count)
     try {
@@ -146,6 +145,7 @@ async function updateOrderItem({orderItemId, count}) {
     }
 }
 
+// Delete a product from a cart given their ID's.
 async function deleteRowProducts(productId, cartId) {
     console.log("Starting to delete product rows")
     try { 
@@ -165,7 +165,9 @@ async function deleteRowProducts(productId, cartId) {
     } catch (error) {
       throw error;
     }
-  }
+}
+
+// Delete a pizza from the orderItems.
   async function deleteRowPizza(pizzaId) {
     console.log("Starting to delete pizza rows")
     try { 
@@ -183,8 +185,6 @@ async function deleteRowProducts(productId, cartId) {
       throw error;
     }
   }
-
-  
 
 module.exports = {
     createCartWithoutUser,

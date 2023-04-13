@@ -1,5 +1,6 @@
 const {client} = require("./client");
 
+// Importing relevant functions from modules.
 const {
     createUser,
     getUser,
@@ -8,47 +9,47 @@ const {
     createAdminUser,
     getAdminUser
   } = require('./users.js');
-  const {
-    createDessert,
-    getAllDesserts,
-    getDessertById,
-    updateDesserts
-  } = require('./desserts.js')
+const {
+  createDessert,
+  getAllDesserts,
+  getDessertById,
+  updateDesserts
+} = require('./desserts.js')
+const {
+  createDrinks,
+  getAllDrinks,
+  getDrinksById,
+  updateDrinks
+} = require('./drinks.js')
+const {
+  createSides,
+  getAllSides,
+  getSidesById,
+  updateSides
+} = require('./sides.js')
+const {
+  createToppings,
+  getAllToppings,
+  getToppingsById,
+  updateToppings
+} = require('./toppings.js');
+const { 
+  addToppingsToPizza,
+  createPizza,
+  addDetailsToPizza 
+} = require("./pizza");
+const {
+  createCartWithoutUser,
+  createCartForUser,
+  checkoutCart,
+  createOrderItemsRowForProduct,
+  createOrderItemsRowForPizza
+} = require("./cart");
+const {
+  createPaymentInformationForOrderRow
+} = require("./paymentInformationForOrder");
 
-  const {
-    createDrinks,
-    getAllDrinks,
-    getDrinksById,
-    updateDrinks
-  } = require('./drinks.js')
-  const {
-    createSides,
-    getAllSides,
-    getSidesById,
-    updateSides
-  } = require('./sides.js')
-  const {
-    createToppings,
-    getAllToppings,
-    getToppingsById,
-    updateToppings
-  } = require('./toppings.js');
-  const { 
-    addToppingsToPizza,
-    createPizza,
-    addDetailsToPizza 
-  } = require("./pizza");
-  const {
-    createCartWithoutUser,
-    createCartForUser,
-    checkoutCart,
-    createOrderItemsRowForProduct,
-    createOrderItemsRowForPizza
-  } = require("./cart");
-  const {
-    createPaymentInformationForOrderRow
-  } = require("./paymentInformationForOrder");
-
+// Dropping all tables.
 async function dropTables() {
   try {
     console.log("Starting to drop tables...");
@@ -69,7 +70,8 @@ async function dropTables() {
     throw error;
   }
 }
-  
+
+// Creating tables on the database.
 async function createTables() {
   try {
     console.log("Starting to build tables...");
@@ -152,13 +154,14 @@ async function createTables() {
   }
 }
 
+// Creating the initial users.
 async function createInitialUsers() {
   console.log("Starting to create users...")
   try {
     const usersToCreate = [
-      { name: "albert", username: "albert", password: "bertie99", email: "bertie@fake.com", phone: "110-111-0010", address: "someAddress 1111 s blvd" },
-      { name: "sandra", username: "sandra", password: "sandra123", email: "sandra@Superfake.com", phone: "110-000-0010", address: "someAddress 0000 s blvd" },
-      { name: "jennifer", username: "glamgal", password: "glamgal123", email: "glammy@Ultrafake.com", phone: "110-333-0010", address: "someAddress 3333 s blvd" } 
+      {name: "albert", username: "albert", password: "bertie99", email: "bertie@fake.com", phone: "110-111-0010", address: "someAddress 1111 s blvd"},
+      {name: "sandra", username: "sandra", password: "sandra123", email: "sandra@Superfake.com", phone: "110-000-0010", address: "someAddress 0000 s blvd"},
+      {name: "jennifer", username: "glamgal", password: "glamgal123", email: "glammy@Ultrafake.com", phone: "110-333-0010", address: "someAddress 3333 s blvd"} 
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 
@@ -171,13 +174,14 @@ async function createInitialUsers() {
   }
 }
 
+// Creating the admin users.
 async function createAdminUsers() {
   console.log("Starting to create admin users...")
   try {
     const adminToCreate = [
-      { username: "charlie", password: "charlie123", isAdmin: true},
-      { username: "tyler", password: "tyler123", isAdmin: true},
-      { username: "emmanuel", password: "emmanuel123", isAdmin: true}
+      {username: "charlie", password: "charlie123", isAdmin: true},
+      {username: "tyler", password: "tyler123", isAdmin: true},
+      {username: "emmanuel", password: "emmanuel123", isAdmin: true}
     ]
     const admin = await Promise.all(adminToCreate.map(createAdminUser))
 
@@ -189,15 +193,15 @@ async function createAdminUsers() {
     throw error
   }
 }
-
+// Creating the initial desserts on the database.
 async function createInitialDesserts() {
   console.log("Starting to create desserts...")
   try {
     const dessertsToCreate = [
-      { category: "desserts", name: "Brownies",  price: 7.99, image: "/Brownies.jpg", isActive: true },
-      { category: "desserts", name: "Cinnamon Twists",  price: 7.99, image: "/Cinnamon.jpg", isActive: true  },
-      { category: "desserts", name: "Apple Pie", price: 11.99, image: "/ApplePie.jpg", isActive: true },
-      { category: "desserts", name: "Chocolate Ice Cream", price: 4.99, image: "/Icecream.jpg", isActive: true },
+      {category: "desserts", name: "Brownies",  price: 7.99, image: "/Brownies.jpg", isActive: true},
+      {category: "desserts", name: "Cinnamon Twists",  price: 7.99, image: "/Cinnamon.jpg", isActive: true},
+      {category: "desserts", name: "Apple Pie", price: 11.99, image: "/ApplePie.jpg", isActive: true},
+      {category: "desserts", name: "Chocolate Ice Cream", price: 4.99, image: "/Icecream.jpg", isActive: true},
     ]
     const desserts = await Promise.all(dessertsToCreate.map(createDessert))
 
@@ -208,22 +212,23 @@ async function createInitialDesserts() {
 }
 }
 
+// Creating the initial drinks on the database.
 async function createInitialDrinks() {
   console.log("Starting to create drinks...")
   try {
     const drinksToCreate = [
-      { category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/NeuronFizz.jpg", isActive: true  },
-      { category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/NeuronFizz.jpg", isActive: true  },
-      { category: "drinks", name: "Small Nexus Nectar", price: 2.79, image: "/NexusNectar.jpg", isActive: true  },
-      { category: "drinks", name: "Large Nexus Nectar", price: 3.29, image: "/NexusNectar.jpg", isActive: true },
-      { category: "drinks", name: "Small Circuit Surge", price: 2.79, image: "/CircuitSurge.jpg", isActive: true  },
-      { category: "drinks", name: "Large Circuit Surge", price: 3.29, image: "/CircuitSurge.jpg", isActive: true  },
-      { category: "drinks", name: "Small Binary Burst", price: 2.79, image: "/BinaryBurst.jpg", isActive: true },
-      { category: "drinks", name: "Large Binary Burst", price: 3.29, image: "/BinaryBurst.jpg", isActive: true  },
-      { category: "drinks", name: "Small Quantum Cola", price: 2.79, image: "/QuantumCola.jpg", isActive: true  },
-      { category: "drinks", name: "Large Quantum Cola", price: 3.29, image: "/QuantumCola.jpg", isActive: true  },
-      { category: "drinks", name: "Small Plasma Pop", price: 2.79, image: "/PlasmaPop.jpg", isActive: true  },
-      { category: "drinks", name: "Large Plasma Pop", price: 3.29, image: "/PlasmaPop.jpg", isActive: true  }
+      {category: "drinks", name: "Small Neuron Fizz", price: 2.79, image: "/NeuronFizz.jpg", isActive: true},
+      {category: "drinks", name: "Large Neuron Fizz", price: 3.29, image: "/NeuronFizz.jpg", isActive: true},
+      {category: "drinks", name: "Small Nexus Nectar", price: 2.79, image: "/NexusNectar.jpg", isActive: true},
+      {category: "drinks", name: "Large Nexus Nectar", price: 3.29, image: "/NexusNectar.jpg", isActive: true},
+      {category: "drinks", name: "Small Circuit Surge", price: 2.79, image: "/CircuitSurge.jpg", isActive: true},
+      {category: "drinks", name: "Large Circuit Surge", price: 3.29, image: "/CircuitSurge.jpg", isActive: true},
+      {category: "drinks", name: "Small Binary Burst", price: 2.79, image: "/BinaryBurst.jpg", isActive: true},
+      {category: "drinks", name: "Large Binary Burst", price: 3.29, image: "/BinaryBurst.jpg", isActive: true},
+      {category: "drinks", name: "Small Quantum Cola", price: 2.79, image: "/QuantumCola.jpg", isActive: true},
+      {category: "drinks", name: "Large Quantum Cola", price: 3.29, image: "/QuantumCola.jpg", isActive: true},
+      {category: "drinks", name: "Small Plasma Pop", price: 2.79, image: "/PlasmaPop.jpg", isActive: true},
+      {category: "drinks", name: "Large Plasma Pop", price: 3.29, image: "/PlasmaPop.jpg", isActive: true}
     ]
     const drinks = await Promise.all(drinksToCreate.map(createDrinks))
 
@@ -233,19 +238,19 @@ async function createInitialDrinks() {
     console.log(error)
   }
 }
+
+// Creating the initial sides on the database.
 async function createInitialSides() {
   console.log("Starting to create sides...")
   try {
     const sidesToCreate = [
-      { category: "sides", name: "Salad", price: 6.99, image: "/Salad.jpeg", isActive: true},
-      { category: "sides", name: "4ct Breadsticks", price: 4.99, image: "/Breadsticks.jpg", isActive: true},
-      { category: "sides", name: "6ct Breadsticks", price: 6.99, image: "/Breadsticks.jpg", isActive: true},
-      { category: "sides", name: "8ct Wings", price: 11.99, image: "/Wings.jpg", isActive: true},
-      { category: "sides", name: "12ct Wings", price: 13.99, image: "/Wings.jpg", isActive: true},
-      { category: "sides", name: "Marinara Cup", price: .99, image: "/MarinaraCupWithLogo.jpg", isActive: true},
-      { category: "sides", name: "Icing Cup", price: 1.99, image: "/IcingCup.jpg", isActive: true}
-      
-
+      {category: "sides", name: "Salad", price: 6.99, image: "/Salad.jpeg", isActive: true},
+      {category: "sides", name: "4ct Breadsticks", price: 4.99, image: "/Breadsticks.jpg", isActive: true},
+      {category: "sides", name: "6ct Breadsticks", price: 6.99, image: "/Breadsticks.jpg", isActive: true},
+      {category: "sides", name: "8ct Wings", price: 11.99, image: "/Wings.jpg", isActive: true},
+      {category: "sides", name: "12ct Wings", price: 13.99, image: "/Wings.jpg", isActive: true},
+      {category: "sides", name: "Marinara Cup", price: .99, image: "/MarinaraCupWithLogo.jpg", isActive: true},
+      {category: "sides", name: "Icing Cup", price: 1.99, image: "/IcingCup.jpg", isActive: true}
     ]
     const sides = await Promise.all(sidesToCreate.map(createSides))
 
@@ -257,16 +262,17 @@ async function createInitialSides() {
   }
 }
 
+// Create the initial toppings.
 async function createInitialToppings() {
   console.log("Starting to create toppings...")
   try {
     const toppingsToCreate = [
-      { name: "Pepperoni", price: 3.99, image: "/1-Pepperoni.png", isActive: true},
-      { name: "Sausage", price: 3.99, image: "/2-Sausage.png", isActive: true},
-      { name: "GreenPepper", price: 2.99, image: "/3-GreenPepper.png", isActive: true},
-      { name: "Onion", price: 2.99, image: "/4-Onions.png", isActive: true},
-      { name: "Black Olives", price: 2.99, image: "/5-BlackOlive.png", isActive: true},
-      { name: "24-Carat Gold Flakes", price: 6.99, image: "/6-Gold.png", isActive: true}
+      {name: "Pepperoni", price: 3.99, image: "/1-Pepperoni.png", isActive: true},
+      {name: "Sausage", price: 3.99, image: "/2-Sausage.png", isActive: true},
+      {name: "GreenPepper", price: 2.99, image: "/3-GreenPepper.png", isActive: true},
+      {name: "Onion", price: 2.99, image: "/4-Onions.png", isActive: true},
+      {name: "Black Olives", price: 2.99, image: "/5-BlackOlive.png", isActive: true},
+      {name: "24-Carat Gold Flakes", price: 6.99, image: "/6-Gold.png", isActive: true}
     ]
     const toppings = await Promise.all(toppingsToCreate.map(createToppings))
 
@@ -277,6 +283,7 @@ async function createInitialToppings() {
   }
 }
 
+// Create pizzas with toppings.
 async function createPizzaWithToppings() {
   console.log("Starting to create a pizza with toppings...")
   try {
@@ -335,6 +342,7 @@ async function createPizzaWithToppings() {
   }
 }
 
+// Create some initial carts without users.
 async function createInitialCartsWithoutUser () {
   console.log("Starting to create a cart without a user...")
   try {
@@ -367,6 +375,7 @@ async function createInitialCartsWithoutUser () {
   }
 }
 
+// Creating initial carts for users.
 async function createInitialCartsForUser () {
   console.log("Starting to create a cart for a user...")
   try {
@@ -404,6 +413,7 @@ async function createInitialCartsForUser () {
   }
 }
 
+// Create the initial order items for a cart with usual products.
 async function createInitialOrderItemsRowsForCartsUsingProducts() {
   console.log("Starting to create orderItems rows for a cart using products...")
   try {
@@ -421,6 +431,7 @@ async function createInitialOrderItemsRowsForCartsUsingProducts() {
   }
 }
 
+// Create initial order items for a cart with pizzas.
 async function createInitialOrderItemsRowsForCartsUsingPizza() {
   console.log("Starting to create orderItems rows for a cart using pizza...")
   try {
@@ -438,13 +449,14 @@ async function createInitialOrderItemsRowsForCartsUsingPizza() {
   }
 }
 
+// Creating the initial payment information.
 async function createInitialPaymentInformationForOrder() {
   console.log("Starting to create payment information for orders...")
   try {
     const initialPaymentInformation = [
-      { cartId: 1, cardholderName: "sam", cardNumber: "123123123", expirationDate: "12/12/2023", cvv: "123", billingAddress: "123 fake street"},
-      { cartId: 2, cardholderName: "bob", cardNumber: "456456456", expirationDate: "12/12/2024", cvv: "456", billingAddress: "456 fake street"},
-      { cartId: 3, cardholderName: "carlyle", cardNumber: "789789789", expirationDate: "12/12/2025", cvv: "789", billingAddress: "789 fake street"}
+      {cartId: 1, cardholderName: "sam", cardNumber: "123123123", expirationDate: "12/12/2023", cvv: "123", billingAddress: "123 fake street"},
+      {cartId: 2, cardholderName: "bob", cardNumber: "456456456", expirationDate: "12/12/2024", cvv: "456", billingAddress: "456 fake street"},
+      {cartId: 3, cardholderName: "carlyle", cardNumber: "789789789", expirationDate: "12/12/2025", cvv: "789", billingAddress: "789 fake street"}
     ]
     const paymentInformation = await Promise.all(initialPaymentInformation.map(createPaymentInformationForOrderRow))
 
@@ -455,6 +467,7 @@ async function createInitialPaymentInformationForOrder() {
   }
 }
 
+// Rebuild the database by removing all tables and reintroducing all seed data.
 async function rebuildDB() {
   try {
     client.connect();
