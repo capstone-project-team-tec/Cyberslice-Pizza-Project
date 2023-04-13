@@ -262,27 +262,27 @@ h3 {
 
 #locationsContainer {
     border: 2px solid white;
-
     margin-left: 10%;
-
     margin-bottom: 20rem;
-
     max-width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 
 .location {
     display: flex;
-
     flex-direction: row;
     border: 2px solid white;
-
     border-radius: 0.4rem;
+    /* max-width: 50%; */
+    width: 100%;
+    margin-bottom: 3%;
 
-    margin-bottom: 1rem;
-    padding-left: 1rem;
-    padding-top: 2rem;
-    padding-bottom: 1rem;
+
+
 }
 
 .locationTitle {
@@ -392,3 +392,63 @@ h3 {
     background-color: #cbff5e !important;
     color: Black !important;
 }
+
+#deliveryform {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    
+
+    height: 25px;
+    width: 450px;
+}
+
+#alldeliveryform {
+   
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;  
+}
+
+#selectlocation {
+    text-align: center;
+}
+#formLocationContainer {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 50%;
+}
+
+#submitbuttontocart {
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+
+    font-family: Orbitron, 'Courier New', Courier, monospace;
+    font-size : 1rem;
+    font-weight: bold;
+
+    padding: 0.5rem 1rem;
+
+    text-align: center;
+    line-height: 10px;
+
+    height: 30px;
+}
+
+#buttoncartcontainer {
+    text-align: center;
+    margin-top: 3%;
+}
+
+
+
