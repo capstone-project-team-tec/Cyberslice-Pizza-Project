@@ -3,10 +3,13 @@ import "./sides.css"
 import "./global.css"
 
 const Sides = (props) => {
+
+  // Setting states
   const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, sides } = props;
   const [currentCartId, setCurrentCartId] = useState(props.currentCart.id);
   const [addedSideId, setAddedSideId] = useState(null);
 
+  // AddToCart notification.
   const showAddedToCartNotification = (id) => {
       setAddedSideId(id);
       setTimeout(() => {
@@ -14,6 +17,7 @@ const Sides = (props) => {
       }, 2000);
   };
 
+  // Creating a guest cart. 
   let guestCartId
   async function createCartForGuest() {
     try {
@@ -24,15 +28,15 @@ const Sides = (props) => {
         },
         body: JSON.stringify({}),
       });
-  
       const result = await response.json();
+
       setCurrentCart({
         id: result.id,
         isCheckedOut: result.isCheckedOut,
         totalCost: result.totalCost,
         userId: result.userId
-    })
-    //   setCurrentCartId(result.id)
+      })
+
       guestCartId = result.id
       if (result.success) {
         console.log('A new cart has been created for the guest. here is the result:  ',result );
@@ -46,6 +50,7 @@ const Sides = (props) => {
     }
   }
 
+  // Add a side to a cart.
   const AddToCart = ({ side }) => {
     const [quantity, setQuantity] = useState(1);
     return (
@@ -73,6 +78,7 @@ const Sides = (props) => {
     );
   };
   
+  // Display a list of side items and let users add them to a cart.
   const Sides = ({ sides }) => {
     return (
       <div>
@@ -84,6 +90,7 @@ const Sides = (props) => {
     );
   };
 
+  // Create a new order item using a POST request.
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
       const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
@@ -107,7 +114,7 @@ const Sides = (props) => {
     }
   };
 
-
+  // Create a new order items row in the database.
   const createOrderItemsRow = async (productId, count, cost, productName) => {
     let cartId;
     if (Object.keys(currentCart).length == 0) {
