@@ -1,6 +1,7 @@
 const express = require("express");
 const dessertsRouter = express.Router();
 
+// Database function wrappers for desserts.
 const { 
     createDessert,
     getAllDesserts,
@@ -9,14 +10,16 @@ const {
     getDessertById,
 } = require('../db/desserts');
 
-//dependency imports
+// Dependency imports
 require('dotenv').config();
 
+// Logs a message for every request made to /desserts
 dessertsRouter.use((req,res,next)=>{
     console.log("A request is being made to /desserts");
     next();
 })
 
+// GET all desserts.
 dessertsRouter.get('/', async(req,res,next)=>{
     try {
         const desserts = await getAllDesserts();
@@ -26,6 +29,7 @@ dessertsRouter.get('/', async(req,res,next)=>{
       }
 })
 
+// PATCH a dessert's name and price by its ID.
 dessertsRouter.patch('/:dessertId', async (req, res, next) => {
   const id = req.params.dessertId;
   console.log("dessertsRouter.patch; desssertId: " + id);
@@ -52,6 +56,7 @@ dessertsRouter.patch('/:dessertId', async (req, res, next) => {
   }
 });
 
+// GET a dessert by its ID.
 dessertsRouter.get('/:dessertId', async (req, res, next) => {
   const dessert = await getDessertById(req.params.dessertId);
   if (!req.params.dessertId) {
@@ -66,6 +71,7 @@ dessertsRouter.get('/:dessertId', async (req, res, next) => {
   }
 });
 
+// DELETE a dessert by its ID.
 dessertsRouter.delete('/:dessertId', async (req, res, next) => {
   if (!req.params.dessertId) {
     console.log(error);

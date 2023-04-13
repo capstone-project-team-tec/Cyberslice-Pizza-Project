@@ -1,6 +1,7 @@
 const express = require("express");
 const pizzaRouter = express.Router();
 
+// Database function wrappers for pizza.
 const { 
     addToppingsToPizza,
     fetchPizzaWithToppingsInfo,
@@ -9,12 +10,16 @@ const {
     fetchPizzaByName
 } = require('../db/pizza');
 
+// Dependency imports
 require('dotenv').config();
+
+// Logs a message for every request made to /pizza
 pizzaRouter.use((req,res,next)=>{
   console.log("A request is being made to /pizza");
   next();
 })
 
+// GET a pizza by its name.
 pizzaRouter.get('/getpizzabyname/:name', async (req, res, next) => {
   console.log('the pizza router get function is running......' + req.params.name)
   if (req.params.name) {
@@ -35,6 +40,7 @@ pizzaRouter.get('/getpizzabyname/:name', async (req, res, next) => {
   }
 });
 
+// POST a new pizza with a name, pizza cost, and a pizza size.
 pizzaRouter.post('/', async (req, res, next) => {
   try {
     const { name, basePizzaCost, pizzaSize } = req.body
@@ -65,6 +71,7 @@ pizzaRouter.post('/', async (req, res, next) => {
   }
 })
 
+// POST a new pizza with toppings, identified by its pizzaId, toppingsId, and count.
 pizzaRouter.post('/:pizzaId/pizzawithtoppings', async (req, res, next) => {
   const {pizzaId} = req.params;
   const {toppingsId, count} = req.body;
@@ -96,6 +103,7 @@ pizzaRouter.post('/:pizzaId/pizzawithtoppings', async (req, res, next) => {
   }
 })
 
+// PATCH a pizza with a new name, cost, and size, identified by its ID.
 pizzaRouter.patch('/:pizzaId', async (req, res, next) => {
   const id = req.params.pizzaId;
   console.log("pizzaRouter.patch; pizzaId: " + id);

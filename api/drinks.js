@@ -1,6 +1,7 @@
 const express = require("express");
 const drinksRouter = express.Router();
 
+// Database function wrappers for drinks.
 const { 
     createDrink,
     getAllDrinks,
@@ -9,12 +10,16 @@ const {
     getDrinkById
 } = require('../db/drinks');
 
+// Dependency imports
 require('dotenv').config();
 
+// Logs a message for every request made to /drinks
 drinksRouter.use((req,res,next)=>{
     console.log("A request is being made to /drinks");
     next();
 })
+
+// GET all drinks.
 drinksRouter.get('/', async(req,res,next)=>{
     try {
         const drinks = await getAllDrinks();
@@ -24,6 +29,7 @@ drinksRouter.get('/', async(req,res,next)=>{
       }
 })
 
+// PATCH a drinks name and price by its ID.
 drinksRouter.patch('/:drinkId', async (req, res, next) => {
   const id = req.params.drinkId;
   console.log("dessertsRouter.patch; drinkId: " + id);
@@ -50,6 +56,7 @@ drinksRouter.patch('/:drinkId', async (req, res, next) => {
   }
 });
 
+// GET a drink by its ID.
 drinksRouter.get('/:drinkId', async (req, res, next) => {
   const drink = await getDrinkById(req.params.drinkId);
   if (!req.params.drinkId) {
@@ -64,6 +71,7 @@ drinksRouter.get('/:drinkId', async (req, res, next) => {
   }
 });
 
+// DELETE a drink by its ID.
 drinksRouter.delete('/:drinkId', async (req, res, next) => {
   if (!req.params.drinkId) {
     console.log(error);

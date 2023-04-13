@@ -1,5 +1,6 @@
 const { client } = require('./client')
 
+// Return all the products in the products table.
 async function fetchAllProducts() {
     try {
         const {rows} = await client.query(`
@@ -7,24 +8,24 @@ async function fetchAllProducts() {
         WHERE id=$1;
         `)
         return rows
-
     } catch(error) {
         console.log(error)
     }
 }
 
+// Return all the users in the users table.
 async function fetchAllUsers() {
     try {
         const {rows} = await client.query(`
         SELECT * FROM users;
         `)
         return rows
-
     } catch(error) {
         console.log(error)
     }
 }
 
+// Create a new product into the products table.
 async function createProduct({category, name, price}) {
     try {
         const {rows} = await client.query(`
@@ -35,12 +36,12 @@ async function createProduct({category, name, price}) {
         `, [category, name, price])
 
         return rows[0];
-
     } catch(error) {
         console.log(error)
     }
 }
 
+// Retrieve a product when given a valid ID.
 async function getProductById(id) {
     console.log("Starting getProductById");
     try {
@@ -57,6 +58,7 @@ async function getProductById(id) {
     }
 }
 
+// Delete a product when given a valid id.
 async function deleteProduct(id) {
     try {
         const product = await getProductById(id);
@@ -77,19 +79,7 @@ async function deleteProduct(id) {
     }
 }
 
-async function getAllUsers() {
-    try {
-        const {rows} = await client.query(`
-        SELECT * FROM users
-        WHERE id=$1;
-        `)
-        
-        return rows;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
+// Get a user when given a valid username.
 async function getUserByUsername(userName) {
     console.log("Getting user by username, testing logging in");
         try {
@@ -110,6 +100,7 @@ async function getUserByUsername(userName) {
         }
 }
 
+// Get a user by their ID.
 async function getUserById(userId) {
     try {
 
@@ -129,6 +120,7 @@ async function getUserById(userId) {
     }
 }
 
+// Update a user.
 async function updateUser({id, username, name, email, address, phone}) {
     console.log("this is the line 164 id and username", id, username)
     try {
@@ -145,6 +137,7 @@ async function updateUser({id, username, name, email, address, phone}) {
     }
 }
 
+// Update a product.
 async function updateProduct({id, category, price, isActive}) {
     console.log("Request payload:", {id, category, price, isActive});
     try {
@@ -164,6 +157,7 @@ async function updateProduct({id, category, price, isActive}) {
     }
 }
 
+// Delete a user based off of their id.
 async function deleteUser(id) {
     try { 
         await client.query(`
@@ -175,7 +169,7 @@ async function deleteUser(id) {
     } catch (error) {
       throw error;
     }
-  }
+}
 
 module.exports = {
     fetchAllProducts,
@@ -183,7 +177,6 @@ module.exports = {
     getProductById,
     updateProduct,
     deleteProduct,
-    getAllUsers,
     getUserByUsername,
     getUserById,
     updateUser,
