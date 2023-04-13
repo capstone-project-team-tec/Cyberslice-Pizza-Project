@@ -161,26 +161,21 @@ const Checkout = (props) => {
             <section id = "totalContainer">
                 <section className = "chargeContainer">
                     <section id = "subtotal">
-                        <section id = "subtotalTitle">
-                            Subtotal
-                        </section>
-
-                        <section className = "price">
-                           $ {subTotalDisplay ? subTotalDisplay: 0}
-                        </section>
+                        <div id="subtotal">
+                            <p id="subtotalText" className="textNoMarginOrPad deliveryFeeCheckout">Subtotal:</p>
+                            <p className="price  textNoMarginOrPad"> $ {subTotalDisplay ? subTotalDisplay: 0}</p>
+                        </div>
                     </section>
-
+                            
                     <section id = "fee">
-                        <section id = "feeTitle">
-                            Delivery Fee
-                        </section>
-                        <section className = "price">
-                            $ 10.00
-                        </section>
+                        <div id="deliveryFee">
+                            <p id="deliveryFeeText" className="textNoMarginOrPad deliveryFeeCheckout">Delivery Fee:</p>
+                            <p className="price  textNoMarginOrPad">$10.00</p>
+                        </div>
                     </section>
 
                     <section id = "total">
-                        <section id = "totalTitle">
+                        <section id = "totalTitle" className="totalCheckout">
                             Total: 
                         </section>
 

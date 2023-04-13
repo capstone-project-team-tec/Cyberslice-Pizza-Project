@@ -26,14 +26,13 @@ const Desserts = (props) => {
         },
         body: JSON.stringify({}),
       });
-  
       const result = await response.json();
       setCurrentCart({
         id: result.id,
         isCheckedOut: result.isCheckedOut,
         totalCost: result.totalCost,
         userId: result.userId
-    })
+      })
       guestCartId = result.id
       if (result.success) {
         return result;

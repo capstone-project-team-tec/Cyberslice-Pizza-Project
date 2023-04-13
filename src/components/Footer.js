@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const Footer = (props) => {
-    const isLoggedIn = props.currentUser;
     const navigate = useNavigate();
 
 

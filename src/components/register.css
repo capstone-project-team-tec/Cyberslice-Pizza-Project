@@ -1,3 +1,4 @@
+/* Register general styling for form and container */
 button {
     margin-bottom: 20%
 }
@@ -9,13 +10,6 @@ button {
     margin-left: 10%;
     margin-top: 5%;
 }
-
-/* @media (max-width: 768px) {
-    .register-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  } */
 
 h2 {
     text-decoration: none;
