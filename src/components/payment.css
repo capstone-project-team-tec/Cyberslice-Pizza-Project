@@ -1,6 +1,5 @@
 /* general payment styling */
 #paymentComponent {
-    /* margin-bottom: 30%;  */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,12 +58,13 @@ h1 {
     margin-top: 6%;
     height: fit-content;
 }
-  
-.input-row {
+
+/* input styling */
+.inputRow {
     display: contents;
 }
   
-.input-field {
+.inputField {
     display: flex;
     flex-direction: column;
     font-family: "Open Sans", 'Courier New', Courier, monospace;
@@ -72,7 +72,7 @@ h1 {
     color: #BDBDBD;
 }
   
-.input-field input {
+.inputField input {
     border: none;
     border-bottom: 2px solid white;
     background-color: transparent;
@@ -83,15 +83,11 @@ h1 {
     font-size: 1.1rem;
 }
 
-.input-field input:focus {
-    outline: none;
-}
-
-.input-field input:focus:valid {
+.inputField input:focus {
     border-bottom: 2px solid #cbff5e;
 }
 
-.input-field input.has-value {
+.inputField input.hasValue {
     border-bottom: 2px solid #cbff5e;
 }
 

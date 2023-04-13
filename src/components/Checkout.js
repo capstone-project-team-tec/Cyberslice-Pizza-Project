@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import "./checkout.css"
 import "./global.css"
 
 const Checkout = (props) => {
-    const { currentCart, currentUser, setCurrentCart, subTotalDisplay, setSubTotalDisplay, totalCost, setTotalCost, currentOrderItems, setCurrentOrderItems} = props
-    const [anything, setAnything] = useState([])
+    const { currentCart, subTotalDisplay, setSubTotalDisplay, totalCost, setTotalCost, currentOrderItems, setCurrentOrderItems} = props
     const [updatedOrderItem, setUpdatedOrderItem] = useState({})
-    
-    const {id} = useParams()
 
     useEffect(() => {
-         getOrderItemsByCartId();
+        getOrderItemsByCartId();
     }, [currentCart]);
 
-    
-    console.log("this is line 16 of checkout current cart id:   ",currentCart.id)
-
+    // this function fetches the entries from the order items table whose cartId value matches the current cart id then sets the currentOrderItems state.
     async function getOrderItemsByCartId() {
         try {
             const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}`, {
@@ -26,39 +21,30 @@ const Checkout = (props) => {
             });      
             const result = await response.json();
             setCurrentOrderItems(result);
-            
         } catch (error) {
           console.log(error);
         }
     }
 
+    // this function removes an entry from the order items table.
     async function removeOrderItem(orderItemId) {
         try {
-            console.log(orderItemId);
-            console.log(currentCart.id)
             const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
                 method: 'DELETE',
                 headers: {
-                'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( {
+                body: JSON.stringify({
                     "cartId" : currentCart.id
-            } )
+                })
           });
-          const result = await response.json();
-
-          setAnything(result);
-          
-          console.log(result);
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
     }
 
+    // this function updates the count of an order item in the order items table.
     async function updateOrderItem( orderItemId, count) {
-        console.log("update order item is firing")
-        console.log("orderitemId: ",orderItemId)
-        console.log("orderitemCount: ",count)
         try {
             const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
                 method: "PATCH",
@@ -69,12 +55,8 @@ const Checkout = (props) => {
                     count
                 }),
             })
-            
             const result = await response.json();
-            
-            console.log("this is the result for update order item", result)
             setUpdatedOrderItem(result)
-        
         } catch(error) {
             console.log(error)
         }
@@ -84,20 +66,20 @@ const Checkout = (props) => {
         getOrderItemsByCartId();
     }, [updatedOrderItem]);
 
+    // this function runs when the remove button is clicked. It updates the state and runs the removeOrderItem function.
     async function handleRemove (productId, orderItemId) {
         const updatedOrderItems = currentOrderItems.filter(
             (orderItem) => orderItem.id !== orderItemId
         );
-
-        // Update the items list again.
         setCurrentOrderItems(updatedOrderItems);
         await removeOrderItem(productId);
     }
 
+    // this function calculates the values that display for subtotal cost and total cost.
     const subTotalCostCalculator = (currentOrderItems) => {
         let subTotal = 0
         let finalSubTotal = 0
-        if (currentOrderItems != {}){
+        if (currentOrderItems.length > 0){
             for (let i=0; i<currentOrderItems.length; i++){
                 subTotal += (currentOrderItems[i].count*currentOrderItems[i].cost)
                 finalSubTotal = subTotal.toFixed(2);
@@ -118,43 +100,38 @@ const Checkout = (props) => {
         <section id = "checkoutContainer">
             <section id = "checkoutPageTitle">My Cart</section>
             
-            {currentOrderItems.length > 0 ? (
-                currentOrderItems.map((orderItem) => {
+            {currentOrderItems.length > 0 ? (currentOrderItems.map((orderItem) => {
                 return (
                     <section key={orderItem.id} className = "item"> 
                         <div>
-                            {/* only one of these should print */}
                             <section className = "itemTitle">{orderItem.productName}</section>
                             <section className = "itemTitle">{orderItem.pizzaName}</section>
 
                             <section className = "itemDetailsContainer">
-
-                                {/* Space these better, away from the remove. */}
                                 <section className = "detailColumn">
                                     <section className = "detailCategory">
                                         Quantity
                                     </section>
 
                                     <section className = "detailValue">
-                                    <select className="selectCountDropdown"
-                                        value={orderItem.count}
-                                        onChange={(event) => {
-                                        event.preventDefault();
-                                        const updatedCost = event.target.value * orderItem.cost;
-                                        updateOrderItem(orderItem.id, event.target.value, updatedCost)    
-                                        }}
-                                        
-                                    >
-                                        <option value={1}>1</option>
-                                        <option value={2}>2</option>
-                                        <option value={3}>3</option>
-                                        <option value={4}>4</option>
-                                        <option value={5}>5</option>
-                                        <option value={6}>6</option>
-                                        <option value={7}>7</option>
-                                        <option value={8}>8</option>
-                                        <option value={9}>9</option>
-                                    </select>
+                                        <select className="selectCountDropdown"
+                                            value={orderItem.count}
+                                            onChange={(event) => {
+                                                event.preventDefault();
+                                                const updatedCost = event.target.value * orderItem.cost;
+                                                updateOrderItem(orderItem.id, event.target.value, updatedCost)    
+                                            }}
+                                        >
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                            <option value={6}>6</option>
+                                            <option value={7}>7</option>
+                                            <option value={8}>8</option>
+                                            <option value={9}>9</option>
+                                        </select>
                                     </section>
                                 </section>
 
@@ -168,19 +145,16 @@ const Checkout = (props) => {
                                     </section>
                                 </section>
 
-                                {/* This needs to go to the far right */}
                                 <section className = "removeButtonContainer">
                                     <button id = "removeButton" onClick={() => handleRemove(orderItem.productId, orderItem.id)}>
                                         Remove
                                     </button>
                                 </section>
-                                
                             </section>
                         </div>
                     </section>
                 );
-                })
-            ) : (
+            })) : (
                 <div>Nothing in the cart yet!</div>
             )}
 

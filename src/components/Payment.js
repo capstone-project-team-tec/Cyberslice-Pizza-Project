@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./payment.css";
 import "./global.css";
 
 const Payment = (props) => {
     const navigate = useNavigate();
-    const { fetchUserCurrentCart,currentUser, currentCart, setCurrentCart, setCurrentUser, subTotalDisplay, setSubTotalDisplay, totalCost, setTotalCost, currentOrderItems, setCurrentOrderItems, fetchCurrentUser, createCartForUser } = props;
+    const { fetchUserCurrentCart,currentUser, currentCart, setCurrentCart, subTotalDisplay, totalCost, setCurrentOrderItems } = props;
     const [cardHolder, setCardHolder] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [MMYY, setMMYY] = useState('');
@@ -15,17 +15,19 @@ const Payment = (props) => {
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');    
 
+    // this function runs the switch statement to set the payment info for the target input field's state and adds/removes the hasValue class for styling
     const handleInputChange = (event) => {
-        const inputElement = event.target;
-        setPaymentInfo(inputElement.id, inputElement.value);
+        const targetInput = event.target;
+        setPaymentInfo(targetInput.id, targetInput.value);
 
-        if (inputElement.value) {
-            inputElement.classList.add('has-value');
+        if (targetInput.value) {
+            targetInput.classList.add('hasValue');
         } else {
-            inputElement.classList.remove('has-value');
+            targetInput.classList.remove('hasValue');
         }
     };
 
+    // this function sets the payment info for whichever field had a value entered into it
     function setPaymentInfo(id, value) {
         switch (id) {
             case 'cardHolder':
@@ -57,8 +59,8 @@ const Payment = (props) => {
         }
     }
 
+    // this function submits payment information by concatenating the billing address together, and submitting it along with the relevant states
     async function submitPaymentInfo() {
-        console.log("Submitting payment info...");
         const concatenatedBillingAddress = (billingAddress + ', ' + city + ', ' + state + ', ' + zip)
         try { 
             const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}/payment`, {
@@ -75,16 +77,12 @@ const Payment = (props) => {
                     billingAddress:concatenatedBillingAddress
                 })
             })
-
-            const resultData = await response.json();
-
-            console.log(resultData)
-
         } catch (error) {
             console.log(error)
         }
     };
     
+    // this function finalizes checkout by changing the current cart isCheckedOut to a value of true and submitting the total cost of the order
     async function finalizeCheckOut() {
         
         try { 
@@ -98,152 +96,130 @@ const Payment = (props) => {
                     totalCost: totalCost
                 })
             })
-
-            const resultData = await response.json();
-
-            console.log(resultData)
-
         } catch (error) {
             console.log(error)
         }
-        console.log("Finished checkout");
     };
 
+    // this function checks to make sure the input does not include numbers
     function validateCardHolder(cardHolder) {
-        console.log("validate card holder is running")
         const numbers = "1234567890";
 
         for (let i = 0; i < numbers.length; i++) {
             if (cardHolder.includes(numbers[i])) {
-                console.log("validate card holder returned false")
                 return false;
             }
         }
-        console.log("validate card holder returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include letters
     function validateCardNumber(cardNumber) {
-        console.log("validate card number is running")
         const lowerCardNumber = cardNumber.toLowerCase();
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
     
         for (let i = 0; i < alphabet.length; i++) {
             if (lowerCardNumber.includes(alphabet[i])) {
-                console.log("validate card number returned false")
                 return false;
             }
         }
-        console.log("validate card number returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include letters
     function validateMMYY(MMYY) {
-        console.log("validate MMYY is running")
         const lowerMMYY = MMYY.toLowerCase();
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
     
         for (let i = 0; i < alphabet.length; i++) {
             if (lowerMMYY.includes(alphabet[i])) {
-                console.log("validate MMYY returned false")
                 return false;
             }
         }
-        console.log("validate MMYY returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include letters
     function validateCVV(CVV) {
-        console.log("validate CVV is running")
         const lowerCVV = CVV.toLowerCase();
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
     
         for (let i = 0; i < alphabet.length; i++) {
             if (lowerCVV.includes(alphabet[i])) {
-                console.log("validate CVV returned false")
                 return false;
             }
         }
-        console.log("validate CVV returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include numbers
     function validateCity(city) {
-        console.log("validate city is running")
         const numbers = "1234567890";
 
         for (let i = 0; i < numbers.length; i++) {
             if (city.includes(numbers[i])) {
-                console.log("validate city returned false")
                 return false;
             }
         }
-        console.log("validate city returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include numbers
     function validateState(state) {
-        console.log("validate state is running")
         const numbers = "1234567890";
 
         for (let i = 0; i < numbers.length; i++) {
             if (state.includes(numbers[i])) {
-                console.log("validate state returned false")
                 return false;
             }
         }
-        console.log("validate state returned true")
         return true;
     }
 
+    // this function checks to make sure the input does not include letters
     function validateZip(zip) {
-        console.log("validate zip is running")
         const lowerZip = zip.toLowerCase();
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
     
         for (let i = 0; i < alphabet.length; i++) {
             if (lowerZip.includes(alphabet[i])) {
-                console.log("validate zip returned false")
                 return false;
             }
         }
-        console.log("validate zip returned true")
         return true;
     }
-// fetchCurrentUser, createCartForUser
-    let guestCartId
+
+    // this function creates a cart for a guest user and sets the current cart state to the result of the post request. It also returns the result.
     async function createCartForGuest() {
-      try {
-        const response = await fetch('http://localhost:1337/api/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({}),
-        });
+        try {
+            const response = await fetch('http://localhost:1337/api/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
     
-        const result = await response.json();
+            const result = await response.json();
         
-        // setCurrentCartId(result.id)
-        guestCartId = result.id
-        if (result.success) {
-          console.log('A new cart has been created for the guest. here is the result:  ',result );
-          setCurrentCart({
-                id: result.id,
-                isCheckedOut: result.isCheckedOut,
-                totalCost: result.totalCost,
-                userId: result.userId
-            })
-          return result;
-        } else {
-          console.log('Failed to create a new cart for the guest:', result.error.message);
-          return null;
+        
+            if (result.success) {
+                setCurrentCart({
+                    id: result.id,
+                    isCheckedOut: result.isCheckedOut,
+                    totalCost: result.totalCost,
+                    userId: result.userId
+                })
+                return result;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error creating cart for guest:', error);
         }
-      } catch (error) {
-        console.error('Error creating cart for guest:', error);
-      }
     }
 
+    // this function checks to make input fields have all been typed into and that they have the correct type of characters, otherwise it will throw an alert, then it submits the payment information to db, then finalizes checkout, then creates a new cart, sets that cart as currentCart, and sets currentOrderItems to empty array
     const handleCheckoutClick = async () => {
         if (cardHolder == '' || cardNumber == '' || MMYY == '' || CVV == '' || billingAddress == '' || city == '' || state == '' || zip == '') {
             alert("Please fill out all payment information fields.")    
@@ -266,12 +242,10 @@ const Payment = (props) => {
             await finalizeCheckOut();
 
             if (currentUser) {
-                console.log("this is the current user:   ", currentUser);
                 const newUserCartForAfterCheckout = await  fetchUserCurrentCart();
                 await setCurrentCart(newUserCartForAfterCheckout);
             } else {
-                const newGuestCartForAfterCheckout = await createCartForGuest();
-                // await setCurrentCart(newGuestCartForAfterCheckout);
+                await createCartForGuest();
             }
             await setCurrentOrderItems([]);
             alert("Your order has been successfully completed!")
@@ -290,38 +264,38 @@ const Payment = (props) => {
                 </div>
                 <div id="paymentInfoFieldsContainerContainer">
                     <div id="paymentInfoFieldsContainer">
-                        <div className="input-row">
-                            <div className="input-field">
+                        <div className="inputRow">
+                            <div className="inputField">
                                 <label htmlFor="cardHolder">Card Holder</label>
                                 <input type="text" id="cardHolder" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="cardNumber">Card Number</label>
                                 <input type="text" id="cardNumber" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="mm_yy">MM/YY</label>
                                 <input type="text" id="mm_yy" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="cvv">CVV</label>
                                 <input type="text" id="cvv" onChange={handleInputChange}/>
                             </div>
                         </div>
-                        <div className="input-row">
-                            <div className="input-field">
+                        <div className="inputRow">
+                            <div className="inputField">
                                 <label htmlFor="billingAddress">Billing Address</label>
                                 <input type="text" id="billingAddress" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="city">City</label>
                                 <input type="text" id="city" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="state">State</label>
                                 <input type="text" id="state" onChange={handleInputChange}/>
                             </div>
-                            <div className="input-field">
+                            <div className="inputField">
                                 <label htmlFor="zip">Zip</label>
                                 <input type="text" id="zip" onChange={handleInputChange}/>
                             </div>
