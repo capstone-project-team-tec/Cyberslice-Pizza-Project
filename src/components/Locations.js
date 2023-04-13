@@ -1,60 +1,61 @@
 import "./locations.css"
 import "./global.css"
 
-
 const CarryoutLocation = ({ title, street, city, state, zip}) => {
     
     return (
-        <section className="location">
-            <section className="locationInfoContainer">
-                <section className="locationTitle">
+        <section className="location-lp">
+
+            <section className="locationInfoContainer-lp">
+                <section className="locationTitle-lp">
                     {title}
                 </section>
-
-                <section className="addressContainer">
+                <section className="addressContainer-lp">
                     
-                    <section className="locationStreetContainer">
-                        <section className="locationStreetTitle">
+                    <section className="locationStreetContainer-lp">
+                        <section className="locationStreetTitle-lp">
                             Street
                         </section>
 
-                        <section className="locationStreet">
+                        <section className="locationStreet-lp">
                             {street}
                         </section>
                     </section>
 
-                    <section className="locationCityContainer">
-                        <section className="locationCityTitle">
+                    <section className="locationCityContainer-lp">
+                        <section className="locationCityTitle-lp">
                             City
                         </section>
 
-                        <section className="locationCity">
+                        <section className="locationCity-lp">
                             {city}
                         </section>
                     </section>
 
-                    <section className="locationStateContainer">
-                        <section className="locationStateTitle">
+                    <section className="locationStateContainer-lp">
+                        <section className="locationStateTitle-lp">
                             State
                         </section>
 
-                        <section className="locationState">
+                        <section className="locationState-lp">
                             {state}
                         </section>
                     </section>
 
-                    <section className="locationZipContainer">
-                        <section className="locationZipTitle">
+                    <section className="locationZipContainer-lp">
+                        <section className="locationZipTitle-lp">
                             Zip
                         </section>
 
-                        <section className="locationZip">
+                        <section className="locationZip-lp">
                             {zip}
                         </section>
-
                     </section>
+
                 </section>
+                
             </section>
+
         </section>
     )
 }
@@ -62,13 +63,13 @@ const CarryoutLocation = ({ title, street, city, state, zip}) => {
 const Locations = () => {
 
     return(
-        <div id="locationsComponent">
-            <div id="locationsComponentTitleContainer">
-                <p id="locationsComponentTitleText">Locations</p>
+        <div id="locationsComponent-lp">
+            <div id="locationsComponentTitleContainer-lp">
+                <p id="locationsComponentTitleText-lp">Locations</p>
             </div>
-            <div id="imageAndAddresses">
-                <img id="locationsImage" src="/snazzyMapsMapFinal.png" alt="Image of Map Locations"/>
-                <div id="locationsContainer">
+            <div id="imageAndAddresses-lp">
+                <img id="locationsImage-lp" src="/snazzyMapsMapFinal.png" alt="Image of Map Locations"/>
+                <div id="locationsContainer-lp">
                     <label htmlFor="CyberNet">
                         <CarryoutLocation
                             title="1. CyberNet"
@@ -76,7 +77,7 @@ const Locations = () => {
                             city="New York City"
                             state="New York"
                             zip="10001"
-                            />
+                        />
                     </label>
                     <label htmlFor="TechnoCorp">
                         <CarryoutLocation 
