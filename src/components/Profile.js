@@ -41,7 +41,7 @@ const Profile = (props) => {
     //Function to fetch carts by user so we can render in order history
     async function fetchCartsByUser() {
         try {
-            const response = await fetch(`http://localhost:1337/api/cart`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -62,7 +62,7 @@ const Profile = (props) => {
     async function fetchOrderItems() {
         userCarts.map(async (singleCart) => {
           try {
-            const response = await fetch(`http://localhost:1337/api/cart/${singleCart.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/${singleCart.id}`, {
               headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +83,7 @@ const Profile = (props) => {
     //This function is fetching the user by id so the user has option to update or delete info
     async function fetchUserById(event) {
         try {
-        const response = await fetch(`http://localhost:1337/api/users/me`, {
+        const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/me`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -107,7 +107,7 @@ const Profile = (props) => {
     async function deleteAccount(event) {
         event.preventDefault()
         try {
-            const response = await fetch(`http://localhost:1337/api/users/me`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/me`, {
             method : `DELETE`,
             headers: {
               'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const Profile = (props) => {
     async function updateUserById(event) {
         event.preventDefault()
         try {
-            const response = await fetch(`http://localhost:1337/api/users/me`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/me`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',

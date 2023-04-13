@@ -77,7 +77,7 @@ const Pizza = (props) => {
     // this function checks if a pizza name has already been made in the table before and if so returns it otherwise it returns a string checked for in the createPizza function
     async function checkPizzaName(pizzaName) {
         try {
-            const response = await fetch(`http://localhost:1337/api/pizza/getpizzabyname/${pizzaName}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/pizza/getpizzabyname/${pizzaName}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const Pizza = (props) => {
         const returnedPizza = await checkPizzaName(pizzaName)
         if (returnedPizza == "no pizza yet created matches the name"){
             try {
-                const response = await fetch('http://localhost:1337/api/pizza', {
+                const response = await fetch('https://cyberslice-backend.onrender.com/api/pizza', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const Pizza = (props) => {
     // this function creates an entry in the pizzaWithToppings table which relates the pizza id of the pizza being purchased to the toppings being used on that pizza and stores the count of toppings
     const createPizzaWithToppingsTableRow = async (pizzaId, toppingsId, count) => {
         try {
-            const response = await fetch(`http://localhost:1337/api/pizza/${pizzaId}/pizzawithtoppings`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/pizza/${pizzaId}/pizzawithtoppings`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const Pizza = (props) => {
     // this creates an entry in the orderItems table which tracks what products or pizzas are in each cart
     const createOrderItem = async (cartId, pizzaId, count, cost, pizzaName) => {
         try {
-            const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/orderitems`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const Pizza = (props) => {
     // this function creates a cart for a guest user and sets the current cart state to the result of the post request. It also returns the result.
     async function createCartForGuest() {
         try {
-            const response = await fetch('http://localhost:1337/api/cart', {
+            const response = await fetch('https://cyberslice-backend.onrender.com/api/cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

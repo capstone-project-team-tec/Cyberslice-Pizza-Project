@@ -34,7 +34,7 @@ const OrderOptions = (props) => {
     async function updateOrderLocationAndDeliveryAddress (event, currentCart) {
         event.preventDefault()
         try {
-            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}/orderoptions`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/${currentCart.id}/orderoptions`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"

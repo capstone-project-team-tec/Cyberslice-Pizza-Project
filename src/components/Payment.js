@@ -63,7 +63,7 @@ const Payment = (props) => {
     async function submitPaymentInfo() {
         const concatenatedBillingAddress = (billingAddress + ', ' + city + ', ' + state + ', ' + zip)
         try { 
-            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}/payment`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/${currentCart.id}/payment`, {
                 method: "POST", 
                 headers: {
                     'Content-Type': "application/json",
@@ -86,7 +86,7 @@ const Payment = (props) => {
     async function finalizeCheckOut() {
         
         try { 
-            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/${currentCart.id}`, {
                 method: "PATCH", 
                 headers: {
                     'Content-Type': "application/json",
@@ -192,7 +192,7 @@ const Payment = (props) => {
     // this function creates a cart for a guest user and sets the current cart state to the result of the post request. It also returns the result.
     async function createCartForGuest() {
         try {
-            const response = await fetch('http://localhost:1337/api/cart', {
+            const response = await fetch('https://cyberslice-backend.onrender.com/api/cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -62,7 +62,7 @@ const Admin = (props) => {
     //Fetching the user by id
     async function fetchUserById(userId) {
         try {
-        const response = await fetch(`http://localhost:1337/api/admin/${userId}`, {
+        const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -105,7 +105,7 @@ const Admin = (props) => {
         if (phone != '') {updatedPhone = phone}
         else {updatedPhone = user.phone}
         try {
-            const response = await fetch(`http://localhost:1337/api/admin/users/${userId}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/users/${userId}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const Admin = (props) => {
     async function deleteAccount(event) {
         event.preventDefault()
         try {
-            const response = await fetch(`http://localhost:1337/api/users/${userToEdit.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/${userToEdit.id}`, {
             method : `DELETE`,
             headers: {
               'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ const Admin = (props) => {
       //This function is fetching the product id so we can update or delete it
       async function fetchProductById(productId) {
         try {
-        const response = await fetch(`http://localhost:1337/api/admin/product/${productId}`, {
+        const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/product/${productId}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -189,7 +189,7 @@ const Admin = (props) => {
     async function createNewProduct () {
         
         try {
-            const response = await fetch(`http://localhost:1337/api/admin/createproduct`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/createproduct`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -233,7 +233,7 @@ const Admin = (props) => {
         if (isActive == true ) {updatedisActive = isActive}
         else {updatedisActive = false}
         try {
-            const response = await fetch(`http://localhost:1337/api/admin/products/${product.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/products/${product.id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ const Admin = (props) => {
     //This function is deleting a product by setting the isActive to false. We are only rendering in products that have isActive = true
     async function deleteProductById(product) {
         try {
-            const response = await fetch(`http://localhost:1337/api/admin/products/${product.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/products/${product.id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',

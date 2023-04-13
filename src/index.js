@@ -53,7 +53,7 @@ const App = () => {
         console.log("create cart for user function has started running...")
         try {
             const token = localStorage.getItem("token")
-            const response = await fetch('http://localhost:1337/api/cart', {
+            const response = await fetch('https://cyberslice-backend.onrender.com/api/cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const App = () => {
             if (!token) {
                 return;
             }
-            const response = await fetch(`http://localhost:1337/api/cart`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -119,7 +119,7 @@ const App = () => {
     // Sets data for the user from the admin.
     async function fetchUsers() {
         try {
-            const response = await fetch(`http://localhost:1337/api/admin/users`);
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/admin/users`);
             const data = await response.json();
             setUsers(data)
         } catch(error) {
@@ -130,7 +130,7 @@ const App = () => {
     // Sets drinks.
     async function fetchDrinks() {
         try {
-            const response = await fetch(`http://localhost:1337/api/drinks`);
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/drinks`);
             const data = await response.json();
             setDrinks(data)
         } catch(error) {
@@ -141,7 +141,7 @@ const App = () => {
     // Sets desserts.
     async function fetchDesserts() {
         try {
-            const response = await fetch(`http://localhost:1337/api/desserts`);
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/desserts`);
             const data = await response.json()
             setDesserts(data)
         } catch(error) {
@@ -152,7 +152,7 @@ const App = () => {
     // Sets sides.
     async function fetchSides() {
         try {
-            const response = await fetch(`http://localhost:1337/api/sides`);
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/sides`);
             const data = await response.json();
             setSides(data)
         } catch(error) {
@@ -165,7 +165,7 @@ const App = () => {
         const token = localStorage.getItem("token");
         if (token) {
             try {
-                const response = await fetch(`http://localhost:1337/api/users/me`, {
+                const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/me`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -188,7 +188,7 @@ const App = () => {
 
         if(token) {
             try {
-                const response = await fetch(`http://localhost:1337/api/users/admin`, {
+                const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/admin`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`

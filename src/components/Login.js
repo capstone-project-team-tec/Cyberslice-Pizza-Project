@@ -16,7 +16,7 @@ const Login = (props) => {
     async function loginFunction(e) {
         e.preventDefault();
         try {
-            const response = await fetch (`http://localhost:1337/api/users/login`, {
+            const response = await fetch (`https://cyberslice-backend.onrender.com/api/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

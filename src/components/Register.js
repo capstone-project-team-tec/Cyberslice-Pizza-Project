@@ -125,7 +125,7 @@ const Register = (props) => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:1337/api/users/register`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/users/register`, {
                 method: "POST", 
                 headers: {
                     'Content-Type': "application/json",

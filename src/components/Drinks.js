@@ -18,7 +18,7 @@ const Drinks = (props) => {
   let guestCartId
   async function createCartForGuest() {
     try {
-      const response = await fetch('http://localhost:1337/api/cart', {
+      const response = await fetch('https://cyberslice-backend.onrender.com/api/cart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const Drinks = (props) => {
   //Creating an order item
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
-      const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
+      const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/orderitems`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

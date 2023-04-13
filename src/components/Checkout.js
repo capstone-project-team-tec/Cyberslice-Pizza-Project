@@ -14,7 +14,7 @@ const Checkout = (props) => {
     // this function fetches the entries from the order items table whose cartId value matches the current cart id then sets the currentOrderItems state.
     async function getOrderItemsByCartId() {
         try {
-            const response = await fetch(`http://localhost:1337/api/cart/${currentCart.id}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/${currentCart.id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -29,7 +29,7 @@ const Checkout = (props) => {
     // this function removes an entry from the order items table.
     async function removeOrderItem(orderItemId) {
         try {
-            const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/orderitems/${orderItemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const Checkout = (props) => {
     // this function updates the count of an order item in the order items table.
     async function updateOrderItem( orderItemId, count) {
         try {
-            const response = await fetch(`http://localhost:1337/api/cart/orderitems/${orderItemId}`, {
+            const response = await fetch(`https://cyberslice-backend.onrender.com/api/cart/orderitems/${orderItemId}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json'
