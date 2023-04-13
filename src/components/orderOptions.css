@@ -37,6 +37,7 @@
     transition: color 0.5s;
     transition: background-color 0.5s;
     margin: 0;
+    z-index: 1;
 }
 
 #deliveryChoice:hover {
@@ -63,6 +64,7 @@
     transition: color 0.5s;
     transition: background-color 0.5s;
     margin: 0;
+    z-index: 1;
 }
 
 #carryoutChoice:hover {
