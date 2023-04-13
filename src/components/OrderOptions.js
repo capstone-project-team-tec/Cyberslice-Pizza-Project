@@ -64,193 +64,204 @@ const OrderOptions = (props) => {
                 </section>
             </section>
 
-            {delivery ? (
-                <div>
-                    <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
-                        <div id="alldeliveryform">
-                        <h3>Enter Delivery Address:</h3>
-                        <input
-                        id="deliveryform" 
-                        type="text"
-                        placeholder="Delivery Address"
-                        onChange = {(event) => setDeliveryAddress(event.target.value)}
-                        />
-                       </div>
-                    </form>
-                </div>
-            ): ""}
+            
 
             {carryOut || delivery ? (
-                <div id="locationsContainer">
-                    <h3 id="selectlocation">Select A Location:</h3>
-                    <form id="formLocationContainer">
-                        
-                        <section className="location">
-                            <section className="locationInfoContainer">
-                                <input type="radio" name="location" onClick={() => setSelectedStoreLocation("4342 N Liberty Road, New York City, New York, 10001")} />
-                                <section className="locationTitle">
-                                    Cyber Net
+                <div id="locationsContainerContainer">
+                    <div id="locationsContainer">
+                    {delivery ? (
+                        <div>
+                            <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
+                                <div id="alldeliveryform">
+                                    <h3>Enter Delivery Address:</h3>
+                                    <input
+                                        id="deliveryform" 
+                                        type="text"
+                                        placeholder="Delivery Address"
+                                        onChange = {(event) => setDeliveryAddress(event.target.value)}
+                                    />
+                                </div>
+                            </form>
+                        </div>
+                    ): ""}
+
+                        <h3 id="selectlocation">Select A Location:</h3>
+                        <form id="formLocationContainer">
+                            
+                            <section className="location">
+                                <section className="locationInfoContainer">
+                                    <div className="locationTitleAndRadioButton">
+                                        <input className="orderOptionsRadio" type="radio" name="location" onClick={() => setSelectedStoreLocation("4342 N Liberty Road, New York City, New York, 10001")} />
+                                        <section className="locationTitle">
+                                            Cyber Net
+                                        </section>
+                                    </div>
+
+                                    <section className="addressContainer">
+                                        
+                                        <section className="locationStreetContainer">
+                                            <section className="locationStreetTitle">
+                                                Street
+                                            </section>
+
+                                            <section className="locationStreet">
+                                                4342 N Liberty Road
+                                            </section>
+                                        </section>
+
+                                        <section className="locationCityContainer">
+                                            <section className="locationCityTitle">
+                                                City
+                                            </section>
+
+                                            <section className="locationCity">
+                                                New York City
+                                            </section>
+                                        </section>
+
+                                        <section className="locationStateContainer">
+                                            <section className="locationStateTitle">
+                                                State
+                                            </section>
+
+                                            <section className="locationState">
+                                                New York
+                                            </section>
+                                        </section>
+
+                                        <section className="locationZipContainer">
+                                            <section className="locationZipTitle">
+                                                Zip
+                                            </section>
+
+                                            <section className="locationZip">
+                                                10001
+                                            </section>
+                                        </section>
+
+                                    </section>
                                 </section>
-                                <section className="addressContainer">
+                            </section>
+
+                            <section className="location">
+                                <section className="locationInfoContainer">
+                                    <div className="locationTitleAndRadioButton">
+                                        <input className="orderOptionsRadio" type="radio" name="location" onClick={() => setSelectedStoreLocation("3697 S Red Planet Road," + " New York City," + " New York," + " 70810")}/>
+                                        <section className="locationTitle">
+                                            Techno Corp
+                                        </section>
+                                    </div>
+
+                                    <section className="addressContainer">
+
+                                        <section className="locationStreetContainer">
+                                            <section className="locationStreetTitle">
+                                                Street
+                                            </section>
+
+                                            <section className="locationStreet">
+                                                3697 S Red Planet Road
+                                            </section>
+                                        </section>
+
+                                        <section className="locationCityContainer">
+                                            <section className="locationCityTitle">
+                                                City
+                                            </section>
+
+                                            <section className="locationCity">
+                                                New York City
+                                            </section>
+                                        </section>
+
+                                        <section className="locationStateContainer">
+                                            <section className="locationStateTitle">
+                                                State
+                                            </section>
+
+                                            <section className="locationState">
+                                                New York
+                                            </section>
+                                        </section>
+
+                                        <section className="locationZipContainer">
+                                            <section className="locationZipTitle">
+                                                Zip
+                                            </section>
+
+                                            <section className="locationZip">
+                                                70810
+                                            </section>
+                                        </section>
+
+                                    </section>
+                                </section>
+                            </section>
+
+                            <section className="location" >
+                                <section className="locationInfoContainer">
+                                    <div className="locationTitleAndRadioButton">
+                                        <input className="orderOptionsRadio" type="radio" name="location" onClick={() => setSelectedStoreLocation("6201 Whispering Pines Lane, New York City, New York, 03429")}/>
+                                        <section className="locationTitle">
+                                            Synth Runner
+                                        </section>
+                                    </div>
                                     
-                                    <section className="locationStreetContainer">
-                                        <section className="locationStreetTitle">
-                                            Street
+                                    <section className="addressContainer">
+
+                                        <section className="locationStreetContainer">
+                                            <section className="locationStreetTitle">
+                                                Street
+                                            </section>
+
+                                            <section className="locationStreet">
+                                                6201 Whispering Pines Lane
+                                            </section>
                                         </section>
 
-                                        <section className="locationStreet">
-                                            4342 N Liberty Road
+                                        <section className="locationCityContainer">
+                                            <section className="locationCityTitle">
+                                                City
+                                            </section>
+
+                                            <section className="locationCity">
+                                                New York City
+                                            </section>
                                         </section>
+
+                                        <section className="locationStateContainer">
+                                            <section className="locationStateTitle">
+                                                State
+                                            </section>
+
+                                            <section className="locationState">
+                                                New York
+                                            </section>
+                                        </section>
+
+                                        <section className="locationZipContainer">
+                                            <section className="locationZipTitle">
+                                                Zip
+                                            </section>
+
+                                            <section className="locationZip">
+                                                03429
+                                            </section>
+                                        </section>
+
                                     </section>
-
-                                    <section className="locationCityContainer">
-                                        <section className="locationCityTitle">
-                                            City
-                                        </section>
-
-                                        <section className="locationCity">
-                                            New York City
-                                        </section>
-                                    </section>
-
-                                    <section className="locationStateContainer">
-                                        <section className="locationStateTitle">
-                                            State
-                                        </section>
-
-                                        <section className="locationState">
-                                            New York
-                                        </section>
-                                    </section>
-
-                                    <section className="locationZipContainer">
-                                        <section className="locationZipTitle">
-                                            Zip
-                                        </section>
-
-                                        <section className="locationZip">
-                                            10001
-                                        </section>
-                                    </section>
-
                                 </section>
                             </section>
-                        </section>
 
-                        <section className="location">
-                            <section className="locationInfoContainer">
-                                <input type="radio" name="location" onClick={() => setSelectedStoreLocation("3697 S Red Planet Road," + " New York City," + " New York," + " 70810")}/>
-                                <section className="locationTitle">
-                                    Techno Corp
-                                </section>
-                                <section className="addressContainer">
-
-                                    <section className="locationStreetContainer">
-                                        <section className="locationStreetTitle">
-                                            Street
-                                        </section>
-
-                                        <section className="locationStreet">
-                                            3697 S Red Planet Road
-                                        </section>
-                                    </section>
-
-                                    <section className="locationCityContainer">
-                                        <section className="locationCityTitle">
-                                            City
-                                        </section>
-
-                                        <section className="locationCity">
-                                            New York City
-                                        </section>
-                                    </section>
-
-                                    <section className="locationStateContainer">
-                                        <section className="locationStateTitle">
-                                            State
-                                        </section>
-
-                                        <section className="locationState">
-                                            New York
-                                        </section>
-                                    </section>
-
-                                    <section className="locationZipContainer">
-                                        <section className="locationZipTitle">
-                                            Zip
-                                        </section>
-
-                                        <section className="locationZip">
-                                            70810
-                                        </section>
-                                    </section>
-
-                                </section>
-                            </section>
-                        </section>
-
-                        <section className="location" >
-                            <section className="locationInfoContainer">
-                                <input type="radio" name="location" onClick={() => setSelectedStoreLocation("6201 Whispering Pines Lane, New York City, New York, 03429")}/>
-                                <section className="locationTitle">
-                                    Synth Runner
-                                </section>
-                                <section className="addressContainer">
-
-                                    <section className="locationStreetContainer">
-                                        <section className="locationStreetTitle">
-                                            Street
-                                        </section>
-
-                                        <section className="locationStreet">
-                                            6201 Whispering Pines Lane
-                                        </section>
-                                    </section>
-
-                                    <section className="locationCityContainer">
-                                        <section className="locationCityTitle">
-                                            City
-                                        </section>
-
-                                        <section className="locationCity">
-                                            New York City
-                                        </section>
-                                    </section>
-
-                                    <section className="locationStateContainer">
-                                        <section className="locationStateTitle">
-                                            State
-                                        </section>
-
-                                        <section className="locationState">
-                                            New York
-                                        </section>
-                                    </section>
-
-                                    <section className="locationZipContainer">
-                                        <section className="locationZipTitle">
-                                            Zip
-                                        </section>
-
-                                        <section className="locationZip">
-                                            03429
-                                        </section>
-                                    </section>
-
-                                </section>
-                            </section>
-                        </section>
-
-                    </form>   
-                </div>
-            ): ""}
-            {delivery || carryOut ? (
-                <form onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
-                    <div id="buttoncartcontainer">
-                        <Link to="/checkout"><button type="submit" id="submitbuttontocart">Continue To Cart</button></Link>
+                        </form>   
                     </div>
-                </form>
-            ):""}   
+                    <form id="continueToCartButtonForm" onSubmit={(event) => updateOrderLocationAndDeliveryAddress(event, currentCart)}>
+                        <div id="buttoncartcontainer">
+                            <Link to="/checkout"><button type="submit" id="submitbuttontocart">Continue To Cart</button></Link>
+                        </div>
+                    </form>
+                </div>
+            ): ""}   
         </div>
     )
 }
