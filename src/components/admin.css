@@ -1,9 +1,4 @@
-#itemPic {
-    height: 100px;
-    width: 150px;
-    margin-bottom: 10px;
-}
-
+/* Button container for user or product buttons  */
 .userorproduct{
     background-color: black;
     border: 2px solid white;
@@ -29,6 +24,7 @@
     justify-content: space-evenly;
     height: 130px;
 }
+
 #buttoncontainerforusersorproducts {
     display: flex;
     flex-direction: row;
@@ -80,6 +76,7 @@
     height: 25px;
     width: 450px;
 }
+
 .submitform {
         background-color: black;
         border: 2px solid white;
@@ -104,6 +101,14 @@
     text-align: center;
 }
 
+/* image adjustment for each catergory */
+
+#itemPic {
+    height: 100px;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
 #drinkscontainer {
     margin-bottom: 10%;
 }
@@ -111,16 +116,21 @@
 .imageContainerDrinks {
     margin-left: 6%;
 }
+
 .imageContainerDesserts {
     margin-left: 15%;
 }
+
 .imageContainerSides {
     margin-left: 15%;
 }
+
 #parent {
     border: 2px solid #32CD32; 
     margin-bottom: 2%;
 }
+
+/* Users information */
 #usercontainer {
     font-size: 100%;
     display: flex;

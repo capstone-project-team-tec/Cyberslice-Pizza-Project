@@ -4,8 +4,6 @@ import "./login.css"
 import "./global.css"
 
 const Login = (props) => {
-
-    //Login
     const [ myUsername, setMyUsername ] = useState("");
     const [ myPassword, setMyPassword ] = useState("");
     const { setCurrentUserTrue } = props
@@ -14,6 +12,7 @@ const Login = (props) => {
 
     const navigate = useNavigate();
 
+    //This is the login function
     async function loginFunction(e) {
         e.preventDefault();
         try {
@@ -29,7 +28,6 @@ const Login = (props) => {
             })
             console.log("login is working")
             const result = await response.json();
-            console.log("This is theresult of logging in line 31 of login component:   ",result)
             if (!result.token) {
                 alert("Username or password is incorrect, please try again")
             } else {
@@ -54,7 +52,6 @@ const Login = (props) => {
     return (
         <section id="loginContainer"> 
 
-            {/* Login */}
             <section className = "loginTitle"> 
                 Welcome Back
                 <br></br>
@@ -87,7 +84,7 @@ const Login = (props) => {
                 <section className = "picture">
                     <img id="slicesInRows" src="/slicesInRows.jpg" alt="Image of pizza slices in rows"/>
                 </section>
-                </section>
+            </section>
             <h5 className="noAccountMessage">Don't Have An Account? <Link id="signUp" to="/register">Sign Up</Link></h5>
             <h5 className="noAccountMessage" id="logInAsAdmin" ><Link id="signUp" to="/adminlogin">Log In As Admin Here</Link></h5>
         </section>
