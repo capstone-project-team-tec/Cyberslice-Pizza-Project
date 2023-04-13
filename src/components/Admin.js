@@ -24,7 +24,7 @@ const Admin = (props) => {
     const [editSides, setEditSides] = useState(null)
     const [editDesserts, setEditDesserts] = useState(null)
     const [editDrinks, setEditDrinks] = useState(null)
-    const { products, users, currentUser, drinks, sides, desserts, setDrinks, setSides, setDesserts } = props
+    const { users, currentUser, drinks, sides, desserts, setDrinks, setSides, setDesserts } = props
     const [allUsers, setAllUsers] = useState({})
     const [allProducts, setAllProducts] = useState({})
     const [userToEdit, setUserToEdit] = useState({})
@@ -34,27 +34,32 @@ const Admin = (props) => {
 
     const navigate = useNavigate()
     
-
+    //Toggles function to see all users
     function toggleUsersToDeleteandUpdate() {
         setToggleUsers(!toggleUsers)
     }
-
+    //Toggles function to see all profucts
     function toggleDrinksToDeleteandUpdate() {
         setToggleProducts(!toggleProducts)
     }
+    //Toggles function to edit a user
     function editUserForm() {
         setEditUser(!editUser)
     }
+    //Toggles function to edit sides
     function editSidesForm(productId) {
         setEditSides(productId === editSides ? null : productId)
     }
+    //Toggles function to edit desserts
     function editDessertsForm(productId) {
         setEditDesserts(productId === editDesserts ? null : productId)
     }
+    //Toggles function to edit Drinks
     function editDrinksForm(productId) {
         setEditDrinks(productId === editDrinks ? null : productId)
     }
 
+    //Fetching the user by id
     async function fetchUserById(userId) {
         try {
         const response = await fetch(`http://localhost:1337/api/admin/${userId}`, {
@@ -64,7 +69,6 @@ const Admin = (props) => {
             }
             })
             const result = await response.json()
-            console.log("This is the result for fetchUserById", result)
 
             setUserToEdit(result)
             setMyId(result.id)
@@ -79,11 +83,8 @@ const Admin = (props) => {
             console.log(error)
         }
     }
-
+    //Updating the user by id. If there is no input for a particular field it defaults to what it was
     async function updateUserById(userId, user) {
-        console.log("This is the update user by id function")
-        console.log("This is line 78", user.name, user.address, user.phone)
-        console.log("this is the currentUser.id", currentUser.id)
         let updatedUsername
         let updatedName
         let updatedPhone
@@ -119,12 +120,9 @@ const Admin = (props) => {
                     phone: updatedPhone
                 }),
             })
-            console.log("This is the response", JSON.stringify(response))
+
             const result = await response.json();
             
-
-
-            console.log("this is the result", result)
 
             setUserToEdit(result)
         
@@ -135,7 +133,7 @@ const Admin = (props) => {
     }
 
 
-
+    //Function to delete an account
     async function deleteAccount(event) {
         event.preventDefault()
         try {
@@ -164,9 +162,9 @@ const Admin = (props) => {
           }
       }
 
+      //This function is fetching the product id so we can update or delete it
       async function fetchProductById(productId) {
         try {
-            console.log("Starting to run fetchProductById")
         const response = await fetch(`http://localhost:1337/api/admin/product/${productId}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -179,7 +177,7 @@ const Admin = (props) => {
             setProductId(result.id)
             setProductName(result.name)
             setProductPrice(result.price)
-            console.log("This is the line 174 result", result)
+            
 
             return result;
 
@@ -187,10 +185,9 @@ const Admin = (props) => {
             console.log(error)
         }
     }
-
+    //Create New Product Function
     async function createNewProduct () {
         
-        console.log("Create new product function is running")
         try {
             const response = await fetch(`http://localhost:1337/api/admin/createproduct`, {
                 method: "POST",
@@ -205,8 +202,6 @@ const Admin = (props) => {
                 })
             })
             const result = await response.json()
-
-            console.log("The create product function finished, this is the result", result)
 
             if (newProductCategory == "drinks") {
                 setDrinks(result)
@@ -224,9 +219,8 @@ const Admin = (props) => {
         }
     }
 
+    //This function is updating the product and if a field has not been updated it will defualt to its original value
       async function updateProductById(product) {
-        console.log("This is the update product by id function")
-        console.log("this is the product.id", product.id)
         let updatedCategory
         let updatedPrice
         let updatedisActive
@@ -252,12 +246,7 @@ const Admin = (props) => {
                     isActive: updatedisActive
                 }),
             })
-            console.log("This is the response", JSON.stringify(response))
             const result = await response.json();
-            
-
-
-            console.log("this is the result", result)
             
 
             setDrinks(result)
@@ -271,10 +260,8 @@ const Admin = (props) => {
             console.log(error)
         }
     }
-
+    //This function is deleting a product by setting the isActive to false. We are only rendering in products that have isActive = true
     async function deleteProductById(product) {
-        console.log("This is the update product by id function")
-        console.log("this is the product.id", product.id)
         try {
             const response = await fetch(`http://localhost:1337/api/admin/products/${product.id}`, {
                 method: "PATCH",
@@ -289,14 +276,8 @@ const Admin = (props) => {
                     isActive: false
                 }),
             })
-            console.log("This is the response", JSON.stringify(response))
-            const result = await response.json();
             
-
-
-            console.log("this is the result", result)
-
-            console.log("This is the product.category", product.category)
+            const result = await response.json();
 
             setAllProducts(result)
             if (product.category == "drinks") {
@@ -305,9 +286,7 @@ const Admin = (props) => {
                 setSides(result)
             } else if (product.category == "desserts") {
                 setDesserts(result)
-            } else {
-                console.log("unknown category:", product.category);
-              }
+            } 
             
             
             
@@ -318,114 +297,53 @@ const Admin = (props) => {
             console.log(error)
         }
     }
-
-    async function deleteProduct(event) {
-        event.preventDefault()
-        try {
-            const response = await fetch(`http://localhost:1337/api/users/${product.id}`, {
-            method : `DELETE`,
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem("token")}`
-              },
-              body: JSON.stringify({
-                id: productId
-              })
-            });
-            const result = await response.json()
-            if(result.success) {
-                alert("Product has been deleted")
-            }
-
-            setAllProducts(result)
-
-            
-            console.log(result);
-            return result
-          } catch (error) {
-            console.error(error);
-          }
-      }
-
-
-    // async function setUserDefaultState (user) {
-    //     console.log("This is the user",  user)
-    //     setUsername(user.username)
-    //     setName(user.name)
-    //     setEmail(user.email)
-    //     setPhone(user.phone)
-    //     setAddress(user.address)
-
-    // }
-
+        
+    //This is the event handler that orders the functions to update a user
     async function onSubmitEventHandlerUpdateUser(event, userId) {
         try {
           event.preventDefault();
-          console.log("This is the user ID:", userId);
-      
-          console.log("Starting to run fetch user by ID");
           const user = await fetchUserById(userId);
-          console.log("Finished running fetch user by ID");
-        //   await setUserDefaultState(user)
-            console.log(name, email, phone, address)
-          console.log("Starting to run update user by ID");
           await updateUserById(userId, user);
-          console.log("Finished running update user by ID");
-          alert("User has been updated")
           navigate('/admin')
         } catch (error) {
           console.error(error);
         }
       }
+       //This is the event handler that orders the functions to delete a user
     async function onSubmitEventHandlerDeleteUser(event, userId) {
         try {
             event.preventDefault()
-        await fetchUserById(userId);
-        await deleteAccount();
-        alert("User has been deleted")
-        navigate('/admin')
+            await fetchUserById(userId);
+            await deleteAccount();
+            alert("User has been deleted")
+            navigate('/admin')
         } catch(error) {
             console.log(error)
         }  
     }
-
+     //This is the event handler that orders the functions to update a product
     async function onSubmitEventHandlerUpdateProduct(event, productId) {
         try {
         event.preventDefault()
-        console.log("This is the product ID:", productId);
-        console.log("Starting to run fetch product by ID");
         const product = await fetchProductById(productId)
-        console.log("Finished running fetch product by ID");
-        console.log("Starting to run update product by ID");
         await updateProductById(product)
-        console.log("Finished running update product by ID")
-        console.log("Product has been updated")
         alert("Product has been updated");
         } catch (error) {
             console.log(error)
         }
     }
+
+     //This is the event handler that orders the functions to delete a product
     async function onSubmitEventHandlerDeleteProduct(productId) {
-        console.log("this is the onsubmiteventhandlerdeleteproduct")
         try {
-        console.log("This is the product ID:", productId);
-        console.log("Starting to run fetch product by ID");
         const product = await fetchProductById(productId)
-        console.log("Finished running fetch product by ID");
-        console.log("Starting to run delete product by ID");
         await deleteProductById(product)
-        console.log("Finished running delete product by ID");
         alert("Product has been deleted")
         
         } catch (error) {
             console.log(error)
         }
     }
-    useEffect(() => {
-       console.log("this is drinks", drinks)
-       console.log("this is desserts", desserts)
-       console.log("this is sides", sides)
-    }, []);
 
     return (
         <div>

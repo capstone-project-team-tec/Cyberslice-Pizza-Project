@@ -1,6 +1,4 @@
-/* .noAccountMessage {
-    margin-bottom: 20%;
-} */
+/* Sign up and log in as admin  */
 #logInAsAdmin {
     margin-bottom: 20%;
 }
@@ -14,6 +12,7 @@
     color: #cbff5e;
 }
 
+/* Login fields */
 #loginContainer{
     display: flex;
     flex-direction: column;
@@ -32,10 +31,13 @@
 h3 {
     margin: 0;
 }
+
 .loginTitle{
     font-size: 4rem;
     margin-bottom: 5rem;
 }
+
+/* Form and picture container */
 
 .formAndPicture {
     display: flex;
@@ -96,8 +98,6 @@ label {
     outline: none;
     transition: border-color 0.75s, color 0.75s;
 }
-
-
 
 #slicesInRows {
     width: 650px;

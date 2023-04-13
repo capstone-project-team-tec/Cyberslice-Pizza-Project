@@ -5,15 +5,16 @@ import "./global.css";
 const Drinks = (props) => {
   const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, drinks } = props;
   const [addedDrinkId, setAddedDrinkId] = useState(null);
-  const [quantity, setQuantity] = useState(1);
 
+  //Add to cart notification
   const showAddedToCartNotification = (id) => {
-    setAddedDrinkId(id);
-    setTimeout(() => {
+      setAddedDrinkId(id);
+      setTimeout(() => {
       setAddedDrinkId(null);
     }, 2000);
   };
-  
+
+  //Creating a cart for guest function upon clicking add to cart button
   let guestCartId
   async function createCartForGuest() {
     try {
@@ -32,13 +33,10 @@ const Drinks = (props) => {
         totalCost: result.totalCost,
         userId: result.userId
     })
-      // setCurrentCartId(result.id)
       guestCartId = result.id
       if (result.success) {
-        console.log('A new cart has been created for the guest. here is the result:  ',result );
         return result;
       } else {
-        console.log('Failed to create a new cart for the guest:', result.error.message);
         return null;
       }
     } catch (error) {
@@ -46,13 +44,14 @@ const Drinks = (props) => {
     }
   }
 
+  //Adjusting the quantity and creating the add to cart button
   const AddToCart = ({ drink }) => {
     const [quantity, setQuantity] = useState(1);
+
     return (
       <div id="addToCartContainer">
         <button id="addToCartButton" onClick={() => {
           createOrderItemsRow(
-            // currentCartId,
             drink.id,
             quantity,
             drink.price,
@@ -83,6 +82,7 @@ const Drinks = (props) => {
     );
   };
 
+  //Creating an order item
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
       const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
@@ -99,28 +99,25 @@ const Drinks = (props) => {
         }),
       });
       const result = await response.json();
-      console.log(result);
+      
       showAddedToCartNotification(productId);
     } catch (error) {
       console.log(error);
     }
   };
 
-
+  //Creating an orderItems row
   const createOrderItemsRow = async (productId, count, cost, productName) => {
     let cartId;
-    if (Object.keys(currentCart).length == 0) {
-      console.log("this is createOrderItemsRow firing on the if currentCart length equals zero");
-      if (currentUser) {
-        console.log("this is the current user:   ", currentUser);
-        await fetchUserCurrentCart();
-        cartId = currentCart.id;
+      if (Object.keys(currentCart).length == 0) {
+        if (currentUser) {
+          await fetchUserCurrentCart();
+          cartId = currentCart.id;
       } else {
-        await createCartForGuest();
-        cartId = guestCartId;
+          await createCartForGuest();
+          cartId = guestCartId;
       }
     } else {
-      console.log("a current cart was found in drinks.  ", currentCart);
       cartId = currentCart.id;
     }
     createOrderItem(cartId, productId, count, cost, productName);
@@ -138,18 +135,15 @@ const Drinks = (props) => {
                   <section key={singleDrink.id} id = "itemContainer">
                       <div>
                         <section id = "imageContainer"> 
-                          <img src = {singleDrink.image} id = "itemPic">
-                          </img>
+                          <img src = {singleDrink.image} id = "itemPic"></img>
                         </section>
 
                         <section id = "itemDetails">
-
                           <section id = "itemTitle">{singleDrink.name}</section>
                           <section id = "itemCost"> ${singleDrink.price}</section>
-
-                          <AddToCart key={singleDrink.id} drink = {singleDrink} />
-                          
+                          <AddToCart key={singleDrink.id} drink = {singleDrink} />  
                         </section>
+
                         {addedDrinkId === singleDrink.id && (
                           <span className="added-to-cart-message">Added to cart!</span>
                         )}

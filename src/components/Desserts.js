@@ -5,15 +5,17 @@ import "./global.css"
 const Desserts = (props) => {
   const { currentCart, currentUser, setCurrentCart, fetchUserCurrentCart, desserts } = props;
   const [addedDessertId, setAddedDessertId] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
 
+    //Added to cart notification
   const showAddedToCartNotification = (id) => {
       setAddedDessertId(id);
       setTimeout(() => {
-        setAddedDessertId(null);
+      setAddedDessertId(null);
       }, 2000);
   };
 
+  //Creating a cart for a guest upon clicking on add to cart
   let guestCartId
   async function createCartForGuest() {
     try {
@@ -32,20 +34,18 @@ const Desserts = (props) => {
         totalCost: result.totalCost,
         userId: result.userId
     })
-      // setCurrentCartId(result.id)
       guestCartId = result.id
       if (result.success) {
-        console.log('A new cart has been created for the guest. here is the result:  ',result );
         return result;
       } else {
-        console.log('Failed to create a new cart for the guest:', result.error.message);
         return null;
       }
     } catch (error) {
-      console.error('Error creating cart for guest:', error);
+      console.error(error);
     }
   }
 
+  //Add to cart button and option to increase quantity
   const AddToCart = ({ dessert }) => {
     const [quantity, setQuantity] = useState(1);
     return (
@@ -84,6 +84,7 @@ const Desserts = (props) => {
     );
   };
 
+  //Creating an order item
   const createOrderItem = async (cartId, productId, count, cost, productName) => {
     try {
       const response = await fetch(`http://localhost:1337/api/cart/orderitems`, {
@@ -107,21 +108,18 @@ const Desserts = (props) => {
     }
   };
 
-
+  //Creating an order item row in table
   const createOrderItemsRow = async (productId, count, cost, productName) => {
     let cartId;
-    if (Object.keys(currentCart).length == 0) {
-      console.log("this is createOrderItemsRow firing on the if currentCart length equals zero");
-      if (currentUser) {
-        console.log("this is the current user:   ", currentUser);
-        await fetchUserCurrentCart();
-        cartId = currentCart.id;
+      if (Object.keys(currentCart).length == 0) {
+        if (currentUser) {
+          await fetchUserCurrentCart();
+          cartId = currentCart.id;
       } else {
-        await createCartForGuest();
-        cartId = guestCartId;
+          await createCartForGuest();
+          cartId = guestCartId;
       }
     } else {
-      console.log("a current cart was found in desserts.  ", currentCart);
       cartId = currentCart.id;
     }
     createOrderItem(cartId, productId, count, cost, productName);

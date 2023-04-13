@@ -11,7 +11,7 @@ const Adminlogin = (props) => {
 
     const navigate = useNavigate()
 
-
+    //This is the login function for admin
     async function loginFunction(e) {
         e.preventDefault();
         try {
@@ -25,9 +25,7 @@ const Adminlogin = (props) => {
                     password: password
                 })
             })
-            console.log("login is working")
             const result = await response.json();
-            console.log("This is theresult of logging in line 31 of login component:   ",result)
             if (!result.token) {
                 alert("Username or password is incorrect, please try again")
             } else {
@@ -49,7 +47,6 @@ const Adminlogin = (props) => {
 
     return (
         <section id="loginContainer">
-            {/* Login */}
             <section className="loginTitle">
                 Admin Login
                 <br />
@@ -86,7 +83,7 @@ const Adminlogin = (props) => {
                     </button>
                 </form>
                 <section className="picture">
-                <img id="slicesInRows" src="/slicesInRows.jpg" alt="Image of pizza slices in rows"/>
+                    <img id="slicesInRows" src="/slicesInRows.jpg" alt="Image of pizza slices in rows"/>
                 </section>
             </section>
         </section>
