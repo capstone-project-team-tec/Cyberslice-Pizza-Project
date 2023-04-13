@@ -138,7 +138,8 @@ button {
     justify-content: flex-end;
 
     width: 100rem;
-    max-width: 80%;
+    max-width: 90%;
+    
 }
 
 
@@ -202,4 +203,12 @@ button {
 
     height: 2rem;
     text-align: center;
+}
+
+.deliveryFeeCheckout {
+    font-size: 25px;
+}
+
+.totalCheckout {
+    font-size: 25px;
 }

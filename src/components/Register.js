@@ -24,7 +24,8 @@ const Register = (props) => {
     }
     
     const emailTitle = document.querySelector('#emailTitle');
-
+    
+    //Verifying that the username has the correct requirements
     function verifyUsername(event) {
         const input = event.target;
         const usernameTitle = document.querySelector('#usernameTitle');
@@ -54,7 +55,7 @@ const Register = (props) => {
             }
         }
     }
-    
+    //Verifying that the password the password has the correct requirements
     function verifyPassword(event) {
         const input = event.target;
         const passwordTitle = document.querySelector('#passwordTitle');
@@ -85,7 +86,7 @@ const Register = (props) => {
             }
         }
     }
-
+    //Verifying the email contains the correct requirements
     function verifyEmail(event) {
         const input = event.target;
         if (!email.includes("@") || !email.includes("."))  {
@@ -113,7 +114,7 @@ const Register = (props) => {
             }
         }
     }
-
+    //Account registration function
     async function accountRegistration() {
         try { 
             if ( username.length < 9 ) {
@@ -159,7 +160,6 @@ const Register = (props) => {
 
     return (
         <section id = "registerContainer">
-            {/* Register */}
             <section className = "registerPageTitle"> 
                 Sign Up
                 <br></br>
